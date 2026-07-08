@@ -126,6 +126,24 @@
             <!-- Input & History Sidebar (Left) -->
             <div class="lg:col-span-4 flex flex-col gap-6">
                 
+                <!-- API Key Configuration Box (Crucial for Vercel Deployments) -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+                    <h3 class="text-sm font-bold text-slate-700 mb-2 flex items-center justify-between">
+                        <span class="flex items-center gap-2">
+                            <i class="fa-solid fa-key text-amber-500"></i>
+                            Gemini API Key Settings
+                        </span>
+                        <span class="text-[10px] text-slate-400 font-normal">Local Storage</span>
+                    </h3>
+                    <div class="relative">
+                        <input type="password" id="apiKeyInput" placeholder="Paste your Gemini API Key here..." class="w-full pl-3 pr-10 py-2 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all">
+                        <button type="button" id="toggleKeyVisibility" class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                            <i class="fa-solid fa-eye text-xs"></i>
+                        </button>
+                    </div>
+                    <p class="text-[10px] text-slate-500 mt-1.5">Get a key from <a href="https://aistudio.google.com/" target="_blank" class="text-brand-600 hover:underline font-semibold">Google AI Studio</a>.</p>
+                </div>
+
                 <!-- History Container -->
                 <div id="historyContainer" class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 hidden">
                     <h3 class="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
@@ -310,9 +328,8 @@
 
     <script>
         // System variables
-        const apiKey = ""; // API key is injected by the environment
+        const fallbackApiKey = ""; // Injected automatically only in editing canvas
         const modelName = "gemini-2.5-flash-preview-09-2025";
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
 
         // DOM Elements
         const form = document.getElementById('methodologyForm');
@@ -341,6 +358,29 @@
         
         const historyContainer = document.getElementById('historyContainer');
         const historyList = document.getElementById('historyList');
+        
+        // API Key Inputs
+        const apiKeyInput = document.getElementById('apiKeyInput');
+        const toggleKeyVisibility = document.getElementById('toggleKeyVisibility');
+
+        // Retrieve/Set Local API Key
+        let localApiKey = localStorage.getItem('gemini_api_key') || '';
+        apiKeyInput.value = localApiKey;
+
+        apiKeyInput.addEventListener('input', (e) => {
+            localApiKey = e.target.value.trim();
+            localStorage.setItem('gemini_api_key', localApiKey);
+        });
+
+        toggleKeyVisibility.addEventListener('click', () => {
+            if (apiKeyInput.type === 'password') {
+                apiKeyInput.type = 'text';
+                toggleKeyVisibility.innerHTML = '<i class="fa-solid fa-eye-slash text-xs"></i>';
+            } else {
+                apiKeyInput.type = 'password';
+                toggleKeyVisibility.innerHTML = '<i class="fa-solid fa-eye text-xs"></i>';
+            }
+        });
 
         // Initialize Mermaid
         mermaid.initialize({ 
@@ -430,7 +470,6 @@
 
         function saveToHistory(domain, objective, iv, dv, cv, methodologyHtml, mermaidCode, sourcesHtml, materialsRaw) {
             const saved = JSON.parse(localStorage.getItem('methodology_history') || '[]');
-            // Avoid duplicate domain + objective
             const exists = saved.find(item => item.domain === domain && item.objective === objective);
             if (!exists) {
                 saved.unshift({
@@ -438,14 +477,12 @@
                     methodologyHtml, mermaidCode, sourcesHtml, materialsRaw,
                     date: new Date().toISOString()
                 });
-                // Limit to 5 items
                 if (saved.length > 5) saved.pop();
                 localStorage.setItem('methodology_history', JSON.stringify(saved));
                 loadHistory();
             }
         }
 
-        // Initialize history on load
         loadHistory();
 
         // Tab Switching Logic
@@ -504,7 +541,14 @@
         // Main Generation Logic
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
+            // Determine the API Key to use
+            const activeKey = localApiKey || fallbackApiKey;
+            if (!activeKey) {
+                showError("Missing API Key! Please enter your Gemini API Key in the settings panel at the top of the sidebar.");
+                return;
+            }
+
             const domain = document.getElementById('domain').value.trim();
             const objective = document.getElementById('objective').value.trim();
             const iv = document.getElementById('iv').value.trim();
@@ -528,13 +572,11 @@
             currentMermaidCode = ''; 
             switchTab(tabMethodology, methodologyContent); 
 
-            // Handle Search Grounding Directions
             let restriction = "established academic consensus";
             if (searchFocus === "pubmed") restriction = "the PubMed database focusing strictly on biomedical, medical, and clinical standards";
             if (searchFocus === "sciencedirect") restriction = "ScienceDirect peer-reviewed articles focusing on rigorous technical, engineering, and STEM designs";
             if (searchFocus === "general") restriction = "open literature research databases, peer reviews, and meta-analyses";
 
-            // Prompt Construction
             const promptText = `
                 I need to design a rigorous scientific methodology for a study.
                 
@@ -576,8 +618,10 @@
                 }
             };
 
+            const targetApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${activeKey}`;
+
             try {
-                const result = await fetchWithRetry(apiUrl, {
+                const result = await fetchWithRetry(targetApiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
@@ -672,10 +716,8 @@
             }
 
             lines.forEach((line, idx) => {
-                // Strip markdown list characters (e.g., "- ", "* ", "1. ", etc.)
                 let cleanedLine = line.replace(/^[-*+]\s*|^[0-9]+[\.\)]\s*/, '').trim();
                 
-                // Try to split on ":" to separate tool and description
                 let title = cleanedLine;
                 let description = "";
                 const colonIdx = cleanedLine.indexOf(':');
@@ -694,7 +736,6 @@
                     </label>
                 `;
                 
-                // Add event listener to strike through when checked
                 const checkbox = itemDiv.querySelector('input');
                 const label = itemDiv.querySelector('label');
                 checkbox.addEventListener('change', () => {
@@ -767,7 +808,6 @@
             let materialsHtml = "";
             let flowchartHtml = "";
 
-            // If materials list is present, generate clean HTML representation for Word export
             const materialsListDiv = document.getElementById('materialsList');
             if (materialsListDiv && materialsListDiv.children.length > 0) {
                 materialsHtml += `<br><br><h2 style="font-family: sans-serif; color: #1e293b;">Required Materials & Tools</h2><ul>`;
@@ -829,7 +869,6 @@
             const nodes = {};
             const edges = [];
             
-            // Clean and split lines
             const lines = mermaidCode.split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('graph') && !l.startsWith('flowchart'));
             
             lines.forEach(line => {
@@ -875,7 +914,6 @@
             const nodeKeys = Object.keys(nodes);
             if (nodeKeys.length === 0) return false;
 
-            // Calculate Levels using BFS
             const inDegree = {};
             const adj = {};
             nodeKeys.forEach(id => { inDegree[id] = 0; adj[id] = []; });
@@ -915,7 +953,6 @@
                 queue = nextQueue;
             }
 
-            // PPTX Grid Assignment
             const slideWidth = 10;
             const startY = 1.3;
             const levelHeight = 0.9;
@@ -932,7 +969,6 @@
                 });
             });
 
-            // Draw Lines (Connectors)
             edges.forEach(e => {
                 const from = nodes[e.from];
                 const to = nodes[e.to];
@@ -965,7 +1001,6 @@
                 }
             });
 
-            // Draw Boxes (Editable Text)
             Object.values(nodes).forEach(n => {
                 slide.addText(n.label, {
                     shape: pptx.ShapeType.rect,
@@ -986,7 +1021,6 @@
             return true;
         }
 
-        // Color Palettes for the PPTX Export
         const themePalettes = {
             blue: { fill: "EFF6FF", stroke: "3B82F6", text: "1E293B", line: "94A3B8" },
             teal: { fill: "F0FDFA", stroke: "0D9488", text: "115E59", line: "94A3B8" },
@@ -1009,7 +1043,6 @@
                 let slide = pptx.addSlide();
                 slide.addText("Experimental Flowchart", { x: 0.5, y: 0.4, w: "90%", h: 0.5, fontSize: 24, bold: true, color: "1E293B" });
                 
-                // Get selected palette
                 const selectedTheme = flowchartTheme.value || 'blue';
                 const palette = themePalettes[selectedTheme] || themePalettes.blue;
 
