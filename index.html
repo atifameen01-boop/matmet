@@ -127,21 +127,32 @@
             <div class="lg:col-span-4 flex flex-col gap-6">
                 
                 <!-- API Key Configuration Box (Crucial for Vercel Deployments) -->
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
-                    <h3 class="text-sm font-bold text-slate-700 mb-2 flex items-center justify-between">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
+                    <h3 class="text-sm font-bold text-slate-700 flex items-center justify-between">
                         <span class="flex items-center gap-2">
                             <i class="fa-solid fa-key text-amber-500"></i>
                             Gemini API Key Settings
                         </span>
                         <span class="text-[10px] text-slate-400 font-normal">Local Storage</span>
                     </h3>
+                    
                     <div class="relative">
                         <input type="password" id="apiKeyInput" placeholder="Paste your Gemini API Key here..." class="w-full pl-3 pr-10 py-2 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all">
                         <button type="button" id="toggleKeyVisibility" class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
                             <i class="fa-solid fa-eye text-xs"></i>
                         </button>
                     </div>
-                    <p class="text-[10px] text-slate-500 mt-1.5">Get a key from <a href="https://aistudio.google.com/" target="_blank" class="text-brand-600 hover:underline font-semibold">Google AI Studio</a>.</p>
+
+                    <div>
+                        <label for="modelSelect" class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Target AI Model</label>
+                        <select id="modelSelect" class="w-full text-xs px-2.5 py-2 border border-slate-300 bg-white rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all">
+                            <option value="gemini-2.5-flash">Gemini 2.5 Flash (Recommended / Stable)</option>
+                            <option value="gemini-1.5-flash">Gemini 1.5 Flash (Legacy Fallback)</option>
+                            <option value="gemini-2.5-flash-preview-09-2025">Gemini 2.5 Flash Preview (Internal Canvas Only)</option>
+                        </select>
+                    </div>
+                    
+                    <p class="text-[10px] text-slate-500 pt-1 border-t border-slate-100">Get a free key from <a href="https://aistudio.google.com/" target="_blank" class="text-brand-600 hover:underline font-semibold">Google AI Studio</a>.</p>
                 </div>
 
                 <!-- History Container -->
@@ -227,7 +238,7 @@
                             <i class="fa-solid fa-circle-exclamation text-red-500"></i>
                         </div>
                         <div class="ml-3">
-                            <p class="text-sm text-red-700" id="errorMessage"></p>
+                            <p class="text-sm text-red-700 font-medium" id="errorMessage"></p>
                         </div>
                     </div>
                 </div>
@@ -328,9 +339,8 @@
 
     <script>
         // System variables
-        const fallbackApiKey = ""; // Injected automatically only in editing canvas
-        const modelName = "gemini-2.5-flash-preview-09-2025";
-
+        const fallbackApiKey = ""; // Automatically injected by developer workspace environment if empty
+        
         // DOM Elements
         const form = document.getElementById('methodologyForm');
         const generateBtn = document.getElementById('generateBtn');
@@ -355,6 +365,7 @@
         const dbFocus = document.getElementById('dbFocus');
         const irbToggle = document.getElementById('irbToggle');
         const flowchartTheme = document.getElementById('flowchartTheme');
+        const modelSelect = document.getElementById('modelSelect');
         
         const historyContainer = document.getElementById('historyContainer');
         const historyList = document.getElementById('historyList');
@@ -363,13 +374,21 @@
         const apiKeyInput = document.getElementById('apiKeyInput');
         const toggleKeyVisibility = document.getElementById('toggleKeyVisibility');
 
-        // Retrieve/Set Local API Key
+        // Retrieve/Set Local API Key and Model Preference
         let localApiKey = localStorage.getItem('gemini_api_key') || '';
         apiKeyInput.value = localApiKey;
+
+        let localSelectedModel = localStorage.getItem('gemini_selected_model') || 'gemini-2.5-flash';
+        modelSelect.value = localSelectedModel;
 
         apiKeyInput.addEventListener('input', (e) => {
             localApiKey = e.target.value.trim();
             localStorage.setItem('gemini_api_key', localApiKey);
+        });
+
+        modelSelect.addEventListener('change', (e) => {
+            localSelectedModel = e.target.value;
+            localStorage.setItem('gemini_selected_model', localSelectedModel);
         });
 
         toggleKeyVisibility.addEventListener('click', () => {
@@ -520,15 +539,24 @@
         tabFlowchart.addEventListener('click', () => switchTab(tabFlowchart, flowchartContent));
         tabSources.addEventListener('click', () => switchTab(tabSources, sourcesContent));
 
-        // Helper: Exponential Backoff Fetch
+        // Helper: Exponential Backoff Fetch with deep error extraction for Google's API
         async function fetchWithRetry(url, options, maxRetries = 5) {
             const delays = [1000, 2000, 4000, 8000, 16000];
             for (let i = 0; i < maxRetries; i++) {
                 try {
                     const response = await fetch(url, options);
                     if (!response.ok) {
-                        const errText = await response.text();
-                        throw new Error(`HTTP error! status: ${response.status}, message: ${errText}`);
+                        let errMessage = `HTTP Error ${response.status}`;
+                        try {
+                            const errJson = await response.json();
+                            if (errJson.error && errJson.error.message) {
+                                errMessage += `: ${errJson.error.message}`;
+                            }
+                        } catch(e) {
+                            const errText = await response.text();
+                            if (errText) errMessage += `: ${errText}`;
+                        }
+                        throw new Error(errMessage);
                     }
                     return await response.json();
                 } catch (error) {
@@ -538,6 +566,13 @@
             }
         }
 
+        // Helper: Show Error
+        function showError(msg) {
+            errorMessage.textContent = msg;
+            errorBox.classList.remove('hidden');
+            errorBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
         // Main Generation Logic
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -545,9 +580,12 @@
             // Determine the API Key to use
             const activeKey = localApiKey || fallbackApiKey;
             if (!activeKey) {
-                showError("Missing API Key! Please enter your Gemini API Key in the settings panel at the top of the sidebar.");
+                showError("Missing API Key! Please paste your Gemini API Key in the Settings panel inside the left sidebar.");
                 return;
             }
+
+            // Determine model preference (default to gemini-2.5-flash for public key deployments)
+            const activeModel = localApiKey ? modelSelect.value : "gemini-2.5-flash-preview-09-2025";
 
             const domain = document.getElementById('domain').value.trim();
             const objective = document.getElementById('objective').value.trim();
@@ -605,9 +643,10 @@
                 Provide a professional, academic response. Format using Markdown with clear headings.
             `;
 
+            // CRITICAL FIX: Use 'googleSearch' in camelCase as expected by Google's Developer API instead of 'google_search'
             const payload = {
                 contents: [{ parts: [{ text: promptText }] }],
-                tools: [{ google_search: {} }], 
+                tools: [{ googleSearch: {} }], 
                 systemInstruction: { 
                     parts: [{ 
                         text: `You are an expert research methodologist and peer-reviewer. 
@@ -618,7 +657,7 @@
                 }
             };
 
-            const targetApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${activeKey}`;
+            const targetApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${activeModel}:generateContent?key=${activeKey}`;
 
             try {
                 const result = await fetchWithRetry(targetApiUrl, {
@@ -631,6 +670,13 @@
                 if (!candidate) throw new Error("No response generated from the model.");
 
                 let generatedText = candidate.content?.parts?.[0]?.text;
+                if (!generatedText) {
+                    // Check if block was rejected due to safety or standard grounding error
+                    if (candidate.finishReason) {
+                        throw new Error(`Generation stopped prematurely. Reason: ${candidate.finishReason}`);
+                    }
+                    throw new Error("Received empty response candidate from API.");
+                }
                 const groundingMetadata = candidate.groundingMetadata?.groundingAttributions;
 
                 // Extract Mermaid Code 
