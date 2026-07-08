@@ -90,7 +90,7 @@
             border-top: 3px solid #3b82f6;
             width: 24px;
             height: 24px;
-            -webkit-animation: spin 1s linear infinite; /* Safari */
+            -webkit-animation: spin 1s linear infinite;
             animation: spin 1s linear infinite;
         }
 
@@ -126,7 +126,7 @@
             <!-- Input & History Sidebar (Left) -->
             <div class="lg:col-span-4 flex flex-col gap-6">
                 
-                <!-- API Key Configuration Box (Crucial for Vercel Deployments) -->
+                <!-- API Key Configuration Box -->
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
                     <h3 class="text-sm font-bold text-slate-700 flex items-center justify-between">
                         <span class="flex items-center gap-2">
@@ -180,7 +180,7 @@
                         </div>
                         
                         <div>
-                            <label for="objective" class="block text-sm font-medium text-slate-700 mb-1">Specific Objectives (Add all objectives if more than 1)</label>
+                            <label for="objective" class="block text-sm font-medium text-slate-700 mb-1">Specific Objectives</label>
                             <textarea id="objective" rows="3" placeholder="What exactly are you trying to achieve or prove?" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all resize-none" required></textarea>
                         </div>
 
@@ -255,7 +255,7 @@
                                 <i class="fa-solid fa-file-lines mr-2"></i> Designed Methodology
                             </button>
                             <button class="px-6 py-3 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap" id="tabMaterials" style="display: none;">
-                                <i class="fa-solid fa-screwdriver-wrench mr-2"></i> Materials & Tools
+                                <i class="fa-solid fa-flask mr-2"></i> Materials Used
                             </button>
                             <button class="px-6 py-3 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap" id="tabFlowchart" style="display: none;">
                                 <i class="fa-solid fa-project-diagram mr-2"></i> Experimental Flowchart
@@ -265,7 +265,7 @@
                             </button>
                         </div>
                         <div class="flex items-center gap-2 py-2">
-                            <!-- Theme Selection Dropdown (Only shown when Flowchart is visible) -->
+                            <!-- Theme Selection Dropdown -->
                             <select id="flowchartTheme" class="hidden text-xs bg-white border border-slate-200 rounded px-2 py-1.5 font-medium text-slate-600 focus:outline-none">
                                 <option value="blue">Blue Palette</option>
                                 <option value="teal">Teal Palette</option>
@@ -273,7 +273,7 @@
                                 <option value="emerald">Emerald Palette</option>
                             </select>
                             <button id="downloadPptxBtn" class="hidden text-sm font-medium text-slate-600 hover:text-orange-600 transition-colors flex items-center gap-2 bg-white border border-slate-200 px-3 py-1.5 rounded-md shadow-sm hover:shadow">
-                                <i class="fa-solid fa-file-powerpoint text-orange-600"></i> Download PPTX
+                                <i class="fa-solid fa-file-powerpoint text-orange-600"></i> Download Editable PPTX
                             </button>
                             <button id="downloadBtn" class="hidden text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors flex items-center gap-2 bg-white border border-slate-200 px-3 py-1.5 rounded-md shadow-sm hover:shadow">
                                 <i class="fa-solid fa-file-word text-blue-600"></i> Download Word
@@ -295,7 +295,7 @@
                         <div id="loadingState" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-white/90 z-10">
                             <div class="loader mb-4"></div>
                             <h3 class="text-lg font-medium text-slate-800">Designing Methodology...</h3>
-                            <p class="text-sm text-slate-500 mt-2 text-center max-w-sm">Synthesizing research design, verifying practices against academic literature, and compiling your interactive materials list and experimental flowchart...</p>
+                            <p class="text-sm text-slate-500 mt-2 text-center max-w-sm">Synthesizing research design and plotting experimental flowchart...</p>
                         </div>
 
                         <!-- Content State -->
@@ -306,7 +306,7 @@
                             
                             <div id="materialsContent" class="hidden">
                                 <h3 class="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
-                                    <i class="fa-solid fa-screwdriver-wrench text-brand-500"></i> Required Materials, Equipment & Software
+                                    <i class="fa-solid fa-flask text-brand-500"></i> Materials Used
                                 </h3>
                                 <p class="text-sm text-slate-500 mb-6">Use this interactive inventory list to review and track preparation status for your study's materials, tools, or reagents.</p>
                                 <div id="materialsList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -315,7 +315,11 @@
                             </div>
                             
                             <div id="flowchartContent" class="hidden h-full flex flex-col items-center">
-                                <div id="mermaidDisplay" class="w-full overflow-x-auto bg-white p-6 rounded-lg border border-slate-100">
+                                <h3 class="text-lg font-semibold text-slate-800 mb-2 self-start flex items-center gap-2">
+                                    <i class="fa-solid fa-project-diagram text-brand-500"></i> Experimental Flowchart
+                                </h3>
+                                <p class="text-sm text-slate-500 mb-6 self-start">Visual representation of the methodology, strictly aligned with your stated research objectives.</p>
+                                <div id="mermaidDisplay" class="w-full overflow-x-auto bg-white p-6 rounded-lg border border-slate-100 flex-grow">
                                     <!-- Mermaid diagram injected here -->
                                 </div>
                             </div>
@@ -339,7 +343,7 @@
 
     <script>
         // System variables
-        const fallbackApiKey = ""; // Automatically injected by developer workspace environment if empty
+        const fallbackApiKey = ""; 
         
         // DOM Elements
         const form = document.getElementById('methodologyForm');
@@ -357,6 +361,7 @@
         const tabMaterials = document.getElementById('tabMaterials');
         const tabFlowchart = document.getElementById('tabFlowchart');
         const tabSources = document.getElementById('tabSources');
+        
         const flowchartContent = document.getElementById('flowchartContent');
         const materialsContent = document.getElementById('materialsContent');
         const downloadBtn = document.getElementById('downloadBtn');
@@ -374,7 +379,6 @@
         const apiKeyInput = document.getElementById('apiKeyInput');
         const toggleKeyVisibility = document.getElementById('toggleKeyVisibility');
 
-        // Retrieve/Set Local API Key and Model Preference
         let localApiKey = localStorage.getItem('gemini_api_key') || '';
         apiKeyInput.value = localApiKey;
 
@@ -408,7 +412,6 @@
             flowchart: { htmlLabels: false } 
         });
         let currentMermaidCode = ''; 
-        let currentReferencesHtml = '';
 
         // Saved History Logic
         function loadHistory() {
@@ -462,19 +465,18 @@
             contentState.classList.remove('hidden');
             downloadBtn.classList.remove('hidden');
             
+            tabMaterials.style.display = 'block';
             if (data.materialsRaw) {
-                tabMaterials.style.display = 'block';
                 renderMaterialsList(data.materialsRaw);
             } else {
-                tabMaterials.style.display = 'none';
+                document.getElementById('materialsList').innerHTML = '<p class="text-sm text-slate-500 italic">No materials data saved for this history item.</p>';
             }
 
+            tabFlowchart.style.display = 'block';
             if (currentMermaidCode) {
-                tabFlowchart.style.display = 'block';
                 downloadPptxBtn.classList.remove('hidden');
                 document.getElementById('mermaidDisplay').removeAttribute('data-rendered');
             } else {
-                tabFlowchart.style.display = 'none';
                 downloadPptxBtn.classList.add('hidden');
             }
             
@@ -516,11 +518,13 @@
             flowchartContent.classList.add('hidden');
             sourcesContent.classList.add('hidden');
             flowchartTheme.classList.add('hidden');
+            downloadPptxBtn.classList.add('hidden'); // Hide by default
 
             activeContentDiv.classList.remove('hidden');
 
             if (activeContentDiv === flowchartContent) {
                 flowchartTheme.classList.remove('hidden');
+                downloadPptxBtn.classList.remove('hidden'); // Show for flowchart
                 if (currentMermaidCode) {
                     const displayArea = document.getElementById('mermaidDisplay');
                     if (!displayArea.hasAttribute('data-rendered')) {
@@ -539,7 +543,6 @@
         tabFlowchart.addEventListener('click', () => switchTab(tabFlowchart, flowchartContent));
         tabSources.addEventListener('click', () => switchTab(tabSources, sourcesContent));
 
-        // Helper: Exponential Backoff Fetch with deep error extraction for Google's API
         async function fetchWithRetry(url, options, maxRetries = 5) {
             const delays = [1000, 2000, 4000, 8000, 16000];
             for (let i = 0; i < maxRetries; i++) {
@@ -566,25 +569,21 @@
             }
         }
 
-        // Helper: Show Error
         function showError(msg) {
             errorMessage.textContent = msg;
             errorBox.classList.remove('hidden');
             errorBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        // Main Generation Logic
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            // Determine the API Key to use
             const activeKey = localApiKey || fallbackApiKey;
             if (!activeKey) {
                 showError("Missing API Key! Please paste your Gemini API Key in the Settings panel inside the left sidebar.");
                 return;
             }
 
-            // Determine model preference (default to gemini-2.5-flash for public key deployments)
             const activeModel = localApiKey ? modelSelect.value : "gemini-2.5-flash-preview-09-2025";
 
             const domain = document.getElementById('domain').value.trim();
@@ -603,9 +602,11 @@
             downloadPptxBtn.classList.add('hidden');
             generateBtn.disabled = true;
             generateBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating...';
+            
             tabSources.style.display = 'none'; 
-            tabMaterials.style.display = 'none'; 
-            tabFlowchart.style.display = 'none'; 
+            tabMaterials.style.display = 'block'; // Always show now
+            tabFlowchart.style.display = 'block'; // Always show now
+            
             document.getElementById('mermaidDisplay').removeAttribute('data-rendered'); 
             currentMermaidCode = ''; 
             switchTab(tabMethodology, methodologyContent); 
@@ -633,30 +634,24 @@
                 ${includeIRB ? '6. **Ethical Considerations & IRB Protocol:** Step-by-step measures for participant safety, consent, and risk minimization.' : ''}
                 7. **References:** Provide a formal references section at the end.
 
-                CRITICAL INSTRUCTION: Include inline citations (e.g., [Author, Year]) throughout the text for every methodological choice.
-                
-                At the end of your text response, also provide a block strictly enclosed in \`\`\`materials and \`\`\` containing a detailed, itemized list of all required materials, equipment, chemicals, software, or tools with short explanations of their purpose. Format each item as a markdown list item, for example:
-                - Material/Tool Name: Purpose/Specification
-                
-                At the very end of your response, provide a Mermaid.js flowchart diagram representing the step-by-step experimental procedure. Enclose the Mermaid code strictly within \`\`\`mermaid and \`\`\` tags. Use top-down (TD) direction. Ensure clean formatting of nodes.
+                CRITICAL FORMATTING INSTRUCTIONS:
+                After writing the methodology text, you MUST append EXACTLY TWO code blocks at the very bottom of your response. Do not skip these.
 
-                Provide a professional, academic response. Format using Markdown with clear headings.
+                Block 1: Materials Used
+                Provide a block enclosed in \`\`\`materials and \`\`\` containing an itemized list of all required materials, equipment, chemicals, software, or tools. 
+                Format as: "- Item Name: Purpose"
+
+                Block 2: Experimental Flowchart
+                Provide a block enclosed strictly in \`\`\`mermaid and \`\`\` containing a Mermaid.js top-down (TD) flowchart. 
+                Crucial Rule: The flowchart MUST represent the step-by-step procedure of your proposed output methods, and the nodes MUST strictly align with the stated objectives (${objective}).
             `;
 
-            // CRITICAL REQUIREMENT: Explicitly command the system instructions to force the generation of materials and flowchart
             const payload = {
                 contents: [{ parts: [{ text: promptText }] }],
                 tools: [{ googleSearch: {} }], 
                 systemInstruction: { 
                     parts: [{ 
-                        text: `You are an expert research methodologist and peer-reviewer. 
-                        Your primary task is to design highly robust, logically sound research methodologies based on user-provided variables.
-                        
-                        CRITICAL REQUIREMENTS:
-                        1. You MUST use the google_search tool to verify your proposed methods against ${restriction}.
-                        2. You MUST include inline citations (e.g., [Author, Year]) and append a References list.
-                        3. You MUST end your response with a dedicated tools and materials list block, wrapped strictly within \`\`\`materials and \`\`\` tags.
-                        4. You MUST end your response with a step-by-step experimental flowchart, wrapped strictly within \`\`\`mermaid and \`\`\` tags, using top-down (TD) direction.`
+                        text: `You are an expert research methodologist. You MUST generate the methodology text and you MUST append both the \`\`\`materials\`\`\` and \`\`\`mermaid\`\`\` code blocks at the end. The Mermaid flowchart MUST align perfectly with the user's objectives.` 
                     }] 
                 }
             };
@@ -682,28 +677,30 @@
                 }
                 const groundingMetadata = candidate.groundingMetadata?.groundingAttributions;
 
-                // Extract Mermaid Code (support flexible spacing and carriage returns robustly)
-                const mermaidMatch = generatedText.match(/```mermaid\s*[\r\n]+([\s\S]*?)```/i);
-                if (mermaidMatch) {
-                    currentMermaidCode = mermaidMatch[1].trim();
-                    generatedText = generatedText.replace(/```mermaid\s*[\r\n]+[\s\S]*?```/i, ''); 
-                    tabFlowchart.style.display = 'block'; 
+                // Extract Materials Code - High Tolerance Regex
+                const materialsMatch = generatedText.match(/```materials[\s\S]*?\n([\s\S]*?)```/i);
+                let materialsRaw = '';
+                if (materialsMatch && materialsMatch[1].trim()) {
+                    materialsRaw = materialsMatch[1].trim();
+                    generatedText = generatedText.replace(/```materials[\s\S]*?```/i, ''); 
+                    renderMaterialsList(materialsRaw);
+                } else {
+                    document.getElementById('materialsList').innerHTML = '<p class="text-sm text-slate-500 italic p-4 bg-slate-50 rounded border border-slate-200">No specific materials or equipment list was generated by the model for this design.</p>';
                 }
 
-                // Extract Materials Code
-                const materialsMatch = generatedText.match(/```materials\s*[\r\n]+([\s\S]*?)```/i);
-                let materialsRaw = '';
-                if (materialsMatch) {
-                    materialsRaw = materialsMatch[1].trim();
-                    generatedText = generatedText.replace(/```materials\s*[\r\n]+[\s\S]*?```/i, ''); 
-                    tabMaterials.style.display = 'block';
-                    renderMaterialsList(materialsRaw);
+                // Extract Mermaid Code - High Tolerance Regex
+                const mermaidMatch = generatedText.match(/```mermaid[\s\S]*?\n([\s\S]*?)```/i);
+                if (mermaidMatch && mermaidMatch[1].trim()) {
+                    currentMermaidCode = mermaidMatch[1].trim();
+                    generatedText = generatedText.replace(/```mermaid[\s\S]*?```/i, ''); 
+                } else {
+                    currentMermaidCode = `graph TD\nErrorNode[Flowchart generation skipped by AI] --> R[Please click 'Design & Verify Method' again]`;
                 }
 
                 // Render Markdown
                 methodologyContent.innerHTML = marked.parse(generatedText);
 
-                // Handle Sources (Grounding)
+                // Handle Sources
                 sourcesList.innerHTML = '';
                 if (groundingMetadata && groundingMetadata.length > 0) {
                     const uniqueSources = new Set();
@@ -732,13 +729,9 @@
                     }
                 }
 
-                // Show content
                 loadingState.classList.add('hidden');
                 contentState.classList.remove('hidden');
                 downloadBtn.classList.remove('hidden');
-                if (currentMermaidCode) {
-                    downloadPptxBtn.classList.remove('hidden');
-                }
 
                 // Save to History
                 saveToHistory(domain, objective, iv, dv, cv, methodologyContent.innerHTML, currentMermaidCode, sourcesList.innerHTML, materialsRaw);
@@ -799,7 +792,6 @@
             });
         }
 
-        // Helper function to render mermaid to a base64 png
         async function getMermaidPngBase64(code, id) {
             return new Promise((resolve, reject) => {
                 const container = document.createElement('div');
@@ -852,14 +844,13 @@
             });
         }
 
-        // Download as Word Document Logic
         downloadBtn.addEventListener('click', async () => {
             let materialsHtml = "";
             let flowchartHtml = "";
 
             const materialsListDiv = document.getElementById('materialsList');
-            if (materialsListDiv && materialsListDiv.children.length > 0) {
-                materialsHtml += `<br><br><h2 style="font-family: sans-serif; color: #1e293b;">Required Materials & Tools</h2><ul>`;
+            if (materialsListDiv && materialsListDiv.children.length > 0 && !materialsListDiv.innerHTML.includes('No specific materials')) {
+                materialsHtml += `<br><br><h2 style="font-family: sans-serif; color: #1e293b;">Materials Used</h2><ul>`;
                 Array.from(materialsListDiv.children).forEach(item => {
                     const label = item.querySelector('label');
                     if (label) {
@@ -871,26 +862,16 @@
                 materialsHtml += `</ul>`;
             }
 
-            if (currentMermaidCode) {
+            if (currentMermaidCode && !currentMermaidCode.includes('ErrorNode')) {
                 try {
                     const pngDataUrl = await getMermaidPngBase64(currentMermaidCode, 'exportMermaidId');
-                    
                     flowchartHtml = `
                         <br><br>
                         <h2 style="font-family: sans-serif; color: #1e293b;">Experimental Flowchart</h2>
                         <img src="${pngDataUrl}" alt="Flowchart Diagram" style="max-width: 100%; height: auto;" />
-                        <br>
-                        <h3 style="font-family: sans-serif; color: #334155;">Flowchart Source Code</h3>
-                        <p style="font-size: 10pt; font-family: sans-serif; color: #64748b;">If you need to heavily modify the structure, you can edit the code below and paste it into any Mermaid editor (e.g., mermaid.live):</p>
-                        <pre style="background-color: #f8fafc; padding: 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-family: monospace; font-size: 10pt;">${currentMermaidCode.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
                     `;
                 } catch (error) {
                     console.error("Error generating flowchart for Word export:", error);
-                    flowchartHtml = `
-                        <br><br>
-                        <h2 style="font-family: sans-serif; color: #1e293b;">Experimental Flowchart (Source Code)</h2>
-                        <pre style="background-color: #f8fafc; padding: 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-family: monospace; font-size: 10pt;">${currentMermaidCode.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
-                    `;
                 }
             }
 
@@ -898,9 +879,7 @@
             const footer = "</body></html>";
             const html = header + methodologyContent.innerHTML + materialsHtml + flowchartHtml + footer;
             
-            const blob = new Blob(['\ufeff', html], {
-                type: 'application/msword'
-            });
+            const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
             
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
@@ -913,7 +892,6 @@
             URL.revokeObjectURL(url);
         });
 
-        // Function to Native Parse Mermaid to Editable PPTX Shapes with Theme Colors
         function buildNativePPTX(slide, pptx, mermaidCode, palette) {
             const nodes = {};
             const edges = [];
@@ -1018,9 +996,9 @@
                 });
             });
 
-            // CRITICAL FIX: Safe Shape Enum mappings to completely prevent PowerPoint corruption crashes
-            const shapeTypeLine = pptx.ShapeType ? pptx.ShapeType.LINE : (pptx.shapes ? pptx.shapes.LINE : 'line');
-            const shapeTypeRect = pptx.ShapeType ? pptx.ShapeType.RECTANGLE : (pptx.shapes ? pptx.shapes.RECTANGLE : 'rect');
+            // Safe reference variables mapping directly to PptxGenJS uppercase constants
+            const LINE_SHAPE = pptx.ShapeType.LINE;
+            const RECT_SHAPE = pptx.ShapeType.RECTANGLE || pptx.ShapeType.RECT;
 
             edges.forEach(e => {
                 const from = nodes[e.from];
@@ -1039,16 +1017,13 @@
                     if (w < 0.01) w = 0.01;
                     if (h < 0.01) h = 0.01;
 
-                    let flipH = (x1 > x2);
-                    let flipV = (y1 > y2);
-
-                    slide.addShape(shapeTypeLine, {
+                    slide.addShape(LINE_SHAPE, {
                         x: x, 
                         y: y, 
                         w: w, 
                         h: h,
-                        flipH: flipH,
-                        flipV: flipV,
+                        flipH: (x1 > x2),
+                        flipV: (y1 > y2),
                         line: { color: palette.line, width: 1.5, endArrowType: "triangle" }
                     });
                 }
@@ -1056,7 +1031,7 @@
 
             Object.values(nodes).forEach(n => {
                 slide.addText(n.label, {
-                    shape: shapeTypeRect,
+                    shape: RECT_SHAPE,
                     x: n.x, 
                     y: n.y, 
                     w: boxWidth, 
@@ -1081,9 +1056,8 @@
             emerald: { fill: "F0FDF4", stroke: "16A34A", text: "166534", line: "94A3B8" }
         };
 
-        // Download as PowerPoint (PPTX) Logic
         downloadPptxBtn.addEventListener('click', async () => {
-            if (!currentMermaidCode) return;
+            if (!currentMermaidCode || currentMermaidCode.includes('ErrorNode')) return;
             
             try {
                 const originalContent = downloadPptxBtn.innerHTML;
@@ -1111,7 +1085,7 @@
                         sizing: { type: 'contain', w: 9.0, h: 3.8 }
                     });
                 } else {
-                    slide.addText("Fully editable shapes generated natively.", { x: 0.5, y: 0.9, w: "90%", h: 0.3, fontSize: 11, italic: true, color: "64748B" });
+                    slide.addText("Fully editable shapes mapped to research objectives.", { x: 0.5, y: 0.9, w: "90%", h: 0.3, fontSize: 11, italic: true, color: "64748B" });
                 }
                 
                 await pptx.writeFile({ fileName: "Experimental_Flowchart.pptx" });
