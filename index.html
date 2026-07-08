@@ -295,7 +295,7 @@
                         <div id="loadingState" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-white/90 z-10">
                             <div class="loader mb-4"></div>
                             <h3 class="text-lg font-medium text-slate-800">Designing Methodology...</h3>
-                            <p class="text-sm text-slate-500 mt-2 text-center max-w-sm">Synthesizing research design and querying targeted academic sources to verify standard practices...</p>
+                            <p class="text-sm text-slate-500 mt-2 text-center max-w-sm">Synthesizing research design, verifying practices against academic literature, and compiling your interactive materials list and experimental flowchart...</p>
                         </div>
 
                         <!-- Content State -->
@@ -643,7 +643,7 @@
                 Provide a professional, academic response. Format using Markdown with clear headings.
             `;
 
-            // CRITICAL FIX: Use 'googleSearch' in camelCase as expected by Google's Developer API instead of 'google_search'
+            // CRITICAL REQUIREMENT: Explicitly command the system instructions to force the generation of materials and flowchart
             const payload = {
                 contents: [{ parts: [{ text: promptText }] }],
                 tools: [{ googleSearch: {} }], 
@@ -651,8 +651,12 @@
                     parts: [{ 
                         text: `You are an expert research methodologist and peer-reviewer. 
                         Your primary task is to design highly robust, logically sound research methodologies based on user-provided variables.
-                        CRITICAL INSTRUCTION: You MUST use the google_search tool to verify your proposed methods against ${restriction}. 
-                        In your response, you MUST include inline citations (e.g., [Author, Year]) and append a References list. Ensure the methodology aligns with standard practices found in the literature.` 
+                        
+                        CRITICAL REQUIREMENTS:
+                        1. You MUST use the google_search tool to verify your proposed methods against ${restriction}.
+                        2. You MUST include inline citations (e.g., [Author, Year]) and append a References list.
+                        3. You MUST end your response with a dedicated tools and materials list block, wrapped strictly within \`\`\`materials and \`\`\` tags.
+                        4. You MUST end your response with a step-by-step experimental flowchart, wrapped strictly within \`\`\`mermaid and \`\`\` tags, using top-down (TD) direction.`
                     }] 
                 }
             };
@@ -671,7 +675,6 @@
 
                 let generatedText = candidate.content?.parts?.[0]?.text;
                 if (!generatedText) {
-                    // Check if block was rejected due to safety or standard grounding error
                     if (candidate.finishReason) {
                         throw new Error(`Generation stopped prematurely. Reason: ${candidate.finishReason}`);
                     }
@@ -679,20 +682,20 @@
                 }
                 const groundingMetadata = candidate.groundingMetadata?.groundingAttributions;
 
-                // Extract Mermaid Code 
-                const mermaidMatch = generatedText.match(/```mermaid\s*\n([\s\S]*?)```/i);
+                // Extract Mermaid Code (support flexible spacing and carriage returns robustly)
+                const mermaidMatch = generatedText.match(/```mermaid\s*[\r\n]+([\s\S]*?)```/i);
                 if (mermaidMatch) {
                     currentMermaidCode = mermaidMatch[1].trim();
-                    generatedText = generatedText.replace(/```mermaid\s*\n[\s\S]*?```/i, ''); 
+                    generatedText = generatedText.replace(/```mermaid\s*[\r\n]+[\s\S]*?```/i, ''); 
                     tabFlowchart.style.display = 'block'; 
                 }
 
                 // Extract Materials Code
-                const materialsMatch = generatedText.match(/```materials\s*\n([\s\S]*?)```/i);
+                const materialsMatch = generatedText.match(/```materials\s*[\r\n]+([\s\S]*?)```/i);
                 let materialsRaw = '';
                 if (materialsMatch) {
                     materialsRaw = materialsMatch[1].trim();
-                    generatedText = generatedText.replace(/```materials\s*\n[\s\S]*?```/i, ''); 
+                    generatedText = generatedText.replace(/```materials\s*[\r\n]+[\s\S]*?```/i, ''); 
                     tabMaterials.style.display = 'block';
                     renderMaterialsList(materialsRaw);
                 }
@@ -1015,6 +1018,10 @@
                 });
             });
 
+            // CRITICAL FIX: Safe Shape Enum mappings to completely prevent PowerPoint corruption crashes
+            const shapeTypeLine = pptx.ShapeType ? pptx.ShapeType.LINE : (pptx.shapes ? pptx.shapes.LINE : 'line');
+            const shapeTypeRect = pptx.ShapeType ? pptx.ShapeType.RECTANGLE : (pptx.shapes ? pptx.shapes.RECTANGLE : 'rect');
+
             edges.forEach(e => {
                 const from = nodes[e.from];
                 const to = nodes[e.to];
@@ -1035,7 +1042,7 @@
                     let flipH = (x1 > x2);
                     let flipV = (y1 > y2);
 
-                    slide.addShape(pptx.ShapeType.line, {
+                    slide.addShape(shapeTypeLine, {
                         x: x, 
                         y: y, 
                         w: w, 
@@ -1049,7 +1056,7 @@
 
             Object.values(nodes).forEach(n => {
                 slide.addText(n.label, {
-                    shape: pptx.ShapeType.rect,
+                    shape: shapeTypeRect,
                     x: n.x, 
                     y: n.y, 
                     w: boxWidth, 
