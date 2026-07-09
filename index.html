@@ -4,15 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Methodology Designer Pro</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Marked.js for Markdown rendering -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <!-- Mermaid.js for Flowcharts -->
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-    <!-- PptxGenJS for PowerPoint export -->
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
@@ -102,7 +97,6 @@
 </head>
 <body class="text-slate-800 antialiased min-h-screen flex flex-col">
 
-    <!-- Header -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
@@ -113,20 +107,17 @@
                     <h1 class="text-xl font-bold text-slate-900 tracking-tight">Methodology Designer <span class="text-brand-600">Pro</span></h1>
                 </div>
                 <div class="text-sm font-medium text-slate-500 flex items-center gap-2">
-                    <i class="fa-solid fa-bolt text-amber-400"></i> Powered by Gemini 2.5 Flash + Web Grounding
+                    <i class="fa-solid fa-bolt text-amber-400"></i> Powered by Gemini 2.5 Flash
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            <!-- Input & History Sidebar (Left) -->
             <div class="lg:col-span-4 flex flex-col gap-6">
                 
-                <!-- API Key Configuration Box -->
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 space-y-3">
                     <h3 class="text-sm font-bold text-slate-700 flex items-center justify-between">
                         <span class="flex items-center gap-2">
@@ -146,27 +137,12 @@
                     <div>
                         <label for="modelSelect" class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Target AI Model</label>
                         <select id="modelSelect" class="w-full text-xs px-2.5 py-2 border border-slate-300 bg-white rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all">
-                            <option value="gemini-2.5-flash">Gemini 2.5 Flash (Recommended / Stable)</option>
+                            <option value="gemini-2.5-flash">Gemini 2.5 Flash (Recommended)</option>
                             <option value="gemini-1.5-flash">Gemini 1.5 Flash (Legacy Fallback)</option>
-                            <option value="gemini-2.5-flash-preview-09-2025">Gemini 2.5 Flash Preview (Internal Canvas Only)</option>
                         </select>
                     </div>
-                    
-                    <p class="text-[10px] text-slate-500 pt-1 border-t border-slate-100">Get a free key from <a href="https://aistudio.google.com/" target="_blank" class="text-brand-600 hover:underline font-semibold">Google AI Studio</a>.</p>
                 </div>
 
-                <!-- History Container -->
-                <div id="historyContainer" class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 hidden">
-                    <h3 class="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
-                        <i class="fa-solid fa-clock-rotate-left text-slate-400"></i>
-                        Saved Methodologies
-                    </h3>
-                    <div id="historyList" class="space-y-2 max-h-40 overflow-y-auto pr-1">
-                        <!-- History items injected here -->
-                    </div>
-                </div>
-
-                <!-- Parameters Box -->
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                     <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
                         <i class="fa-solid fa-sliders text-slate-400"></i>
@@ -188,37 +164,30 @@
                             <h3 class="text-sm font-semibold text-slate-600 mb-3 uppercase tracking-wider">Variables</h3>
                             <div class="space-y-3">
                                 <div>
-                                    <label for="iv" class="block text-sm font-medium text-slate-700 mb-1">Independent Variable(s) (IV)</label>
+                                    <label for="iv" class="block text-sm font-medium text-slate-700 mb-1">Independent Variable (IV)</label>
                                     <input type="text" id="iv" placeholder="What you manipulate or observe" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all" required>
                                 </div>
                                 
                                 <div>
-                                    <label for="dv" class="block text-sm font-medium text-slate-700 mb-1">Dependent Variable(s) (DV)</label>
+                                    <label for="dv" class="block text-sm font-medium text-slate-700 mb-1">Dependent Variable (DV)</label>
                                     <input type="text" id="dv" placeholder="What you measure" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all" required>
-                                </div>
-                                
-                                <div>
-                                    <label for="cv" class="block text-sm font-medium text-slate-700 mb-1">Control Variables (Optional)</label>
-                                    <input type="text" id="cv" placeholder="What must be kept constant" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all">
                                 </div>
                             </div>
                         </div>
 
                         <div class="pt-4 border-t border-slate-100 space-y-4">
-                            <div>
-                                <label for="dbFocus" class="block text-sm font-semibold text-slate-600 mb-1.5 uppercase tracking-wider">Verification Focus</label>
-                                <select id="dbFocus" class="w-full px-4 py-2 border border-slate-300 bg-white rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all">
-                                    <option value="all">PubMed & ScienceDirect (Recommended)</option>
-                                    <option value="pubmed">PubMed Focus Only (Clinical/Medical)</option>
-                                    <option value="sciencedirect">ScienceDirect Focus Only (STEM/Hard Sciences)</option>
-                                    <option value="general">Consensus & Academic Open-Web</option>
-                                </select>
-                            </div>
-
                             <div class="flex items-center justify-between">
                                 <span class="text-sm font-medium text-slate-700">Include Ethical / IRB Protocol</span>
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="checkbox" id="irbToggle" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-600"></div>
+                                </label>
+                            </div>
+
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-slate-700">Generate Experimental Flowchart</span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="flowchartToggle" class="sr-only peer" checked>
                                     <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-600"></div>
                                 </label>
                             </div>
@@ -231,12 +200,9 @@
                     </form>
                 </div>
 
-                <!-- Alert Box -->
                 <div id="errorBox" class="hidden bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
                     <div class="flex">
-                        <div class="flex-shrink-0">
-                            <i class="fa-solid fa-circle-exclamation text-red-500"></i>
-                        </div>
+                        <i class="fa-solid fa-circle-exclamation text-red-500 mt-0.5"></i>
                         <div class="ml-3">
                             <p class="text-sm text-red-700 font-medium" id="errorMessage"></p>
                         </div>
@@ -244,93 +210,68 @@
                 </div>
             </div>
 
-            <!-- Output Section (Right) -->
             <div class="lg:col-span-8 flex flex-col">
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 flex-grow flex flex-col min-h-[600px] overflow-hidden">
                     
-                    <!-- Tabs -->
                     <div class="border-b border-slate-200 bg-slate-50 flex items-center justify-between pr-4 flex-wrap">
                         <div class="flex overflow-x-auto">
                             <button class="px-6 py-3 text-sm font-medium text-brand-600 border-b-2 border-brand-600 bg-white whitespace-nowrap" id="tabMethodology">
                                 <i class="fa-solid fa-file-lines mr-2"></i> Designed Methodology
                             </button>
-                            <button class="px-6 py-3 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap" id="tabMaterials" style="display: none;">
+                            <button class="px-6 py-3 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap" id="tabMaterials">
                                 <i class="fa-solid fa-flask mr-2"></i> Materials Used
                             </button>
-                            <button class="px-6 py-3 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap" id="tabFlowchart" style="display: none;">
+                            <button class="px-6 py-3 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap" id="tabFlowchart">
                                 <i class="fa-solid fa-project-diagram mr-2"></i> Experimental Flowchart
-                            </button>
-                            <button class="px-6 py-3 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap" id="tabSources" style="display: none;">
-                                <i class="fa-solid fa-magnifying-glass-chart mr-2"></i> Verification Sources
                             </button>
                         </div>
                         <div class="flex items-center gap-2 py-2">
-                            <!-- Theme Selection Dropdown -->
                             <select id="flowchartTheme" class="hidden text-xs bg-white border border-slate-200 rounded px-2 py-1.5 font-medium text-slate-600 focus:outline-none">
                                 <option value="blue">Blue Palette</option>
                                 <option value="teal">Teal Palette</option>
                                 <option value="slate">Slate Palette</option>
-                                <option value="emerald">Emerald Palette</option>
                             </select>
                             <button id="downloadPptxBtn" class="hidden text-sm font-medium text-slate-600 hover:text-orange-600 transition-colors flex items-center gap-2 bg-white border border-slate-200 px-3 py-1.5 rounded-md shadow-sm hover:shadow">
-                                <i class="fa-solid fa-file-powerpoint text-orange-600"></i> Download Editable PPTX
+                                <i class="fa-solid fa-file-powerpoint text-orange-600"></i> Export PPTX
                             </button>
                             <button id="downloadBtn" class="hidden text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors flex items-center gap-2 bg-white border border-slate-200 px-3 py-1.5 rounded-md shadow-sm hover:shadow">
-                                <i class="fa-solid fa-file-word text-blue-600"></i> Download Word
+                                <i class="fa-solid fa-file-word text-blue-600"></i> Export Word
                             </button>
                         </div>
                     </div>
 
-                    <!-- Output Content Area -->
                     <div class="p-6 flex-grow overflow-y-auto relative bg-white" id="outputArea">
                         
-                        <!-- Empty State -->
                         <div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400">
-                            <i class="fa-solid fa-flask text-6xl mb-4 opacity-50"></i>
+                            <i class="fa-solid fa-microscope text-6xl mb-4 opacity-50"></i>
                             <h3 class="text-lg font-medium text-slate-600">No Methodology Designed Yet</h3>
-                            <p class="text-sm text-center max-w-sm mt-2">Fill in your research objectives and variables on the left, and click generate to design and literature-verify your methodology.</p>
+                            <p class="text-sm text-center max-w-sm mt-2">Fill in your research objectives on the left and click generate. Ensure the 'Generate Experimental Flowchart' toggle is active.</p>
                         </div>
 
-                        <!-- Loading State -->
                         <div id="loadingState" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-white/90 z-10">
                             <div class="loader mb-4"></div>
-                            <h3 class="text-lg font-medium text-slate-800">Designing Methodology...</h3>
-                            <p class="text-sm text-slate-500 mt-2 text-center max-w-sm">Synthesizing research design and plotting experimental flowchart...</p>
+                            <h3 class="text-lg font-medium text-slate-800">Synthesizing Design...</h3>
+                            <p class="text-sm text-slate-500 mt-2 text-center">Plotting variables and generating flowchart...</p>
                         </div>
 
-                        <!-- Content State -->
                         <div id="contentState" class="hidden h-full">
                             <div id="methodologyContent" class="prose max-w-none">
-                                <!-- Markdown content injected here -->
-                            </div>
+                                </div>
                             
                             <div id="materialsContent" class="hidden">
                                 <h3 class="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
-                                    <i class="fa-solid fa-flask text-brand-500"></i> Materials Used
+                                    <i class="fa-solid fa-flask text-brand-500"></i> Materials & Equipment
                                 </h3>
-                                <p class="text-sm text-slate-500 mb-6">Use this interactive inventory list to review and track preparation status for your study's materials, tools, or reagents.</p>
                                 <div id="materialsList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <!-- Dynamic checklist items injected here -->
-                                </div>
+                                    </div>
                             </div>
                             
                             <div id="flowchartContent" class="hidden h-full flex flex-col items-center">
                                 <h3 class="text-lg font-semibold text-slate-800 mb-2 self-start flex items-center gap-2">
-                                    <i class="fa-solid fa-project-diagram text-brand-500"></i> Experimental Flowchart
+                                    <i class="fa-solid fa-project-diagram text-brand-500"></i> Step-by-Step Flowchart
                                 </h3>
-                                <p class="text-sm text-slate-500 mb-6 self-start">Visual representation of the methodology, strictly aligned with your stated research objectives.</p>
                                 <div id="mermaidDisplay" class="w-full overflow-x-auto bg-white p-6 rounded-lg border border-slate-100 flex-grow">
-                                    <!-- Mermaid diagram injected here -->
-                                </div>
-                            </div>
-
-                            <div id="sourcesContent" class="hidden">
-                                <h3 class="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
-                                    <i class="fa-solid fa-bookmark text-brand-500"></i> Grounding Sources & Verification
-                                </h3>
-                                <ul id="sourcesList" class="space-y-3">
-                                    <!-- Sources injected here -->
-                                </ul>
+                                    </div>
                             </div>
                         </div>
 
@@ -342,9 +283,6 @@
     </main>
 
     <script>
-        // System variables
-        const fallbackApiKey = ""; 
-        
         // DOM Elements
         const form = document.getElementById('methodologyForm');
         const generateBtn = document.getElementById('generateBtn');
@@ -352,47 +290,33 @@
         const loadingState = document.getElementById('loadingState');
         const contentState = document.getElementById('contentState');
         const methodologyContent = document.getElementById('methodologyContent');
-        const sourcesContent = document.getElementById('sourcesContent');
-        const sourcesList = document.getElementById('sourcesList');
         const errorBox = document.getElementById('errorBox');
         const errorMessage = document.getElementById('errorMessage');
         
         const tabMethodology = document.getElementById('tabMethodology');
         const tabMaterials = document.getElementById('tabMaterials');
         const tabFlowchart = document.getElementById('tabFlowchart');
-        const tabSources = document.getElementById('tabSources');
         
         const flowchartContent = document.getElementById('flowchartContent');
         const materialsContent = document.getElementById('materialsContent');
         const downloadBtn = document.getElementById('downloadBtn');
         const downloadPptxBtn = document.getElementById('downloadPptxBtn');
         
-        const dbFocus = document.getElementById('dbFocus');
         const irbToggle = document.getElementById('irbToggle');
+        const flowchartToggle = document.getElementById('flowchartToggle');
         const flowchartTheme = document.getElementById('flowchartTheme');
-        const modelSelect = document.getElementById('modelSelect');
         
-        const historyContainer = document.getElementById('historyContainer');
-        const historyList = document.getElementById('historyList');
-        
-        // API Key Inputs
+        // API Key
         const apiKeyInput = document.getElementById('apiKeyInput');
         const toggleKeyVisibility = document.getElementById('toggleKeyVisibility');
+        const modelSelect = document.getElementById('modelSelect');
 
         let localApiKey = localStorage.getItem('gemini_api_key') || '';
         apiKeyInput.value = localApiKey;
 
-        let localSelectedModel = localStorage.getItem('gemini_selected_model') || 'gemini-2.5-flash';
-        modelSelect.value = localSelectedModel;
-
         apiKeyInput.addEventListener('input', (e) => {
             localApiKey = e.target.value.trim();
             localStorage.setItem('gemini_api_key', localApiKey);
-        });
-
-        modelSelect.addEventListener('change', (e) => {
-            localSelectedModel = e.target.value;
-            localStorage.setItem('gemini_selected_model', localSelectedModel);
         });
 
         toggleKeyVisibility.addEventListener('click', () => {
@@ -405,133 +329,32 @@
             }
         });
 
-        // Initialize Mermaid
-        mermaid.initialize({ 
-            startOnLoad: false, 
-            theme: 'default',
-            flowchart: { htmlLabels: false } 
-        });
+        mermaid.initialize({ startOnLoad: false, theme: 'default' });
         let currentMermaidCode = ''; 
-
-        // Saved History Logic
-        function loadHistory() {
-            const saved = JSON.parse(localStorage.getItem('methodology_history') || '[]');
-            if (saved.length === 0) {
-                historyContainer.classList.add('hidden');
-                return;
-            }
-            historyContainer.classList.remove('hidden');
-            historyList.innerHTML = '';
-            
-            saved.forEach((item, index) => {
-                const div = document.createElement('div');
-                div.className = "flex justify-between items-center bg-slate-50 p-2 rounded border border-slate-200 text-xs";
-                div.innerHTML = `
-                    <button class="text-left font-medium text-slate-700 truncate hover:text-brand-600 flex-grow mr-2" onclick="restoreHistory(${index})">
-                        ${item.domain} (${new Date(item.date).toLocaleDateString()})
-                    </button>
-                    <button class="text-slate-400 hover:text-red-500 p-1" onclick="deleteHistory(${index}, event)">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                `;
-                historyList.appendChild(div);
-            });
-        }
-
-        window.deleteHistory = function(index, e) {
-            e.stopPropagation();
-            let saved = JSON.parse(localStorage.getItem('methodology_history') || '[]');
-            saved.splice(index, 1);
-            localStorage.setItem('methodology_history', JSON.stringify(saved));
-            loadHistory();
-        };
-
-        window.restoreHistory = function(index) {
-            const saved = JSON.parse(localStorage.getItem('methodology_history') || '[]');
-            const data = saved[index];
-            if (!data) return;
-
-            document.getElementById('domain').value = data.domain;
-            document.getElementById('objective').value = data.objective;
-            document.getElementById('iv').value = data.iv;
-            document.getElementById('dv').value = data.dv;
-            document.getElementById('cv').value = data.cv;
-            
-            currentMermaidCode = data.mermaidCode;
-            methodologyContent.innerHTML = data.methodologyHtml;
-            sourcesList.innerHTML = data.sourcesHtml;
-            
-            emptyState.classList.add('hidden');
-            contentState.classList.remove('hidden');
-            downloadBtn.classList.remove('hidden');
-            
-            tabMaterials.style.display = 'block';
-            if (data.materialsRaw) {
-                renderMaterialsList(data.materialsRaw);
-            } else {
-                document.getElementById('materialsList').innerHTML = '<p class="text-sm text-slate-500 italic">No materials data saved for this history item.</p>';
-            }
-
-            tabFlowchart.style.display = 'block';
-            if (currentMermaidCode) {
-                downloadPptxBtn.classList.remove('hidden');
-                document.getElementById('mermaidDisplay').removeAttribute('data-rendered');
-            } else {
-                downloadPptxBtn.classList.add('hidden');
-            }
-            
-            if (data.sourcesHtml) {
-                tabSources.style.display = 'block';
-            } else {
-                tabSources.style.display = 'none';
-            }
-            
-            switchTab(tabMethodology, methodologyContent);
-        };
-
-        function saveToHistory(domain, objective, iv, dv, cv, methodologyHtml, mermaidCode, sourcesHtml, materialsRaw) {
-            const saved = JSON.parse(localStorage.getItem('methodology_history') || '[]');
-            const exists = saved.find(item => item.domain === domain && item.objective === objective);
-            if (!exists) {
-                saved.unshift({
-                    domain, objective, iv, dv, cv,
-                    methodologyHtml, mermaidCode, sourcesHtml, materialsRaw,
-                    date: new Date().toISOString()
-                });
-                if (saved.length > 5) saved.pop();
-                localStorage.setItem('methodology_history', JSON.stringify(saved));
-                loadHistory();
-            }
-        }
-
-        loadHistory();
 
         // Tab Switching Logic
         function switchTab(activeTabBtn, activeContentDiv) {
-            [tabMethodology, tabMaterials, tabFlowchart, tabSources].forEach(tab => {
-                if(tab) tab.className = "px-6 py-3 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap";
+            [tabMethodology, tabMaterials, tabFlowchart].forEach(tab => {
+                tab.className = "px-6 py-3 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap";
             });
             activeTabBtn.className = "px-6 py-3 text-sm font-medium text-brand-600 border-b-2 border-brand-600 bg-white whitespace-nowrap";
 
             methodologyContent.classList.add('hidden');
             materialsContent.classList.add('hidden');
             flowchartContent.classList.add('hidden');
-            sourcesContent.classList.add('hidden');
             flowchartTheme.classList.add('hidden');
-            downloadPptxBtn.classList.add('hidden'); // Hide by default
+            downloadPptxBtn.classList.add('hidden');
 
             activeContentDiv.classList.remove('hidden');
 
-            if (activeContentDiv === flowchartContent) {
+            if (activeContentDiv === flowchartContent && !emptyState.classList.contains('hidden') === false) {
                 flowchartTheme.classList.remove('hidden');
-                downloadPptxBtn.classList.remove('hidden'); // Show for flowchart
                 if (currentMermaidCode) {
+                    downloadPptxBtn.classList.remove('hidden');
                     const displayArea = document.getElementById('mermaidDisplay');
                     if (!displayArea.hasAttribute('data-rendered')) {
                         displayArea.innerHTML = `<div class="mermaid">${currentMermaidCode}</div>`;
-                        setTimeout(() => {
-                            mermaid.init(undefined, document.querySelectorAll('.mermaid'));
-                        }, 50);
+                        setTimeout(() => mermaid.init(undefined, document.querySelectorAll('.mermaid')), 50);
                         displayArea.setAttribute('data-rendered', 'true');
                     }
                 }
@@ -541,566 +364,46 @@
         tabMethodology.addEventListener('click', () => switchTab(tabMethodology, methodologyContent));
         tabMaterials.addEventListener('click', () => switchTab(tabMaterials, materialsContent));
         tabFlowchart.addEventListener('click', () => switchTab(tabFlowchart, flowchartContent));
-        tabSources.addEventListener('click', () => switchTab(tabSources, sourcesContent));
 
-        async function fetchWithRetry(url, options, maxRetries = 5) {
-            const delays = [1000, 2000, 4000, 8000, 16000];
-            for (let i = 0; i < maxRetries; i++) {
-                try {
-                    const response = await fetch(url, options);
-                    if (!response.ok) {
-                        let errMessage = `HTTP Error ${response.status}`;
-                        try {
-                            const errJson = await response.json();
-                            if (errJson.error && errJson.error.message) {
-                                errMessage += `: ${errJson.error.message}`;
-                            }
-                        } catch(e) {
-                            const errText = await response.text();
-                            if (errText) errMessage += `: ${errText}`;
-                        }
-                        throw new Error(errMessage);
-                    }
-                    return await response.json();
-                } catch (error) {
-                    if (i === maxRetries - 1) throw error;
-                    await new Promise(resolve => setTimeout(resolve, delays[i]));
-                }
-            }
-        }
-
-        function showError(msg) {
-            errorMessage.textContent = msg;
-            errorBox.classList.remove('hidden');
-            errorBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-
+        // Form Submit
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const activeKey = localApiKey || fallbackApiKey;
-            if (!activeKey) {
-                showError("Missing API Key! Please paste your Gemini API Key in the Settings panel inside the left sidebar.");
+            if (!localApiKey) {
+                errorMessage.textContent = "Please paste your Gemini API Key in the settings panel.";
+                errorBox.classList.remove('hidden');
                 return;
             }
-
-            const activeModel = localApiKey ? modelSelect.value : "gemini-2.5-flash-preview-09-2025";
 
             const domain = document.getElementById('domain').value.trim();
             const objective = document.getElementById('objective').value.trim();
             const iv = document.getElementById('iv').value.trim();
             const dv = document.getElementById('dv').value.trim();
-            const cv = document.getElementById('cv').value.trim() || 'None specified';
-            const searchFocus = dbFocus.value;
             const includeIRB = irbToggle.checked;
+            const includeFlowchart = flowchartToggle.checked;
+            const activeModel = modelSelect.value;
 
             errorBox.classList.add('hidden');
             emptyState.classList.add('hidden');
             contentState.classList.add('hidden');
             loadingState.classList.remove('hidden');
             downloadBtn.classList.add('hidden');
-            downloadPptxBtn.classList.add('hidden');
-            generateBtn.disabled = true;
-            generateBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating...';
-            
-            tabSources.style.display = 'none'; 
-            tabMaterials.style.display = 'block'; // Always show now
-            tabFlowchart.style.display = 'block'; // Always show now
             
             document.getElementById('mermaidDisplay').removeAttribute('data-rendered'); 
             currentMermaidCode = ''; 
             switchTab(tabMethodology, methodologyContent); 
 
-            let restriction = "established academic consensus";
-            if (searchFocus === "pubmed") restriction = "the PubMed database focusing strictly on biomedical, medical, and clinical standards";
-            if (searchFocus === "sciencedirect") restriction = "ScienceDirect peer-reviewed articles focusing on rigorous technical, engineering, and STEM designs";
-            if (searchFocus === "general") restriction = "open literature research databases, peer reviews, and meta-analyses";
-
-            const promptText = `
+            let promptText = `
                 I need to design a rigorous scientific methodology for a study.
+                Domain: ${domain}
+                Objectives: ${objective}
+                IV: ${iv}
+                DV: ${dv}
+
+                Please include: Research Design, Sampling, Data Collection, Data Analysis, and Validity.
+                ${includeIRB ? 'Also include: Ethical Considerations & IRB Protocol.' : ''}
+
+                CRITICAL INSTRUCTION 1: You MUST append a code block at the end enclosed in \`\`\`materials and \`\`\` containing an itemized list of all required materials and equipment. Format as: "- Item Name: Purpose".
                 
-                Research Domain: ${domain}
-                Specific Objective(s): ${objective}
-                Independent Variable(s): ${iv}
-                Dependent Variable(s): ${dv}
-                Control Variable(s): ${cv}
-
-                Please design a comprehensive methodology. Your response must include:
-                1. **Research Design:** (e.g., Experimental, Quasi-experimental, Observational) and justify why it fits the variables.
-                2. **Sampling & Participants/Materials:** How to select the sample to ensure validity.
-                3. **Data Collection Procedure:** Step-by-step how the IV will be manipulated/observed and how the DV will be measured.
-                4. **Data Analysis Plan:** Specific statistical tests or analysis frameworks to evaluate the relationship between IV and DV.
-                5. **Validity & Reliability:** How to address potential confounds (incorporating the Control Variables).
-                ${includeIRB ? '6. **Ethical Considerations & IRB Protocol:** Step-by-step measures for participant safety, consent, and risk minimization.' : ''}
-                7. **References:** Provide a formal references section at the end.
-
-                CRITICAL FORMATTING INSTRUCTIONS:
-                After writing the methodology text, you MUST append EXACTLY TWO code blocks at the very bottom of your response. Do not skip these.
-
-                Block 1: Materials Used
-                Provide a block enclosed in \`\`\`materials and \`\`\` containing an itemized list of all required materials, equipment, chemicals, software, or tools. 
-                Format as: "- Item Name: Purpose"
-
-                Block 2: Experimental Flowchart
-                Provide a block enclosed strictly in \`\`\`mermaid and \`\`\` containing a Mermaid.js top-down (TD) flowchart. 
-                Crucial Rule: The flowchart MUST represent the step-by-step procedure of your proposed output methods, and the nodes MUST strictly align with the stated objectives (${objective}).
-            `;
-
-            const payload = {
-                contents: [{ parts: [{ text: promptText }] }],
-                tools: [{ googleSearch: {} }], 
-                systemInstruction: { 
-                    parts: [{ 
-                        text: `You are an expert research methodologist. You MUST generate the methodology text and you MUST append both the \`\`\`materials\`\`\` and \`\`\`mermaid\`\`\` code blocks at the end. The Mermaid flowchart MUST align perfectly with the user's objectives.` 
-                    }] 
-                }
-            };
-
-            const targetApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${activeModel}:generateContent?key=${activeKey}`;
-
-            try {
-                const result = await fetchWithRetry(targetApiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                const candidate = result.candidates?.[0];
-                if (!candidate) throw new Error("No response generated from the model.");
-
-                let generatedText = candidate.content?.parts?.[0]?.text;
-                if (!generatedText) {
-                    if (candidate.finishReason) {
-                        throw new Error(`Generation stopped prematurely. Reason: ${candidate.finishReason}`);
-                    }
-                    throw new Error("Received empty response candidate from API.");
-                }
-                const groundingMetadata = candidate.groundingMetadata?.groundingAttributions;
-
-                // Extract Materials Code - High Tolerance Regex
-                const materialsMatch = generatedText.match(/```materials[\s\S]*?\n([\s\S]*?)```/i);
-                let materialsRaw = '';
-                if (materialsMatch && materialsMatch[1].trim()) {
-                    materialsRaw = materialsMatch[1].trim();
-                    generatedText = generatedText.replace(/```materials[\s\S]*?```/i, ''); 
-                    renderMaterialsList(materialsRaw);
-                } else {
-                    document.getElementById('materialsList').innerHTML = '<p class="text-sm text-slate-500 italic p-4 bg-slate-50 rounded border border-slate-200">No specific materials or equipment list was generated by the model for this design.</p>';
-                }
-
-                // Extract Mermaid Code - High Tolerance Regex
-                const mermaidMatch = generatedText.match(/```mermaid[\s\S]*?\n([\s\S]*?)```/i);
-                if (mermaidMatch && mermaidMatch[1].trim()) {
-                    currentMermaidCode = mermaidMatch[1].trim();
-                    generatedText = generatedText.replace(/```mermaid[\s\S]*?```/i, ''); 
-                } else {
-                    currentMermaidCode = `graph TD\nErrorNode[Flowchart generation skipped by AI] --> R[Please click 'Design & Verify Method' again]`;
-                }
-
-                // Render Markdown
-                methodologyContent.innerHTML = marked.parse(generatedText);
-
-                // Handle Sources
-                sourcesList.innerHTML = '';
-                if (groundingMetadata && groundingMetadata.length > 0) {
-                    const uniqueSources = new Set();
-                    groundingMetadata.forEach(attribution => {
-                        const uri = attribution.web?.uri;
-                        const title = attribution.web?.title;
-                        
-                        if (uri && title && !uniqueSources.has(uri)) {
-                            uniqueSources.add(uri);
-                            const li = document.createElement('li');
-                            li.className = "flex items-start gap-3 p-3 rounded-lg border border-slate-100 bg-slate-50 hover:bg-slate-100 transition-colors";
-                            li.innerHTML = `
-                                <i class="fa-solid fa-link text-slate-400 mt-1"></i>
-                                <div>
-                                    <a href="${uri}" target="_blank" class="text-brand-600 hover:text-brand-800 font-medium text-sm leading-tight inline-block mb-1">${title}</a>
-                                    <p class="text-xs text-slate-500 truncate max-w-[400px] lg:max-w-[600px]">${uri}</p>
-                                </div>
-                            `;
-                            sourcesList.appendChild(li);
-                        }
-                    });
-
-                    if (uniqueSources.size > 0) {
-                        tabSources.style.display = 'block';
-                        sourcesContent.classList.remove('hidden');
-                    }
-                }
-
-                loadingState.classList.add('hidden');
-                contentState.classList.remove('hidden');
-                downloadBtn.classList.remove('hidden');
-
-                // Save to History
-                saveToHistory(domain, objective, iv, dv, cv, methodologyContent.innerHTML, currentMermaidCode, sourcesList.innerHTML, materialsRaw);
-
-            } catch (error) {
-                console.error("Error generating method:", error);
-                loadingState.classList.add('hidden');
-                emptyState.classList.remove('hidden');
-                showError("Failed to generate methodology. Details: " + error.message);
-            } finally {
-                generateBtn.disabled = false;
-                generateBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Design & Verify Method';
-            }
-        });
-
-        function renderMaterialsList(rawList) {
-            const listContainer = document.getElementById('materialsList');
-            listContainer.innerHTML = '';
-            
-            const lines = rawList.split('\n').map(l => l.trim()).filter(l => l);
-            if (lines.length === 0) {
-                listContainer.innerHTML = '<p class="text-sm text-slate-500 italic">No specific tools or materials listed.</p>';
-                return;
-            }
-
-            lines.forEach((line, idx) => {
-                let cleanedLine = line.replace(/^[-*+]\s*|^[0-9]+[\.\)]\s*/, '').trim();
-                
-                let title = cleanedLine;
-                let description = "";
-                const colonIdx = cleanedLine.indexOf(':');
-                if (colonIdx !== -1) {
-                    title = cleanedLine.substring(0, colonIdx).trim();
-                    description = cleanedLine.substring(colonIdx + 1).trim();
-                }
-
-                const itemDiv = document.createElement('div');
-                itemDiv.className = "flex items-start gap-3 p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 transition-all cursor-pointer shadow-sm";
-                itemDiv.innerHTML = `
-                    <input type="checkbox" id="mat-${idx}" class="mt-1 h-4 w-4 text-brand-600 border-slate-300 rounded focus:ring-brand-500 cursor-pointer">
-                    <label for="mat-${idx}" class="flex-grow text-sm cursor-pointer select-none">
-                        <strong class="text-slate-800 block font-semibold">${title}</strong>
-                        ${description ? `<span class="text-slate-500 text-xs mt-0.5 block">${description}</span>` : ''}
-                    </label>
-                `;
-                
-                const checkbox = itemDiv.querySelector('input');
-                const label = itemDiv.querySelector('label');
-                checkbox.addEventListener('change', () => {
-                    if (checkbox.checked) {
-                        label.classList.add('line-through', 'opacity-50');
-                    } else {
-                        label.classList.remove('line-through', 'opacity-50');
-                    }
-                });
-
-                listContainer.appendChild(itemDiv);
-            });
-        }
-
-        async function getMermaidPngBase64(code, id) {
-            return new Promise((resolve, reject) => {
-                const container = document.createElement('div');
-                container.style.position = 'absolute';
-                container.style.top = '-9999px';
-                document.body.appendChild(container);
-                container.innerHTML = `<div class="mermaid" id="${id}">${code}</div>`;
-                
-                mermaid.init(undefined, container.querySelectorAll('.mermaid'));
-                
-                setTimeout(() => {
-                    const svgElement = container.querySelector('svg');
-                    if (!svgElement) {
-                        document.body.removeChild(container);
-                        return reject(new Error('Failed to render Mermaid SVG'));
-                    }
-                    
-                    const viewBox = svgElement.getAttribute('viewBox');
-                    if (viewBox) {
-                        const vParts = viewBox.split(' ');
-                        if (vParts.length === 4) {
-                            svgElement.setAttribute('width', vParts[2] + 'px');
-                            svgElement.setAttribute('height', vParts[3] + 'px');
-                        }
-                    }
-                    
-                    const svgData = new XMLSerializer().serializeToString(svgElement);
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    const img = new Image();
-                    
-                    img.onload = () => {
-                        canvas.width = img.width;
-                        canvas.height = img.height;
-                        ctx.fillStyle = "white";
-                        ctx.fillRect(0, 0, canvas.width, canvas.height);
-                        ctx.drawImage(img, 0, 0);
-                        const dataUrl = canvas.toDataURL('image/png');
-                        document.body.removeChild(container);
-                        resolve(dataUrl);
-                    };
-                    
-                    img.onerror = () => {
-                        document.body.removeChild(container);
-                        reject(new Error('Failed to load SVG into Image for PNG conversion'));
-                    };
-                    
-                    img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
-                }, 500); 
-            });
-        }
-
-        downloadBtn.addEventListener('click', async () => {
-            let materialsHtml = "";
-            let flowchartHtml = "";
-
-            const materialsListDiv = document.getElementById('materialsList');
-            if (materialsListDiv && materialsListDiv.children.length > 0 && !materialsListDiv.innerHTML.includes('No specific materials')) {
-                materialsHtml += `<br><br><h2 style="font-family: sans-serif; color: #1e293b;">Materials Used</h2><ul>`;
-                Array.from(materialsListDiv.children).forEach(item => {
-                    const label = item.querySelector('label');
-                    if (label) {
-                        const strongText = label.querySelector('strong') ? label.querySelector('strong').innerText : '';
-                        const spanText = label.querySelector('span') ? label.querySelector('span').innerText : '';
-                        materialsHtml += `<li style="font-family: sans-serif; font-size: 11pt; margin-bottom: 6px;"><strong>${strongText}</strong>${spanText ? `: ${spanText}` : ''}</li>`;
-                    }
-                });
-                materialsHtml += `</ul>`;
-            }
-
-            if (currentMermaidCode && !currentMermaidCode.includes('ErrorNode')) {
-                try {
-                    const pngDataUrl = await getMermaidPngBase64(currentMermaidCode, 'exportMermaidId');
-                    flowchartHtml = `
-                        <br><br>
-                        <h2 style="font-family: sans-serif; color: #1e293b;">Experimental Flowchart</h2>
-                        <img src="${pngDataUrl}" alt="Flowchart Diagram" style="max-width: 100%; height: auto;" />
-                    `;
-                } catch (error) {
-                    console.error("Error generating flowchart for Word export:", error);
-                }
-            }
-
-            const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Research Methodology</title></head><body>";
-            const footer = "</body></html>";
-            const html = header + methodologyContent.innerHTML + materialsHtml + flowchartHtml + footer;
-            
-            const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
-            
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'Research_Methodology.doc'; 
-            document.body.appendChild(link);
-            link.click();
-            
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-        });
-
-        function buildNativePPTX(slide, pptx, mermaidCode, palette) {
-            const nodes = {};
-            const edges = [];
-            
-            const lines = mermaidCode.split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('graph') && !l.startsWith('flowchart'));
-            
-            lines.forEach(line => {
-                line = line.split('%')[0].trim(); 
-                if (!line) return;
-
-                let parts = line.split(/-->/);
-                if (parts.length > 1) {
-                    let fromId = null;
-                    for (let i = 0; i < parts.length; i++) {
-                        let part = parts[i].trim();
-                        part = part.replace(/^\|.*?\|\s*/, ''); 
-                        
-                        let match = part.match(/^([a-zA-Z0-9_]+)(?:\s*(?:\[(.*?)\]|\((.*?)\)|\{(.*?)\}))?/);
-                        if (match) {
-                            let id = match[1];
-                            let label = match[2] || match[3] || match[4] || id;
-                            label = label.replace(/^["']|["']$/g, ''); 
-                            
-                            if (!nodes[id]) {
-                                nodes[id] = { id, label, level: 0 };
-                            } else if (label !== id && nodes[id].label === id) {
-                                nodes[id].label = label;
-                            }
-                            
-                            if (fromId !== null) {
-                                edges.push({ from: fromId, to: id });
-                            }
-                            fromId = id;
-                        }
-                    }
-                } else {
-                    let match = line.match(/^([a-zA-Z0-9_]+)(?:\s*(?:\[(.*?)\]|\((.*?)\)|\{(.*?)\}))?/);
-                    if (match) {
-                        let id = match[1];
-                        let label = match[2] || match[3] || match[4] || id;
-                        label = label.replace(/^["']|["']$/g, '');
-                        if (!nodes[id]) nodes[id] = { id, label, level: 0 };
-                    }
-                }
-            });
-
-            const nodeKeys = Object.keys(nodes);
-            if (nodeKeys.length === 0) return false;
-
-            const inDegree = {};
-            const adj = {};
-            nodeKeys.forEach(id => { inDegree[id] = 0; adj[id] = []; });
-            edges.forEach(e => { 
-                if (inDegree[e.to] !== undefined) {
-                    inDegree[e.to]++; 
-                    adj[e.from].push(e.to);
-                }
-            });
-            
-            let queue = nodeKeys.filter(id => inDegree[id] === 0);
-            if (queue.length === 0) queue = [nodeKeys[0]]; 
-            
-            let levelInfo = [];
-            let visited = new Set(queue);
-            
-            while (queue.length > 0) {
-                levelInfo.push([...queue]);
-                let nextQueue = [];
-                queue.forEach(id => {
-                    adj[id].forEach(to => {
-                        inDegree[to]--;
-                        if (inDegree[to] === 0 && !visited.has(to)) {
-                            visited.add(to);
-                            nextQueue.push(to);
-                        }
-                    });
-                });
-                
-                if (nextQueue.length === 0 && visited.size < nodeKeys.length) {
-                    let unvisited = nodeKeys.find(n => !visited.has(n));
-                    if (unvisited) {
-                        visited.add(unvisited);
-                        nextQueue.push(unvisited);
-                    }
-                }
-                queue = nextQueue;
-            }
-
-            const slideWidth = 10;
-            const startY = 1.3;
-            const levelHeight = 0.9;
-            const boxWidth = 2.4;
-            const boxHeight = 0.5;
-
-            levelInfo.forEach((levelNodes, levelIdx) => {
-                const y = startY + (levelIdx * levelHeight);
-                const gap = slideWidth / (levelNodes.length + 1);
-                
-                levelNodes.forEach((id, nodeIdx) => {
-                    nodes[id].x = gap * (nodeIdx + 1) - (boxWidth / 2);
-                    nodes[id].y = y;
-                });
-            });
-
-            // Safe reference variables mapping directly to PptxGenJS uppercase constants
-            const LINE_SHAPE = pptx.ShapeType.LINE;
-            const RECT_SHAPE = pptx.ShapeType.RECTANGLE || pptx.ShapeType.RECT;
-
-            edges.forEach(e => {
-                const from = nodes[e.from];
-                const to = nodes[e.to];
-                if (from && to) {
-                    let x1 = from.x + (boxWidth / 2);
-                    let y1 = from.y + boxHeight;
-                    let x2 = to.x + (boxWidth / 2);
-                    let y2 = to.y;
-
-                    let x = Math.min(x1, x2);
-                    let y = Math.min(y1, y2);
-                    let w = Math.abs(x2 - x1);
-                    let h = Math.abs(y2 - y1);
-
-                    if (w < 0.01) w = 0.01;
-                    if (h < 0.01) h = 0.01;
-
-                    slide.addShape(LINE_SHAPE, {
-                        x: x, 
-                        y: y, 
-                        w: w, 
-                        h: h,
-                        flipH: (x1 > x2),
-                        flipV: (y1 > y2),
-                        line: { color: palette.line, width: 1.5, endArrowType: "triangle" }
-                    });
-                }
-            });
-
-            Object.values(nodes).forEach(n => {
-                slide.addText(n.label, {
-                    shape: RECT_SHAPE,
-                    x: n.x, 
-                    y: n.y, 
-                    w: boxWidth, 
-                    h: boxHeight,
-                    fill: { color: palette.fill },
-                    line: { color: palette.stroke, width: 1.2 },
-                    color: palette.text, 
-                    fontSize: 11, 
-                    bold: true, 
-                    align: "center", 
-                    valign: "middle"
-                });
-            });
-
-            return true;
-        }
-
-        const themePalettes = {
-            blue: { fill: "EFF6FF", stroke: "3B82F6", text: "1E293B", line: "94A3B8" },
-            teal: { fill: "F0FDFA", stroke: "0D9488", text: "115E59", line: "94A3B8" },
-            slate: { fill: "F8FAFC", stroke: "475569", text: "0F172A", line: "94A3B8" },
-            emerald: { fill: "F0FDF4", stroke: "16A34A", text: "166534", line: "94A3B8" }
-        };
-
-        downloadPptxBtn.addEventListener('click', async () => {
-            if (!currentMermaidCode || currentMermaidCode.includes('ErrorNode')) return;
-            
-            try {
-                const originalContent = downloadPptxBtn.innerHTML;
-                downloadPptxBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-orange-600"></i> Exporting...';
-                downloadPptxBtn.disabled = true;
-
-                let pptx = new PptxGenJS();
-                pptx.layout = 'LAYOUT_16x9'; 
-                
-                let slide = pptx.addSlide();
-                slide.addText("Experimental Flowchart", { x: 0.5, y: 0.4, w: "90%", h: 0.5, fontSize: 24, bold: true, color: "1E293B" });
-                
-                const selectedTheme = flowchartTheme.value || 'blue';
-                const palette = themePalettes[selectedTheme] || themePalettes.blue;
-
-                const nativeSuccess = buildNativePPTX(slide, pptx, currentMermaidCode, palette);
-                
-                if (!nativeSuccess) {
-                    const pngDataUrl = await getMermaidPngBase64(currentMermaidCode, 'exportPptxMermaidId');
-                    slide.addText("Note: Diagram was too complex for native shapes. Rendered as image.", { x: 0.5, y: 0.9, w: "90%", h: 0.3, fontSize: 10, italic: true, color: "EF4444" });
-                    slide.addImage({ 
-                        data: pngDataUrl, 
-                        x: 0.5, y: 1.5, 
-                        w: 9.0, h: 3.8, 
-                        sizing: { type: 'contain', w: 9.0, h: 3.8 }
-                    });
-                } else {
-                    slide.addText("Fully editable shapes mapped to research objectives.", { x: 0.5, y: 0.9, w: "90%", h: 0.3, fontSize: 11, italic: true, color: "64748B" });
-                }
-                
-                await pptx.writeFile({ fileName: "Experimental_Flowchart.pptx" });
-                
-                downloadPptxBtn.innerHTML = originalContent;
-                downloadPptxBtn.disabled = false;
-
-            } catch (error) {
-                console.error("Error generating PPTX:", error);
-                showError("Failed to generate PowerPoint file.");
-                downloadPptxBtn.innerHTML = '<i class="fa-solid fa-file-powerpoint text-orange-600"></i> Download PPTX';
-                downloadPptxBtn.disabled = false;
-            }
-        });
-
-    </script>
-</body>
-</html>
+                ${includeFlowchart ? 'CRITICAL INSTRUCTION 2: You MUST append a second code block strictly enclosed in 
+http://googleusercontent.com/immersive_entry_chip/0
