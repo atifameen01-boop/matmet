@@ -22,12 +22,12 @@
                 extend: {
                     colors: {
                         brand: {
-                            50: '#f0f7ff',
-                            100: '#e0effe',
-                            500: '#0284c7',
-                            600: '#0369a1',
-                            700: '#075985',
-                            900: '#0c4a6e',
+                            50: '#f4fbe9',
+                            100: '#e8f7d2',
+                            500: '#7cd914', // Vibrant Parrot Green
+                            600: '#64b00f',
+                            700: '#4c860c',
+                            900: '#264306',
                         },
                         slate: {
                             950: '#0f172a'
@@ -77,7 +77,7 @@
         .prose h2 { 
             font-size: 1.35rem; 
             font-weight: 700; 
-            color: #0369a1; 
+            color: #4c860c; 
             margin-top: 1.75rem; 
             margin-bottom: 0.75rem;
         }
@@ -104,7 +104,7 @@
         .prose li { margin-bottom: 0.5em; line-height: 1.7; }
         .prose strong { color: #0f172a; font-weight: 600; }
         .prose blockquote {
-            border-left: 4px solid #0284c7;
+            border-left: 4px solid #7cd914;
             padding-left: 1rem;
             color: #475569;
             font-style: italic;
@@ -117,7 +117,7 @@
         .loader {
             border: 3px solid #f3f3f3;
             border-radius: 50%;
-            border-top: 3px solid #0284c7;
+            border-top: 3px solid #7cd914;
             width: 32px;
             height: 32px;
             animation: spin 1s linear infinite;
@@ -129,8 +129,8 @@
         }
 
         .tab-active {
-            color: #0284c7 !important;
-            border-bottom: 2px solid #0284c7 !important;
+            color: #64b00f !important;
+            border-bottom: 2px solid #64b00f !important;
             background-color: #ffffff;
         }
     </style>
@@ -141,7 +141,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center gap-3">
-                    <div class="bg-gradient-to-tr from-brand-600 to-sky-500 p-2.5 rounded-xl text-white shadow-md shadow-brand-500/20">
+                    <div class="bg-gradient-to-tr from-brand-600 to-lime-400 p-2.5 rounded-xl text-white shadow-md shadow-brand-500/20">
                         <i class="fa-solid fa-flask-vial text-lg"></i>
                     </div>
                     <div>
@@ -225,7 +225,7 @@
                         </div>
 
                         <div class="pt-3 border-t border-slate-100 space-y-3.5">
-                            <div class="bg-gradient-to-r from-brand-50 to-sky-50 border border-brand-100 rounded-xl p-3.5 space-y-2">
+                            <div class="bg-gradient-to-r from-brand-50 to-lime-50 border border-brand-100 rounded-xl p-3.5 space-y-2">
                                 <span class="block text-[10px] font-extrabold text-brand-700 uppercase tracking-wider flex items-center gap-1">
                                     <i class="fa-solid fa-shield-halved text-brand-600 animate-pulse"></i>
                                     Unified Verification Pipeline
@@ -235,8 +235,8 @@
                                 </p>
                                 <div class="flex flex-wrap gap-1 pt-1">
                                     <span class="px-2 py-0.5 rounded-full bg-brand-100 text-brand-800 text-[9px] font-semibold">PubMed</span>
-                                    <span class="px-2 py-0.5 rounded-full bg-sky-100 text-sky-800 text-[9px] font-semibold">ScienceDirect</span>
-                                    <span class="px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800 text-[9px] font-semibold">Consensus AI</span>
+                                    <span class="px-2 py-0.5 rounded-full bg-lime-100 text-lime-800 text-[9px] font-semibold">ScienceDirect</span>
+                                    <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[9px] font-semibold">Consensus AI</span>
                                     <span class="px-2 py-0.5 rounded-full bg-slate-200 text-slate-800 text-[9px] font-semibold">Open Repositories</span>
                                 </div>
                             </div>
@@ -250,7 +250,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" id="generateBtn" class="w-full mt-2 bg-gradient-to-r from-brand-600 to-sky-600 hover:from-brand-700 hover:to-sky-700 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-md shadow-brand-500/10 flex items-center justify-center gap-2 text-sm">
+                        <button type="submit" id="generateBtn" class="w-full mt-2 bg-gradient-to-r from-brand-600 to-lime-600 hover:from-brand-700 hover:to-lime-700 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-md shadow-brand-500/10 flex items-center justify-center gap-2 text-sm">
                             <i class="fa-solid fa-wand-magic-sparkles"></i>
                             Design & Verify Method
                         </button>
@@ -278,6 +278,9 @@
                             </button>
                             <button id="tabFlowchart" class="px-4 py-3 text-xs font-bold text-slate-500 hover:text-slate-800 transition-all rounded-t-lg flex items-center gap-1.5 whitespace-nowrap hidden">
                                 <i class="fa-solid fa-route"></i> Procedure Chart
+                            </button>
+                            <button id="tabStatFlowchart" class="px-4 py-3 text-xs font-bold text-slate-500 hover:text-slate-800 transition-all rounded-t-lg flex items-center gap-1.5 whitespace-nowrap hidden">
+                                <i class="fa-solid fa-calculator"></i> Statistical Chart
                             </button>
                             <button id="tabSources" class="px-4 py-3 text-xs font-bold text-slate-500 hover:text-slate-800 transition-all rounded-t-lg flex items-center gap-1.5 whitespace-nowrap hidden">
                                 <i class="fa-solid fa-quote-left"></i> Citations & Verification
@@ -363,11 +366,20 @@
                                 </div>
                             </div>
 
+                            <!-- Statistical Flowchart viewport tab content -->
+                            <div id="statFlowchartContent" class="hidden h-full flex flex-col items-center">
+                                <div class="w-full bg-slate-50 border border-slate-200/60 rounded-xl p-6 flex justify-center items-center overflow-x-auto min-h-[400px]">
+                                    <div id="mermaidStatDisplay" class="w-full">
+                                        <!-- Statistical Flowchart injected here -->
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Citations tab content -->
                             <div id="sourcesContent" class="hidden">
-                                <div class="bg-blue-50 border border-blue-100 p-4 rounded-xl mb-4 flex gap-3 items-start">
-                                    <i class="fa-solid fa-circle-info text-blue-500 text-sm mt-0.5"></i>
-                                    <div class="text-[11px] text-blue-800 leading-relaxed">
+                                <div class="bg-lime-50 border border-lime-100 p-4 rounded-xl mb-4 flex gap-3 items-start">
+                                    <i class="fa-solid fa-circle-info text-brand-600 text-sm mt-0.5"></i>
+                                    <div class="text-[11px] text-brand-800 leading-relaxed">
                                         <span class="font-bold">Database Cross-Verification Active:</span> These sources align and cross-verify parameters across clinical pathways, STEM protocols, and scientific literature consensus.
                                     </div>
                                 </div>
@@ -439,6 +451,7 @@
         let isEditMode = false;
         let currentMaterials = [];
         let currentMermaidCode = "";
+        let currentStatMermaidCode = "";
         let parsedReferences = [];
 
         function sanitizeMermaidText(text) {
@@ -462,8 +475,10 @@
         const tabMethodology = document.getElementById('tabMethodology');
         const tabMaterials = document.getElementById('tabMaterials');
         const tabFlowchart = document.getElementById('tabFlowchart');
+        const tabStatFlowchart = document.getElementById('tabStatFlowchart');
         const tabSources = document.getElementById('tabSources');
         const flowchartContent = document.getElementById('flowchartContent');
+        const statFlowchartContent = document.getElementById('statFlowchartContent');
         const materialsContent = document.getElementById('materialsContent');
         const downloadBtn = document.getElementById('downloadBtn');
         const downloadPptxBtn = document.getElementById('downloadPptxBtn');
@@ -544,8 +559,8 @@
 
         // Tab controller operations
         function switchTab(activeBtn, targetDiv) {
-            const btns = [tabMethodology, tabMaterials, tabFlowchart, tabSources];
-            const divs = [methodologyContent, materialsContent, flowchartContent, sourcesContent];
+            const btns = [tabMethodology, tabMaterials, tabFlowchart, tabStatFlowchart, tabSources];
+            const divs = [methodologyContent, materialsContent, flowchartContent, statFlowchartContent, sourcesContent];
             
             btns.forEach(btn => btn.classList.remove('tab-active'));
             divs.forEach(div => div.classList.add('hidden'));
@@ -557,12 +572,16 @@
             if (targetDiv === flowchartContent) {
                 flowchartTheme.classList.remove('hidden');
                 renderFlowchart();
+            } else if (targetDiv === statFlowchartContent) {
+                flowchartTheme.classList.remove('hidden');
+                renderStatFlowchart();
             }
         }
 
         tabMethodology.addEventListener('click', () => switchTab(tabMethodology, methodologyContent));
         tabMaterials.addEventListener('click', () => switchTab(tabMaterials, materialsContent));
         tabFlowchart.addEventListener('click', () => switchTab(tabFlowchart, flowchartContent));
+        tabStatFlowchart.addEventListener('click', () => switchTab(tabStatFlowchart, statFlowchartContent));
         tabSources.addEventListener('click', () => switchTab(tabSources, sourcesContent));
 
         window.deleteHistoryItem = function(index) {
@@ -586,6 +605,7 @@
 
             methodologyContent.innerHTML = marked.parse(target.markdown);
             currentMermaidCode = target.flowchart;
+            currentStatMermaidCode = target.statFlowchart || "";
             currentMaterials = target.materials;
             parsedReferences = target.sources;
 
@@ -594,6 +614,7 @@
 
             tabMaterials.classList.remove('hidden');
             tabFlowchart.classList.remove('hidden');
+            tabStatFlowchart.classList.remove('hidden');
             tabSources.classList.remove('hidden');
             editToggleBtn.classList.remove('hidden');
             downloadBtn.classList.remove('hidden');
@@ -687,13 +708,26 @@ E --> F
 F --> G["Measure DV: ${cleanDv}..."]
 G --> H["Analyze Data via Mixed ANOVA"]`;
 
+                    const statFlowchart = `graph TD
+SA["Dataset Preparation: ${cleanDv}"] --> SB["Assumptions Verification Sequence"]
+SB --> SC{"Normality Check (Shapiro-Wilk)"}
+SC -->|Violated p < 0.05| SD["Run Data Transformation or Non-parametric equivalent"]
+SC -->|Sufficient p >= 0.05| SE{"Sphericity Check (Mauchly's Test)"}
+SE -->|Violated| SF["Apply Greenhouse-Geisser adjustment"]
+SE -->|Sufficient| SG["Run Standard 2-Way Mixed ANOVA"]
+SD --> SG
+SF --> SG
+SG --> SH{"Evaluate Interaction Effect (IV * Group)"}
+SH -->|Significant p < 0.05| SI["Pairwise Comparisons (Bonferroni correction)"]
+SH -->|Non-significant| SJ["Interpret Main Effect profiles only"]`;
+
                     const sources = [
                         { title: "Experimental and Quasi-Experimental Designs for Causal Inference", authors: "Shadish et al., 2002", journal: "Houghton Mifflin Classics (PubMed & ScienceDirect Aligned)", link: "https://pubmed.ncbi.nlm.nih.gov/" },
                         { title: "Research Design: Qualitative, Quantitative, and Mixed Methods Approaches", authors: "Creswell & Creswell, 2018", journal: "SAGE Research Publications (Consensus Aligned)", link: "https://www.sciencedirect.com/" },
                         { title: "Statistical Assumptions and Mixed ANOVA Models", authors: "Field, 2018", journal: "SAGE Core Publications", link: "https://www.sciencedirect.com/" }
                     ];
 
-                    resolve({ markdown: resultMarkdown, materials, flowchart, sources });
+                    resolve({ markdown: resultMarkdown, materials, flowchart, statFlowchart, sources });
                 }, 1500);
             });
         }
@@ -708,7 +742,8 @@ You must output:
 1. The Research Methodology draft (enclosed in markdown, detailing Design, Sampling, Procedure, Analysis Plan with full statistical checks, and Ethical considerations if requested).
 2. The exact lists of required Materials (strictly enclosed in a custom block tags \`\`\`materials ... \`\`\`).
 3. A beautiful, runnable Mermaid.js Flowchart representing the procedure (strictly enclosed in \`\`\`mermaid ... \`\`\` code block).
-4. The bibliography / sources reference list at the very end.`;
+4. A beautiful, runnable Mermaid.js Flowchart representing the Statistical Decision Tree flow (strictly enclosed in \`\`\`mermaid-stat ... \`\`\` code block).
+5. The bibliography / sources reference list at the very end.`;
 
             const promptText = `
 Design an extensive, highly rigorous scientific methodology for the following research plan:
@@ -749,6 +784,17 @@ D --> F["Maintain Controls"]
 E --> F
 F --> G["Measure DV"]
 G --> H["ANOVA / Statistical Tests"]
+\`\`\`
+
+Then provide the statistical decision flow chart block (use double quotes inside nodes like SA["Normality check"]):
+\`\`\`mermaid-stat
+graph TD
+SA["Dataset: Dependent Variable"] --> SB["Test Normality"]
+SB --> SC{"Shapiro-Wilk"}
+SC -->|Pass| SD["Check Variance Sphericity"]
+SC -->|Fail| SE["Non-parametric checks"]
+SD --> SF["Execute Mixed Model ANOVA"]
+SE --> SF
 \`\`\`
 
 Provide a professional, academic, ready-for-submission output.`;
@@ -799,6 +845,7 @@ Provide a professional, academic, ready-for-submission output.`;
             let cleanMarkdown = text;
             let materials = [];
             let flowchart = "";
+            let statFlowchart = "";
 
             // 1. Extract Materials Block
             const materialsRegex = /```materials\s*([\s\S]*?)\s*```/;
@@ -830,7 +877,22 @@ Provide a professional, academic, ready-for-submission output.`;
                 cleanMarkdown = cleanMarkdown.replace(mermaidRegex, '');
             }
 
-            // 3. Fallback Sources if none found
+            // 3. Extract Mermaid Stat Block
+            const mermaidStatRegex = /```mermaid-stat\s*([\s\S]*?)\s*```/;
+            const merStatMatch = cleanMarkdown.match(mermaidStatRegex);
+            if(merStatMatch && merStatMatch[1]) {
+                statFlowchart = merStatMatch[1].trim();
+                cleanMarkdown = cleanMarkdown.replace(mermaidStatRegex, '');
+            } else {
+                // If the dynamic prompt returns it wrapped in standard mermaid blocks elsewhere, check for a second one
+                const secondMerMatch = cleanMarkdown.match(mermaidRegex);
+                if (secondMerMatch && secondMerMatch[1]) {
+                    statFlowchart = secondMerMatch[1].trim();
+                    cleanMarkdown = cleanMarkdown.replace(mermaidRegex, '');
+                }
+            }
+
+            // 4. Fallback Sources if none found
             let sources = extractedSources;
             if(sources.length === 0) {
                 sources = [
@@ -838,7 +900,7 @@ Provide a professional, academic, ready-for-submission output.`;
                 ];
             }
 
-            return { markdown: cleanMarkdown, materials, flowchart, sources };
+            return { markdown: cleanMarkdown, materials, flowchart, statFlowchart, sources };
         }
 
         form.addEventListener('submit', async (e) => {
@@ -871,6 +933,7 @@ Provide a professional, academic, ready-for-submission output.`;
                 // Render out structures safely
                 methodologyContent.innerHTML = marked.parse(data.markdown);
                 currentMermaidCode = data.flowchart || `graph TD\nStart[Start Study] --> Design[Formulate Procedure] --> End[Analyze Data]`;
+                currentStatMermaidCode = data.statFlowchart || `graph TD\nData[Prepare Data] --> Assumptions[Verify Parametric Assumptions] --> Test[Run ANOVA / Regression]`;
                 currentMaterials = data.materials;
                 parsedReferences = data.sources;
 
@@ -882,6 +945,7 @@ Provide a professional, academic, ready-for-submission output.`;
                 // Enable tabs view controls
                 tabMaterials.classList.remove('hidden');
                 tabFlowchart.classList.remove('hidden');
+                tabStatFlowchart.classList.remove('hidden');
                 tabSources.classList.remove('hidden');
                 editToggleBtn.classList.remove('hidden');
                 downloadBtn.classList.remove('hidden');
@@ -892,7 +956,7 @@ Provide a professional, academic, ready-for-submission output.`;
                 contentState.classList.remove('hidden');
                 
                 // Sync History lists
-                saveToHistory(domain, objective, iv, dv, cv, data.markdown, currentMermaidCode, currentMaterials, parsedReferences);
+                saveToHistory(domain, objective, iv, dv, cv, data.markdown, currentMermaidCode, currentStatMermaidCode, currentMaterials, parsedReferences);
 
                 switchTab(tabMethodology, methodologyContent);
                 showToast("Methodology designed and unified across all databases!", "success");
@@ -973,7 +1037,11 @@ Provide a professional, academic, ready-for-submission output.`;
 
         // Real-time Flowchart Mermaid Theme customizer
         flowchartTheme.addEventListener('change', () => {
-            renderFlowchart();
+            if (!flowchartContent.classList.contains('hidden')) {
+                renderFlowchart();
+            } else if (!statFlowchartContent.classList.contains('hidden')) {
+                renderStatFlowchart();
+            }
         });
 
         function renderFlowchart() {
@@ -1000,6 +1068,33 @@ Provide a professional, academic, ready-for-submission output.`;
             } catch(e) {
                 console.error("Mermaid initialization failed dynamically. Cleaning up chart views.");
                 display.innerHTML = `<div class="text-xs text-rose-600 text-center py-4 bg-rose-50 rounded-xl border border-rose-100">Flowchart format syntax mismatch: Please refine procedure logic.</div>`;
+            }
+        }
+
+        function renderStatFlowchart() {
+            const display = document.getElementById('mermaidStatDisplay');
+            display.innerHTML = "";
+
+            const themeOption = flowchartTheme.value;
+            let themeConfig = "";
+
+            if(themeOption === 'blue') {
+                themeConfig = "%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#eff6ff', 'primaryTextColor': '#1e3a8a', 'primaryBorderColor': '#bfdbfe', 'lineColor': '#2563eb' }}}%%\n";
+            } else if (themeOption === 'teal') {
+                themeConfig = "%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#f0fdfa', 'primaryTextColor': '#115e59', 'primaryBorderColor': '#99f6e4', 'lineColor': '#0d9488' }}}%%\n";
+            } else if (themeOption === 'slate') {
+                themeConfig = "%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#f8fafc', 'primaryTextColor': '#1e293b', 'primaryBorderColor': '#cbd5e1', 'lineColor': '#475569' }}}%%\n";
+            } else if (themeOption === 'emerald') {
+                themeConfig = "%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#f0fdf4', 'primaryTextColor': '#166534', 'primaryBorderColor': '#bbf7d0', 'lineColor': '#16a34a' }}}%%\n";
+            }
+
+            const chartCode = themeConfig + currentStatMermaidCode;
+            display.innerHTML = `<div class="mermaid">${chartCode}</div>`;
+            try {
+                mermaid.init(undefined, display.querySelectorAll('.mermaid'));
+            } catch(e) {
+                console.error("Mermaid initialization failed dynamically. Cleaning up statistical chart views.");
+                display.innerHTML = `<div class="text-xs text-rose-600 text-center py-4 bg-rose-50 rounded-xl border border-rose-100">Statistical flowchart format syntax mismatch: Please refine variables parameters.</div>`;
             }
         }
 
@@ -1101,9 +1196,9 @@ Provide a professional, academic, ready-for-submission output.`;
             });
 
             // Split branch lines C -> D and C -> E
-            // Left branch (from C center-bottom to D top-center): x: 2.5, y: 4.6, w: 1.75, h: 0.3. Pointing bottom-left requires flipH
+            // Left branch (from C center-bottom to D top-center): Pointing bottom-left requires flipH
             s.addShape("line", { x: 2.5, y: 4.6, w: 1.75, h: 0.3, flipH: true, line: { color: "94A3B8", width: 2, endArrowType: "triangle" } });
-            // Right branch (from C center-bottom to E top-center): x: 4.25, y: 4.6, w: 1.75, h: 0.3. Pointing bottom-right
+            // Right branch (from C center-bottom to E top-center): Pointing bottom-right
             s.addShape("line", { x: 4.25, y: 4.6, w: 1.75, h: 0.3, line: { color: "94A3B8", width: 2, endArrowType: "triangle" } });
 
             // Node D (Active Path - Left)
@@ -1174,70 +1269,173 @@ Provide a professional, academic, ready-for-submission output.`;
 
         downloadBtn.addEventListener('click', () => {
             const rawHtml = methodologyContent.innerHTML;
+            const dateStr = new Date().toISOString().split('.')[0] + 'Z';
             
-            // Re-map inline document styling headers for safe MS Word import compatibility
-            const docContent = `
-                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-                <head>
-                    <meta charset="utf-8">
-                    <title>Extensive Scientific Methodology Design</title>
-                    <style>
-                        body { 
-                            font-family: "Times New Roman", Times, serif; 
-                            line-height: 1.8; 
-                            color: #111111; 
-                            margin: 1.0in; 
-                        }
-                        h1 { 
-                            font-size: 18pt; 
-                            font-weight: bold;
-                            color: #0c4a6e; 
-                            border-bottom: 2px solid #e2e8f0; 
-                            padding-bottom: 5px; 
-                            margin-top: 24pt;
-                            margin-bottom: 12pt;
-                        }
-                        h2 { 
-                            font-size: 14pt; 
-                            font-weight: bold;
-                            color: #075985; 
-                            margin-top: 18pt; 
-                            margin-bottom: 8pt;
-                        }
-                        h3 { 
-                            font-size: 12pt; 
-                            font-weight: bold;
-                            color: #0f172a; 
-                            margin-top: 14pt;
-                            margin-bottom: 6pt;
-                        }
-                        p { 
-                            margin-bottom: 12pt; 
-                            text-align: justify; 
-                            text-indent: 0.5in;
-                        }
-                        ul, ol { 
-                            margin-bottom: 12pt; 
-                            padding-left: 24pt; 
-                        }
-                        li { 
-                            margin-bottom: 6pt; 
-                            text-align: justify;
-                        }
-                        blockquote {
-                            margin: 12pt 24pt;
-                            padding-left: 12pt;
-                            border-left: 3px solid #0284c7;
-                            color: #444444;
-                            font-style: italic;
-                        }
-                    </style>
-                </head>
-                <body>
-                    ${rawHtml}
-                </body>
-                </html>
-            `;
+            const docContent = `<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"
+xmlns:m="http://schemas.microsoft.com/office/2004/12/omml"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=unicode">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 15">
+<meta name=Originator content="Microsoft Word 15">
+<title>Research Methodology</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>ATIF AMIN BAIG</o:Author>
+  <o:Template>Normal</o:Template>
+  <o:LastAuthor>ATIF AMIN BAIG</o:LastAuthor>
+  <o:Revision>2</o:Revision>
+  <o:TotalTime>0</o:TotalTime>
+  <o:Created>${dateStr}</o:Created>
+  <o:LastSaved>${dateStr}</o:LastSaved>
+  <o:Pages>9</o:Pages>
+  <o:Version>16.00</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]-->
+<!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:View>Print</w:View>
+  <w:TrackMoves>false</w:TrackMoves>
+  <w:TrackFormatting/>
+  <w:ValidateAgainstSchemas/>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:DoNotPromoteQF/>
+  <w:LidThemeOther>EN-GB</w:LidThemeOther>
+  <w:LidThemeAsian>X-NONE</w:LidThemeAsian>
+  <w:LidThemeComplexScript>X-NONE</w:LidThemeComplexScript>
+  <w:Compatibility>
+   <w:BreakWrappedTables/>
+   <w:SplitPgBreakAndParaMark/>
+  </w:Compatibility>
+  <m:mathPr>
+   <m:mathFont m:val="Cambria Math"/>
+   <m:brkBin m:val="before"/>
+   <m:brkBinSub m:val="&#45;-"/>
+   <m:smallFrac m:val="off"/>
+   <m:dispDef/>
+   <m:lMargin m:val="0"/>
+   <m:rMargin m:val="0"/>
+   <m:defJc m:val="centerGroup"/>
+   <m:wrapIndent m:val="1440"/>
+   <m:intLim m:val="subSup"/>
+   <m:naryLim m:val="undOvr"/>
+  </m:mathPr></w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;
+	mso-font-charset:2;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:0 268435456 0 0 -2147483648 0;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:roman;
+	mso-font-pitch:variable;
+	mso-font-signature:-536869121 1107305727 33554432 0 415 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-style-parent:"";
+	margin:0cm;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;
+	mso-fareast-font-family:"Times New Roman";}
+h1, h2
+	{mso-style-priority:9;
+	mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-margin-top-alt:auto;
+	margin-right:0cm;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	mso-outline-level:2;
+	font-size:18.0pt;
+	font-family:"Times New Roman",serif;
+	mso-fareast-font-family:"Times New Roman";
+	font-weight:bold;
+	color:#0F4761;}
+h3
+	{mso-style-priority:9;
+	mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-margin-top-alt:auto;
+	margin-right:0cm;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	mso-outline-level:3;
+	font-size:13.5pt;
+	font-family:"Times New Roman",serif;
+	mso-fareast-font-family:"Times New Roman";
+	font-weight:bold;
+	color:#0F4761;}
+p
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-margin-top-alt:auto;
+	margin-right:0cm;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;
+	mso-fareast-font-family:"Times New Roman";
+	text-align:justify;
+	line-height:1.15;}
+ul, ol {
+	margin-top:0cm;
+	margin-bottom:0.3cm;
+	padding-left:1.0cm;
+}
+li {
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;
+	margin-bottom:0.15cm;
+	text-align:justify;
+}
+blockquote {
+	margin:0.5cm 1.0cm;
+	padding-left:0.4cm;
+	border-left:3px solid #0F4761;
+	font-style:italic;
+	font-family:"Times New Roman",serif;
+}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;
+	mso-header-margin:35.4pt;
+	mso-footer-margin:35.4pt;
+	mso-paper-source:0;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+</head>
+
+<body lang=EN-GB style='tab-interval:36.0pt;word-wrap:break-word'>
+
+<div class=WordSection1>
+    ${rawHtml}
+</div>
+
+</body>
+</html>`;
 
             const blob = new Blob(['\ufeff' + docContent], {
                 type: 'application/msword;charset=utf-8'
@@ -1252,9 +1450,9 @@ Provide a professional, academic, ready-for-submission output.`;
             showToast("Microsoft Word document downloaded with full scientific explanations!", "success");
         });
 
-        function saveToHistory(domain, objective, iv, dv, cv, markdown, flowchart, materials, sources) {
+        function saveToHistory(domain, objective, iv, dv, cv, markdown, flowchart, statFlowchart, materials, sources) {
             const saved = JSON.parse(localStorage.getItem('methodology_history') || '[]');
-            const keyPair = { domain, objective, iv, dv, cv, markdown, flowchart, materials, sources, date: new Date().toISOString() };
+            const keyPair = { domain, objective, iv, dv, cv, markdown, flowchart, statFlowchart, materials, sources, date: new Date().toISOString() };
             
             // Limit duplicate occurrences
             const filterHistory = saved.filter(item => item.objective !== objective);
