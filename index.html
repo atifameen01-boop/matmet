@@ -4,454 +4,1043 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Methodology Designer Pro</title>
-    <!-- External Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Marked.js for Markdown rendering -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Mermaid.js for Flowcharts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <!-- PptxGenJS for PowerPoint export -->
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --primary: #0f172a;
-            --primary-hover: #334155;
-            --bg-color: #f8fafc;
-            --panel-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --success-bg: #dcfce7;
-            --success-text: #166534;
-            --success-dot: #22c55e;
-            --inactive-bg: #f1f5f9;
-            --inactive-text: #475569;
-            --inactive-dot: #94a3b8;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            padding: 2rem;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        h1, h2, h3 { margin-bottom: 1rem; }
-
-        /* API Key Panel Styling */
-        .api-key-container {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 24px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .api-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .api-header h3 { margin: 0; font-size: 1.2rem; }
-
-        .api-input-group {
-            display: flex;
-            gap: 12px;
-        }
-
-        .api-input-group input {
-            flex: 1;
-            padding: 10px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 1rem;
-            outline: none;
-        }
-
-        .api-input-group input:focus { border-color: var(--primary); }
-
-        .api-hint { font-size: 0.85rem; color: var(--text-muted); margin-top: 10px; }
-
-        /* Status Badge */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        .status-badge.active { background: var(--success-bg); color: var(--success-text); }
-        .status-badge.inactive { background: var(--inactive-bg); color: var(--inactive-text); }
-        .status-dot { width: 10px; height: 10px; border-radius: 50%; }
-        .status-badge.inactive .status-dot { background: var(--inactive-dot); }
-        .status-badge.active .status-dot {
-            background: var(--success-dot);
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-            70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
-        }
-
-        /* App Layout */
-        .app-container {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-        }
-
-        textarea {
-            width: 100%;
-            height: 120px;
-            padding: 1rem;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            resize: vertical;
-            margin-bottom: 1rem;
-            font-size: 1rem;
-            outline: none;
-        }
-        
-        textarea:focus { border-color: var(--primary); }
-
-        /* Buttons */
-        .btn {
-            padding: 10px 20px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 500;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn:hover { background: var(--primary-hover); }
-        .btn:disabled { background: var(--text-muted); cursor: not-allowed; }
-        
-        .btn-secondary {
-            background: white;
-            color: var(--primary);
-            border: 1px solid var(--primary);
-        }
-        .btn-secondary:hover { background: #f1f5f9; }
-
-        .toolbar {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        #download-toolbar { display: none; margin-left: auto; }
-
-        /* Tabs */
-        .tabs {
-            display: flex;
-            gap: 1rem;
-            border-bottom: 2px solid var(--border-color);
-            margin-bottom: 1.5rem;
-            margin-top: 1rem;
-        }
-        .tab-btn {
-            background: none;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            margin-bottom: -2px;
-        }
-        .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
-        
-        .tab-content { display: none; padding: 1rem 0; }
-        .tab-content.active { display: block; }
-
-        /* Flowchart Canvas */
-        .flowchart-canvas {
-            background-image: radial-gradient(var(--border-color) 1px, transparent 1px);
-            background-size: 20px 20px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 2rem;
-            min-height: 400px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: auto;
+            font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
         }
 
-        .markdown-body { line-height: 1.6; }
-        .markdown-body h2 { margin-top: 1.5rem; padding-bottom: 0.3em; border-bottom: 1px solid var(--border-color); }
-        .markdown-body h3 { margin-top: 1rem; }
-        .markdown-body ul, .markdown-body ol { padding-left: 2rem; margin-bottom: 1rem; }
-        .markdown-body p { margin-bottom: 1rem; }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
 
-        #loading { display: none; color: var(--text-muted); font-style: italic; margin-top: 10px; }
+        /* Markdown Styles */
+        .prose h1, .prose h2, .prose h3 {
+            color: #1e293b;
+            font-weight: 600;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        .prose h1 { font-size: 1.5rem; }
+        .prose h2 { font-size: 1.25rem; }
+        .prose p {
+            margin-bottom: 1em;
+            line-height: 1.6;
+            color: #334155;
+        }
+        .prose ul, .prose ol {
+            margin-bottom: 1em;
+            padding-left: 1.5em;
+            color: #334155;
+        }
+        .prose ul { list-style-type: disc; }
+        .prose ol { list-style-type: decimal; }
+        .prose li { margin-bottom: 0.25em; }
+        .prose strong { color: #0f172a; }
+        
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #3b82f6;
+            width: 24px;
+            height: 24px;
+            -webkit-animation: spin 1s linear infinite; /* Safari */
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
-<body>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
 
-    <!-- API Key Panel -->
-    <div class="api-key-container">
-        <div class="api-header">
-            <h3>Gemini API Configuration</h3>
-            <span id="api-status-badge" class="status-badge inactive">
-                <span class="status-dot"></span>
-                <span id="api-status-text">Disconnected</span>
-            </span>
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-2">
+                    <div class="bg-brand-600 p-2 rounded-lg text-white">
+                        <i class="fa-solid fa-microscope"></i>
+                    </div>
+                    <h1 class="text-xl font-bold text-slate-900 tracking-tight">Methodology Designer <span class="text-brand-600">Pro</span></h1>
+                </div>
+                <div class="text-sm font-medium text-slate-500 flex items-center gap-2">
+                    <i class="fa-solid fa-bolt text-amber-400"></i> Powered by Gemini 2.5 Flash + Web Grounding
+                </div>
+            </div>
         </div>
-        <div class="api-input-group">
-            <input type="password" id="api-key-input" placeholder="Enter API Key (AIzaSy...)" autocomplete="off">
-            <button id="save-key-btn" class="btn">Save Key</button>
-        </div>
-        <p class="api-hint">Your key is stored securely in your browser's local storage. This is required for Vercel deployment.</p>
-    </div>
+    </header>
 
-    <!-- Main App -->
-    <div class="app-container">
-        <h1>Methodology Designer Pro</h1>
-        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Enter your research goal. The AI will generate Materials & Methods, a detailed protocol, and a visual flowchart.</p>
-        
-        <textarea id="prompt-input" placeholder="Describe your experiment (e.g., Testing the effect of varying pH levels on hydroponic lettuce growth)..."></textarea>
-        
-        <div class="toolbar">
-            <button id="generate-btn" class="btn">Generate Research Plan</button>
-            <div id="loading">Generating methodology and processing flowchart... please wait.</div>
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            <div class="toolbar" id="download-toolbar">
-                <button id="download-txt-btn" class="btn btn-secondary">⬇ Download Text (MD)</button>
-                <button id="download-svg-btn" class="btn btn-secondary">⬇ Download Flowchart</button>
+            <!-- Input & History Sidebar (Left) -->
+            <div class="lg:col-span-4 flex flex-col gap-6">
+                
+                <!-- History Container -->
+                <div id="historyContainer" class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 hidden">
+                    <h3 class="text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-clock-rotate-left text-slate-400"></i>
+                        Saved Methodologies
+                    </h3>
+                    <div id="historyList" class="space-y-2 max-h-40 overflow-y-auto pr-1">
+                        <!-- History items injected here -->
+                    </div>
+                </div>
+
+                <!-- Parameters Box -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                    <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-slate-400"></i>
+                        Research Parameters
+                    </h2>
+                    
+                    <form id="methodologyForm" class="space-y-4">
+                        <div>
+                            <label for="domain" class="block text-sm font-medium text-slate-700 mb-1">Research Field / Domain</label>
+                            <input type="text" id="domain" placeholder="e.g., Clinical Psychology, Materials Science..." class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all" required>
+                        </div>
+                        
+                        <div>
+                            <label for="objective" class="block text-sm font-medium text-slate-700 mb-1">Specific Objectives (Add all objectives if more than 1)</label>
+                            <textarea id="objective" rows="3" placeholder="What exactly are you trying to achieve or prove?" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all resize-none" required></textarea>
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-100">
+                            <h3 class="text-sm font-semibold text-slate-600 mb-3 uppercase tracking-wider">Variables</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <label for="iv" class="block text-sm font-medium text-slate-700 mb-1">Independent Variable(s) (IV)</label>
+                                    <input type="text" id="iv" placeholder="What you manipulate or observe" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all" required>
+                                </div>
+                                
+                                <div>
+                                    <label for="dv" class="block text-sm font-medium text-slate-700 mb-1">Dependent Variable(s) (DV)</label>
+                                    <input type="text" id="dv" placeholder="What you measure" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all" required>
+                                </div>
+                                
+                                <div>
+                                    <label for="cv" class="block text-sm font-medium text-slate-700 mb-1">Control Variables (Optional)</label>
+                                    <input type="text" id="cv" placeholder="What must be kept constant" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-slate-100 space-y-4">
+                            <div>
+                                <label for="dbFocus" class="block text-sm font-semibold text-slate-600 mb-1.5 uppercase tracking-wider">Verification Focus</label>
+                                <select id="dbFocus" class="w-full px-4 py-2 border border-slate-300 bg-white rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all">
+                                    <option value="all">PubMed & ScienceDirect (Recommended)</option>
+                                    <option value="pubmed">PubMed Focus Only (Clinical/Medical)</option>
+                                    <option value="sciencedirect">ScienceDirect Focus Only (STEM/Hard Sciences)</option>
+                                    <option value="general">Consensus & Academic Open-Web</option>
+                                </select>
+                            </div>
+
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-slate-700">Include Ethical / IRB Protocol</span>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="irbToggle" class="sr-only peer" checked>
+                                    <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-600"></div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="generateBtn" class="w-full mt-6 bg-brand-600 hover:bg-brand-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            Design & Verify Method
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Alert Box -->
+                <div id="errorBox" class="hidden bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fa-solid fa-circle-exclamation text-red-500"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-red-700" id="errorMessage"></p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="tabs">
-            <button class="tab-btn active" data-target="text-tab">Materials, Methods & Protocol</button>
-            <button class="tab-btn" data-target="flowchart-tab">Experimental Flowchart</button>
-        </div>
+            <!-- Output Section (Right) -->
+            <div class="lg:col-span-8 flex flex-col">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 flex-grow flex flex-col min-h-[600px] overflow-hidden">
+                    
+                    <!-- Tabs -->
+                    <div class="border-b border-slate-200 bg-slate-50 flex items-center justify-between pr-4 flex-wrap">
+                        <div class="flex overflow-x-auto">
+                            <button class="px-6 py-3 text-sm font-medium text-brand-600 border-b-2 border-brand-600 bg-white whitespace-nowrap" id="tabMethodology">
+                                <i class="fa-solid fa-file-lines mr-2"></i> Designed Methodology
+                            </button>
+                            <button class="px-6 py-3 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap" id="tabMaterials" style="display: none;">
+                                <i class="fa-solid fa-screwdriver-wrench mr-2"></i> Materials & Tools
+                            </button>
+                            <button class="px-6 py-3 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap" id="tabFlowchart" style="display: none;">
+                                <i class="fa-solid fa-project-diagram mr-2"></i> Experimental Flowchart
+                            </button>
+                            <button class="px-6 py-3 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap" id="tabSources" style="display: none;">
+                                <i class="fa-solid fa-magnifying-glass-chart mr-2"></i> Verification Sources
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-2 py-2">
+                            <!-- Theme Selection Dropdown (Only shown when Flowchart is visible) -->
+                            <select id="flowchartTheme" class="hidden text-xs bg-white border border-slate-200 rounded px-2 py-1.5 font-medium text-slate-600 focus:outline-none">
+                                <option value="blue">Blue Palette</option>
+                                <option value="teal">Teal Palette</option>
+                                <option value="slate">Slate Palette</option>
+                                <option value="emerald">Emerald Palette</option>
+                            </select>
+                            <button id="downloadPptxBtn" class="hidden text-sm font-medium text-slate-600 hover:text-orange-600 transition-colors flex items-center gap-2 bg-white border border-slate-200 px-3 py-1.5 rounded-md shadow-sm hover:shadow">
+                                <i class="fa-solid fa-file-powerpoint text-orange-600"></i> Download PPTX
+                            </button>
+                            <button id="downloadBtn" class="hidden text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors flex items-center gap-2 bg-white border border-slate-200 px-3 py-1.5 rounded-md shadow-sm hover:shadow">
+                                <i class="fa-solid fa-file-word text-blue-600"></i> Download Word
+                            </button>
+                        </div>
+                    </div>
 
-        <!-- Output Tabs -->
-        <div id="text-tab" class="tab-content active markdown-body">
-            <p style="color: var(--text-muted);">Your detailed methodology will appear here.</p>
-        </div>
+                    <!-- Output Content Area -->
+                    <div class="p-6 flex-grow overflow-y-auto relative bg-white" id="outputArea">
+                        
+                        <!-- Empty State -->
+                        <div id="emptyState" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400">
+                            <i class="fa-solid fa-flask text-6xl mb-4 opacity-50"></i>
+                            <h3 class="text-lg font-medium text-slate-600">No Methodology Designed Yet</h3>
+                            <p class="text-sm text-center max-w-sm mt-2">Fill in your research objectives and variables on the left, and click generate to design and literature-verify your methodology.</p>
+                        </div>
 
-        <div id="flowchart-tab" class="tab-content">
-            <div class="flowchart-canvas" id="mermaid-container">
-                <p style="color: var(--text-muted);">Your flowchart will appear here.</p>
+                        <!-- Loading State -->
+                        <div id="loadingState" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-white/90 z-10">
+                            <div class="loader mb-4"></div>
+                            <h3 class="text-lg font-medium text-slate-800">Designing Methodology...</h3>
+                            <p class="text-sm text-slate-500 mt-2 text-center max-w-sm">Synthesizing research design and querying targeted academic sources to verify standard practices...</p>
+                        </div>
+
+                        <!-- Content State -->
+                        <div id="contentState" class="hidden h-full">
+                            <div id="methodologyContent" class="prose max-w-none">
+                                <!-- Markdown content injected here -->
+                            </div>
+                            
+                            <div id="materialsContent" class="hidden">
+                                <h3 class="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                                    <i class="fa-solid fa-screwdriver-wrench text-brand-500"></i> Required Materials, Equipment & Software
+                                </h3>
+                                <p class="text-sm text-slate-500 mb-6">Use this interactive inventory list to review and track preparation status for your study's materials, tools, or reagents.</p>
+                                <div id="materialsList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <!-- Dynamic checklist items injected here -->
+                                </div>
+                            </div>
+                            
+                            <div id="flowchartContent" class="hidden h-full flex flex-col items-center">
+                                <div id="mermaidDisplay" class="w-full overflow-x-auto bg-white p-6 rounded-lg border border-slate-100">
+                                    <!-- Mermaid diagram injected here -->
+                                </div>
+                            </div>
+
+                            <div id="sourcesContent" class="hidden">
+                                <h3 class="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
+                                    <i class="fa-solid fa-bookmark text-brand-500"></i> Grounding Sources & Verification
+                                </h3>
+                                <ul id="sourcesList" class="space-y-3">
+                                    <!-- Sources injected here -->
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
+
         </div>
-    </div>
+    </main>
 
     <script>
-        let rawMarkdownContent = ""; // For downloading later
+        // System variables
+        const apiKey = ""; // API key is injected by the environment
+        const modelName = "gemini-2.5-flash-preview-09-2025";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- API KEY LOGIC ---
-            const apiKeyInput = document.getElementById('api-key-input');
-            const saveKeyBtn = document.getElementById('save-key-btn');
-            
-            const savedKey = localStorage.getItem('GEMINI_API_KEY');
-            if (savedKey) {
-                apiKeyInput.value = savedKey;
-                updateApiStatus(true);
-            }
-
-            saveKeyBtn.addEventListener('click', () => {
-                const key = apiKeyInput.value.trim();
-                if (key) {
-                    localStorage.setItem('GEMINI_API_KEY', key);
-                    updateApiStatus(true);
-                } else {
-                    localStorage.removeItem('GEMINI_API_KEY');
-                    updateApiStatus(false);
-                }
-            });
-
-            function updateApiStatus(isActive) {
-                const badge = document.getElementById('api-status-badge');
-                const text = document.getElementById('api-status-text');
-                if (isActive) {
-                    badge.classList.replace('inactive', 'active');
-                    text.textContent = 'API KEY Active';
-                } else {
-                    badge.classList.replace('active', 'inactive');
-                    text.textContent = 'Disconnected';
-                }
-            }
-
-            // --- MERMAID INIT ---
-            mermaid.initialize({
-                startOnLoad: false,
-                theme: 'base',
-                themeVariables: {
-                    primaryColor: '#ffffff',
-                    primaryBorderColor: '#0f172a',
-                    lineColor: '#475569',
-                    fontFamily: 'sans-serif'
-                },
-                flowchart: { curve: 'basis' }
-            });
-
-            // --- TAB LOGIC ---
-            const tabBtns = document.querySelectorAll('.tab-btn');
-            const tabContents = document.querySelectorAll('.tab-content');
-
-            tabBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    tabBtns.forEach(b => b.classList.remove('active'));
-                    tabContents.forEach(c => c.classList.remove('active'));
-                    btn.classList.add('active');
-                    document.getElementById(btn.dataset.target).classList.add('active');
-                });
-            });
-        });
-
-        // --- GENERATION LOGIC ---
-        const generateBtn = document.getElementById('generate-btn');
+        // DOM Elements
+        const form = document.getElementById('methodologyForm');
+        const generateBtn = document.getElementById('generateBtn');
+        const emptyState = document.getElementById('emptyState');
+        const loadingState = document.getElementById('loadingState');
+        const contentState = document.getElementById('contentState');
+        const methodologyContent = document.getElementById('methodologyContent');
+        const sourcesContent = document.getElementById('sourcesContent');
+        const sourcesList = document.getElementById('sourcesList');
+        const errorBox = document.getElementById('errorBox');
+        const errorMessage = document.getElementById('errorMessage');
         
-        generateBtn.addEventListener('click', async () => {
-            const apiKey = localStorage.getItem('GEMINI_API_KEY');
-            const prompt = document.getElementById('prompt-input').value.trim();
+        const tabMethodology = document.getElementById('tabMethodology');
+        const tabMaterials = document.getElementById('tabMaterials');
+        const tabFlowchart = document.getElementById('tabFlowchart');
+        const tabSources = document.getElementById('tabSources');
+        const flowchartContent = document.getElementById('flowchartContent');
+        const materialsContent = document.getElementById('materialsContent');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const downloadPptxBtn = document.getElementById('downloadPptxBtn');
+        
+        const dbFocus = document.getElementById('dbFocus');
+        const irbToggle = document.getElementById('irbToggle');
+        const flowchartTheme = document.getElementById('flowchartTheme');
+        
+        const historyContainer = document.getElementById('historyContainer');
+        const historyList = document.getElementById('historyList');
 
-            if (!apiKey) {
-                alert('Please save your API key in the configuration panel above first!');
+        // Initialize Mermaid
+        mermaid.initialize({ 
+            startOnLoad: false, 
+            theme: 'default',
+            flowchart: { htmlLabels: false } 
+        });
+        let currentMermaidCode = ''; 
+        let currentReferencesHtml = '';
+
+        // Saved History Logic
+        function loadHistory() {
+            const saved = JSON.parse(localStorage.getItem('methodology_history') || '[]');
+            if (saved.length === 0) {
+                historyContainer.classList.add('hidden');
                 return;
             }
-            if (!prompt) {
-                alert('Please enter a research prompt.');
-                return;
+            historyContainer.classList.remove('hidden');
+            historyList.innerHTML = '';
+            
+            saved.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = "flex justify-between items-center bg-slate-50 p-2 rounded border border-slate-200 text-xs";
+                div.innerHTML = `
+                    <button class="text-left font-medium text-slate-700 truncate hover:text-brand-600 flex-grow mr-2" onclick="restoreHistory(${index})">
+                        ${item.domain} (${new Date(item.date).toLocaleDateString()})
+                    </button>
+                    <button class="text-slate-400 hover:text-red-500 p-1" onclick="deleteHistory(${index}, event)">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                `;
+                historyList.appendChild(div);
+            });
+        }
+
+        window.deleteHistory = function(index, e) {
+            e.stopPropagation();
+            let saved = JSON.parse(localStorage.getItem('methodology_history') || '[]');
+            saved.splice(index, 1);
+            localStorage.setItem('methodology_history', JSON.stringify(saved));
+            loadHistory();
+        };
+
+        window.restoreHistory = function(index) {
+            const saved = JSON.parse(localStorage.getItem('methodology_history') || '[]');
+            const data = saved[index];
+            if (!data) return;
+
+            document.getElementById('domain').value = data.domain;
+            document.getElementById('objective').value = data.objective;
+            document.getElementById('iv').value = data.iv;
+            document.getElementById('dv').value = data.dv;
+            document.getElementById('cv').value = data.cv;
+            
+            currentMermaidCode = data.mermaidCode;
+            methodologyContent.innerHTML = data.methodologyHtml;
+            sourcesList.innerHTML = data.sourcesHtml;
+            
+            emptyState.classList.add('hidden');
+            contentState.classList.remove('hidden');
+            downloadBtn.classList.remove('hidden');
+            
+            if (data.materialsRaw) {
+                tabMaterials.style.display = 'block';
+                renderMaterialsList(data.materialsRaw);
+            } else {
+                tabMaterials.style.display = 'none';
             }
 
-            const loading = document.getElementById('loading');
-            const textTab = document.getElementById('text-tab');
-            const mermaidContainer = document.getElementById('mermaid-container');
-            const downloadToolbar = document.getElementById('download-toolbar');
+            if (currentMermaidCode) {
+                tabFlowchart.style.display = 'block';
+                downloadPptxBtn.classList.remove('hidden');
+                document.getElementById('mermaidDisplay').removeAttribute('data-rendered');
+            } else {
+                tabFlowchart.style.display = 'none';
+                downloadPptxBtn.classList.add('hidden');
+            }
+            
+            if (data.sourcesHtml) {
+                tabSources.style.display = 'block';
+            } else {
+                tabSources.style.display = 'none';
+            }
+            
+            switchTab(tabMethodology, methodologyContent);
+        };
 
+        function saveToHistory(domain, objective, iv, dv, cv, methodologyHtml, mermaidCode, sourcesHtml, materialsRaw) {
+            const saved = JSON.parse(localStorage.getItem('methodology_history') || '[]');
+            // Avoid duplicate domain + objective
+            const exists = saved.find(item => item.domain === domain && item.objective === objective);
+            if (!exists) {
+                saved.unshift({
+                    domain, objective, iv, dv, cv,
+                    methodologyHtml, mermaidCode, sourcesHtml, materialsRaw,
+                    date: new Date().toISOString()
+                });
+                // Limit to 5 items
+                if (saved.length > 5) saved.pop();
+                localStorage.setItem('methodology_history', JSON.stringify(saved));
+                loadHistory();
+            }
+        }
+
+        // Initialize history on load
+        loadHistory();
+
+        // Tab Switching Logic
+        function switchTab(activeTabBtn, activeContentDiv) {
+            [tabMethodology, tabMaterials, tabFlowchart, tabSources].forEach(tab => {
+                if(tab) tab.className = "px-6 py-3 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors whitespace-nowrap";
+            });
+            activeTabBtn.className = "px-6 py-3 text-sm font-medium text-brand-600 border-b-2 border-brand-600 bg-white whitespace-nowrap";
+
+            methodologyContent.classList.add('hidden');
+            materialsContent.classList.add('hidden');
+            flowchartContent.classList.add('hidden');
+            sourcesContent.classList.add('hidden');
+            flowchartTheme.classList.add('hidden');
+
+            activeContentDiv.classList.remove('hidden');
+
+            if (activeContentDiv === flowchartContent) {
+                flowchartTheme.classList.remove('hidden');
+                if (currentMermaidCode) {
+                    const displayArea = document.getElementById('mermaidDisplay');
+                    if (!displayArea.hasAttribute('data-rendered')) {
+                        displayArea.innerHTML = `<div class="mermaid">${currentMermaidCode}</div>`;
+                        setTimeout(() => {
+                            mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+                        }, 50);
+                        displayArea.setAttribute('data-rendered', 'true');
+                    }
+                }
+            }
+        }
+
+        tabMethodology.addEventListener('click', () => switchTab(tabMethodology, methodologyContent));
+        tabMaterials.addEventListener('click', () => switchTab(tabMaterials, materialsContent));
+        tabFlowchart.addEventListener('click', () => switchTab(tabFlowchart, flowchartContent));
+        tabSources.addEventListener('click', () => switchTab(tabSources, sourcesContent));
+
+        // Helper: Exponential Backoff Fetch
+        async function fetchWithRetry(url, options, maxRetries = 5) {
+            const delays = [1000, 2000, 4000, 8000, 16000];
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) {
+                        const errText = await response.text();
+                        throw new Error(`HTTP error! status: ${response.status}, message: ${errText}`);
+                    }
+                    return await response.json();
+                } catch (error) {
+                    if (i === maxRetries - 1) throw error;
+                    await new Promise(resolve => setTimeout(resolve, delays[i]));
+                }
+            }
+        }
+
+        // Main Generation Logic
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const domain = document.getElementById('domain').value.trim();
+            const objective = document.getElementById('objective').value.trim();
+            const iv = document.getElementById('iv').value.trim();
+            const dv = document.getElementById('dv').value.trim();
+            const cv = document.getElementById('cv').value.trim() || 'None specified';
+            const searchFocus = dbFocus.value;
+            const includeIRB = irbToggle.checked;
+
+            errorBox.classList.add('hidden');
+            emptyState.classList.add('hidden');
+            contentState.classList.add('hidden');
+            loadingState.classList.remove('hidden');
+            downloadBtn.classList.add('hidden');
+            downloadPptxBtn.classList.add('hidden');
             generateBtn.disabled = true;
-            loading.style.display = 'block';
-            downloadToolbar.style.display = 'none';
-            textTab.innerHTML = '';
-            mermaidContainer.innerHTML = '';
+            generateBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating...';
+            tabSources.style.display = 'none'; 
+            tabMaterials.style.display = 'none'; 
+            tabFlowchart.style.display = 'none'; 
+            document.getElementById('mermaidDisplay').removeAttribute('data-rendered'); 
+            currentMermaidCode = ''; 
+            switchTab(tabMethodology, methodologyContent); 
 
-            const systemPrompt = `You are an expert research methodologist. 
-            Based on the user's research goal, you must provide exactly two things:
-            1. A highly detailed text section formatted in Markdown. This text MUST include a specific section titled "## Materials and Methods" and a section for the step-by-step protocol.
-            2. A Mermaid.js flowchart mapping out the experimental procedure.
-            You MUST enclose the Mermaid code strictly inside a markdown code block labeled \`\`\`mermaid. Use 'flowchart TD'.`;
+            // Handle Search Grounding Directions
+            let restriction = "established academic consensus";
+            if (searchFocus === "pubmed") restriction = "the PubMed database focusing strictly on biomedical, medical, and clinical standards";
+            if (searchFocus === "sciencedirect") restriction = "ScienceDirect peer-reviewed articles focusing on rigorous technical, engineering, and STEM designs";
+            if (searchFocus === "general") restriction = "open literature research databases, peer reviews, and meta-analyses";
+
+            // Prompt Construction
+            const promptText = `
+                I need to design a rigorous scientific methodology for a study.
+                
+                Research Domain: ${domain}
+                Specific Objective(s): ${objective}
+                Independent Variable(s): ${iv}
+                Dependent Variable(s): ${dv}
+                Control Variable(s): ${cv}
+
+                Please design a comprehensive methodology. Your response must include:
+                1. **Research Design:** (e.g., Experimental, Quasi-experimental, Observational) and justify why it fits the variables.
+                2. **Sampling & Participants/Materials:** How to select the sample to ensure validity.
+                3. **Data Collection Procedure:** Step-by-step how the IV will be manipulated/observed and how the DV will be measured.
+                4. **Data Analysis Plan:** Specific statistical tests or analysis frameworks to evaluate the relationship between IV and DV.
+                5. **Validity & Reliability:** How to address potential confounds (incorporating the Control Variables).
+                ${includeIRB ? '6. **Ethical Considerations & IRB Protocol:** Step-by-step measures for participant safety, consent, and risk minimization.' : ''}
+                7. **References:** Provide a formal references section at the end.
+
+                CRITICAL INSTRUCTION: Include inline citations (e.g., [Author, Year]) throughout the text for every methodological choice.
+                
+                At the end of your text response, also provide a block strictly enclosed in \`\`\`materials and \`\`\` containing a detailed, itemized list of all required materials, equipment, chemicals, software, or tools with short explanations of their purpose. Format each item as a markdown list item, for example:
+                - Material/Tool Name: Purpose/Specification
+                
+                At the very end of your response, provide a Mermaid.js flowchart diagram representing the step-by-step experimental procedure. Enclose the Mermaid code strictly within \`\`\`mermaid and \`\`\` tags. Use top-down (TD) direction. Ensure clean formatting of nodes.
+
+                Provide a professional, academic response. Format using Markdown with clear headings.
+            `;
+
+            const payload = {
+                contents: [{ parts: [{ text: promptText }] }],
+                tools: [{ google_search: {} }], 
+                systemInstruction: { 
+                    parts: [{ 
+                        text: `You are an expert research methodologist and peer-reviewer. 
+                        Your primary task is to design highly robust, logically sound research methodologies based on user-provided variables.
+                        CRITICAL INSTRUCTION: You MUST use the google_search tool to verify your proposed methods against ${restriction}. 
+                        In your response, you MUST include inline citations (e.g., [Author, Year]) and append a References list. Ensure the methodology aligns with standard practices found in the literature.` 
+                    }] 
+                }
+            };
 
             try {
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-                
-                const response = await fetch(url, {
+                const result = await fetchWithRetry(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        system_instruction: { parts: [{ text: systemPrompt }] },
-                        contents: [{ parts: [{ text: prompt }] }],
-                        tools: [{ googleSearch: {} }] // Proper format for ground search
-                    })
+                    body: JSON.stringify(payload)
                 });
 
-                if (!response.ok) throw new Error(`API Request Failed (${response.status})`);
+                const candidate = result.candidates?.[0];
+                if (!candidate) throw new Error("No response generated from the model.");
 
-                const data = await response.json();
-                const textResponse = data.candidates[0].content.parts[0].text;
-                
-                // Extract Mermaid Flowchart
-                const mermaidRegex = /```mermaid\s+([\s\S]*?)```/;
-                const match = textResponse.match(mermaidRegex);
-                
-                let mermaidCode = null;
-                rawMarkdownContent = textResponse; // Store for download
+                let generatedText = candidate.content?.parts?.[0]?.text;
+                const groundingMetadata = candidate.groundingMetadata?.groundingAttributions;
 
-                if (match) {
-                    mermaidCode = match[1].trim();
-                    // Remove mermaid block from markdown text so it doesn't show as raw text
-                    let markdownOnly = textResponse.replace(mermaidRegex, '');
-                    textTab.innerHTML = marked.parse(markdownOnly);
-                } else {
-                    textTab.innerHTML = marked.parse(textResponse);
+                // Extract Mermaid Code 
+                const mermaidMatch = generatedText.match(/```mermaid\s*\n([\s\S]*?)```/i);
+                if (mermaidMatch) {
+                    currentMermaidCode = mermaidMatch[1].trim();
+                    generatedText = generatedText.replace(/```mermaid\s*\n[\s\S]*?```/i, ''); 
+                    tabFlowchart.style.display = 'block'; 
                 }
 
-                // Render Flowchart
-                if (mermaidCode) {
-                    try {
-                        const { svg } = await mermaid.render('mermaid-graph-svg', mermaidCode);
-                        mermaidContainer.innerHTML = svg;
+                // Extract Materials Code
+                const materialsMatch = generatedText.match(/```materials\s*\n([\s\S]*?)```/i);
+                let materialsRaw = '';
+                if (materialsMatch) {
+                    materialsRaw = materialsMatch[1].trim();
+                    generatedText = generatedText.replace(/```materials\s*\n[\s\S]*?```/i, ''); 
+                    tabMaterials.style.display = 'block';
+                    renderMaterialsList(materialsRaw);
+                }
+
+                // Render Markdown
+                methodologyContent.innerHTML = marked.parse(generatedText);
+
+                // Handle Sources (Grounding)
+                sourcesList.innerHTML = '';
+                if (groundingMetadata && groundingMetadata.length > 0) {
+                    const uniqueSources = new Set();
+                    groundingMetadata.forEach(attribution => {
+                        const uri = attribution.web?.uri;
+                        const title = attribution.web?.title;
                         
-                        // Add ID to SVG for easy downloading
-                        const svgElement = mermaidContainer.querySelector('svg');
-                        if(svgElement) svgElement.id = 'generated-svg-element';
-                        
-                    } catch (error) {
-                        mermaidContainer.innerHTML = `<p style="color:red">Flowchart syntax error.</p><pre>${mermaidCode}</pre>`;
+                        if (uri && title && !uniqueSources.has(uri)) {
+                            uniqueSources.add(uri);
+                            const li = document.createElement('li');
+                            li.className = "flex items-start gap-3 p-3 rounded-lg border border-slate-100 bg-slate-50 hover:bg-slate-100 transition-colors";
+                            li.innerHTML = `
+                                <i class="fa-solid fa-link text-slate-400 mt-1"></i>
+                                <div>
+                                    <a href="${uri}" target="_blank" class="text-brand-600 hover:text-brand-800 font-medium text-sm leading-tight inline-block mb-1">${title}</a>
+                                    <p class="text-xs text-slate-500 truncate max-w-[400px] lg:max-w-[600px]">${uri}</p>
+                                </div>
+                            `;
+                            sourcesList.appendChild(li);
+                        }
+                    });
+
+                    if (uniqueSources.size > 0) {
+                        tabSources.style.display = 'block';
+                        sourcesContent.classList.remove('hidden');
                     }
-                } else {
-                    mermaidContainer.innerHTML = `<p>No flowchart generated.</p>`;
                 }
 
-                // Show Downloads
-                downloadToolbar.style.display = 'flex';
+                // Show content
+                loadingState.classList.add('hidden');
+                contentState.classList.remove('hidden');
+                downloadBtn.classList.remove('hidden');
+                if (currentMermaidCode) {
+                    downloadPptxBtn.classList.remove('hidden');
+                }
+
+                // Save to History
+                saveToHistory(domain, objective, iv, dv, cv, methodologyContent.innerHTML, currentMermaidCode, sourcesList.innerHTML, materialsRaw);
 
             } catch (error) {
-                alert(`Error: ${error.message}`);
-                textTab.innerHTML = `<p style="color:red">Failed to generate methodology.</p>`;
+                console.error("Error generating method:", error);
+                loadingState.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                showError("Failed to generate methodology. Details: " + error.message);
             } finally {
                 generateBtn.disabled = false;
-                loading.style.display = 'none';
+                generateBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Design & Verify Method';
             }
         });
 
-        // --- DOWNLOAD LOGIC ---
-        document.getElementById('download-txt-btn').addEventListener('click', () => {
-            const blob = new Blob([rawMarkdownContent], { type: "text/markdown" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = "Research_Methodology.md";
-            a.click();
-            URL.revokeObjectURL(url);
-        });
-
-        document.getElementById('download-svg-btn').addEventListener('click', () => {
-            const svgElement = document.getElementById('generated-svg-element');
-            if (!svgElement) {
-                alert('No valid flowchart available to download.');
+        function renderMaterialsList(rawList) {
+            const listContainer = document.getElementById('materialsList');
+            listContainer.innerHTML = '';
+            
+            const lines = rawList.split('\n').map(l => l.trim()).filter(l => l);
+            if (lines.length === 0) {
+                listContainer.innerHTML = '<p class="text-sm text-slate-500 italic">No specific tools or materials listed.</p>';
                 return;
             }
+
+            lines.forEach((line, idx) => {
+                // Strip markdown list characters (e.g., "- ", "* ", "1. ", etc.)
+                let cleanedLine = line.replace(/^[-*+]\s*|^[0-9]+[\.\)]\s*/, '').trim();
+                
+                // Try to split on ":" to separate tool and description
+                let title = cleanedLine;
+                let description = "";
+                const colonIdx = cleanedLine.indexOf(':');
+                if (colonIdx !== -1) {
+                    title = cleanedLine.substring(0, colonIdx).trim();
+                    description = cleanedLine.substring(colonIdx + 1).trim();
+                }
+
+                const itemDiv = document.createElement('div');
+                itemDiv.className = "flex items-start gap-3 p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 transition-all cursor-pointer shadow-sm";
+                itemDiv.innerHTML = `
+                    <input type="checkbox" id="mat-${idx}" class="mt-1 h-4 w-4 text-brand-600 border-slate-300 rounded focus:ring-brand-500 cursor-pointer">
+                    <label for="mat-${idx}" class="flex-grow text-sm cursor-pointer select-none">
+                        <strong class="text-slate-800 block font-semibold">${title}</strong>
+                        ${description ? `<span class="text-slate-500 text-xs mt-0.5 block">${description}</span>` : ''}
+                    </label>
+                `;
+                
+                // Add event listener to strike through when checked
+                const checkbox = itemDiv.querySelector('input');
+                const label = itemDiv.querySelector('label');
+                checkbox.addEventListener('change', () => {
+                    if (checkbox.checked) {
+                        label.classList.add('line-through', 'opacity-50');
+                    } else {
+                        label.classList.remove('line-through', 'opacity-50');
+                    }
+                });
+
+                listContainer.appendChild(itemDiv);
+            });
+        }
+
+        // Helper function to render mermaid to a base64 png
+        async function getMermaidPngBase64(code, id) {
+            return new Promise((resolve, reject) => {
+                const container = document.createElement('div');
+                container.style.position = 'absolute';
+                container.style.top = '-9999px';
+                document.body.appendChild(container);
+                container.innerHTML = `<div class="mermaid" id="${id}">${code}</div>`;
+                
+                mermaid.init(undefined, container.querySelectorAll('.mermaid'));
+                
+                setTimeout(() => {
+                    const svgElement = container.querySelector('svg');
+                    if (!svgElement) {
+                        document.body.removeChild(container);
+                        return reject(new Error('Failed to render Mermaid SVG'));
+                    }
+                    
+                    const viewBox = svgElement.getAttribute('viewBox');
+                    if (viewBox) {
+                        const vParts = viewBox.split(' ');
+                        if (vParts.length === 4) {
+                            svgElement.setAttribute('width', vParts[2] + 'px');
+                            svgElement.setAttribute('height', vParts[3] + 'px');
+                        }
+                    }
+                    
+                    const svgData = new XMLSerializer().serializeToString(svgElement);
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const img = new Image();
+                    
+                    img.onload = () => {
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.fillStyle = "white";
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0);
+                        const dataUrl = canvas.toDataURL('image/png');
+                        document.body.removeChild(container);
+                        resolve(dataUrl);
+                    };
+                    
+                    img.onerror = () => {
+                        document.body.removeChild(container);
+                        reject(new Error('Failed to load SVG into Image for PNG conversion'));
+                    };
+                    
+                    img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+                }, 500); 
+            });
+        }
+
+        // Download as Word Document Logic
+        downloadBtn.addEventListener('click', async () => {
+            let materialsHtml = "";
+            let flowchartHtml = "";
+
+            // If materials list is present, generate clean HTML representation for Word export
+            const materialsListDiv = document.getElementById('materialsList');
+            if (materialsListDiv && materialsListDiv.children.length > 0) {
+                materialsHtml += `<br><br><h2 style="font-family: sans-serif; color: #1e293b;">Required Materials & Tools</h2><ul>`;
+                Array.from(materialsListDiv.children).forEach(item => {
+                    const label = item.querySelector('label');
+                    if (label) {
+                        const strongText = label.querySelector('strong') ? label.querySelector('strong').innerText : '';
+                        const spanText = label.querySelector('span') ? label.querySelector('span').innerText : '';
+                        materialsHtml += `<li style="font-family: sans-serif; font-size: 11pt; margin-bottom: 6px;"><strong>${strongText}</strong>${spanText ? `: ${spanText}` : ''}</li>`;
+                    }
+                });
+                materialsHtml += `</ul>`;
+            }
+
+            if (currentMermaidCode) {
+                try {
+                    const pngDataUrl = await getMermaidPngBase64(currentMermaidCode, 'exportMermaidId');
+                    
+                    flowchartHtml = `
+                        <br><br>
+                        <h2 style="font-family: sans-serif; color: #1e293b;">Experimental Flowchart</h2>
+                        <img src="${pngDataUrl}" alt="Flowchart Diagram" style="max-width: 100%; height: auto;" />
+                        <br>
+                        <h3 style="font-family: sans-serif; color: #334155;">Flowchart Source Code</h3>
+                        <p style="font-size: 10pt; font-family: sans-serif; color: #64748b;">If you need to heavily modify the structure, you can edit the code below and paste it into any Mermaid editor (e.g., mermaid.live):</p>
+                        <pre style="background-color: #f8fafc; padding: 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-family: monospace; font-size: 10pt;">${currentMermaidCode.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
+                    `;
+                } catch (error) {
+                    console.error("Error generating flowchart for Word export:", error);
+                    flowchartHtml = `
+                        <br><br>
+                        <h2 style="font-family: sans-serif; color: #1e293b;">Experimental Flowchart (Source Code)</h2>
+                        <pre style="background-color: #f8fafc; padding: 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-family: monospace; font-size: 10pt;">${currentMermaidCode.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
+                    `;
+                }
+            }
+
+            const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Research Methodology</title></head><body>";
+            const footer = "</body></html>";
+            const html = header + methodologyContent.innerHTML + materialsHtml + flowchartHtml + footer;
             
-            // Get SVG string and create download
-            const svgData = new XMLSerializer().serializeToString(svgElement);
-            const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+            const blob = new Blob(['\ufeff', html], {
+                type: 'application/msword'
+            });
+            
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = "Experimental_Flowchart.svg";
-            a.click();
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'Research_Methodology.doc'; 
+            document.body.appendChild(link);
+            link.click();
+            
+            document.body.removeChild(link);
             URL.revokeObjectURL(url);
         });
+
+        // Function to Native Parse Mermaid to Editable PPTX Shapes with Theme Colors
+        function buildNativePPTX(slide, pptx, mermaidCode, palette) {
+            const nodes = {};
+            const edges = [];
+            
+            // Clean and split lines
+            const lines = mermaidCode.split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('graph') && !l.startsWith('flowchart'));
+            
+            lines.forEach(line => {
+                line = line.split('%')[0].trim(); 
+                if (!line) return;
+
+                let parts = line.split(/-->/);
+                if (parts.length > 1) {
+                    let fromId = null;
+                    for (let i = 0; i < parts.length; i++) {
+                        let part = parts[i].trim();
+                        part = part.replace(/^\|.*?\|\s*/, ''); 
+                        
+                        let match = part.match(/^([a-zA-Z0-9_]+)(?:\s*(?:\[(.*?)\]|\((.*?)\)|\{(.*?)\}))?/);
+                        if (match) {
+                            let id = match[1];
+                            let label = match[2] || match[3] || match[4] || id;
+                            label = label.replace(/^["']|["']$/g, ''); 
+                            
+                            if (!nodes[id]) {
+                                nodes[id] = { id, label, level: 0 };
+                            } else if (label !== id && nodes[id].label === id) {
+                                nodes[id].label = label;
+                            }
+                            
+                            if (fromId !== null) {
+                                edges.push({ from: fromId, to: id });
+                            }
+                            fromId = id;
+                        }
+                    }
+                } else {
+                    let match = line.match(/^([a-zA-Z0-9_]+)(?:\s*(?:\[(.*?)\]|\((.*?)\)|\{(.*?)\}))?/);
+                    if (match) {
+                        let id = match[1];
+                        let label = match[2] || match[3] || match[4] || id;
+                        label = label.replace(/^["']|["']$/g, '');
+                        if (!nodes[id]) nodes[id] = { id, label, level: 0 };
+                    }
+                }
+            });
+
+            const nodeKeys = Object.keys(nodes);
+            if (nodeKeys.length === 0) return false;
+
+            // Calculate Levels using BFS
+            const inDegree = {};
+            const adj = {};
+            nodeKeys.forEach(id => { inDegree[id] = 0; adj[id] = []; });
+            edges.forEach(e => { 
+                if (inDegree[e.to] !== undefined) {
+                    inDegree[e.to]++; 
+                    adj[e.from].push(e.to);
+                }
+            });
+            
+            let queue = nodeKeys.filter(id => inDegree[id] === 0);
+            if (queue.length === 0) queue = [nodeKeys[0]]; 
+            
+            let levelInfo = [];
+            let visited = new Set(queue);
+            
+            while (queue.length > 0) {
+                levelInfo.push([...queue]);
+                let nextQueue = [];
+                queue.forEach(id => {
+                    adj[id].forEach(to => {
+                        inDegree[to]--;
+                        if (inDegree[to] === 0 && !visited.has(to)) {
+                            visited.add(to);
+                            nextQueue.push(to);
+                        }
+                    });
+                });
+                
+                if (nextQueue.length === 0 && visited.size < nodeKeys.length) {
+                    let unvisited = nodeKeys.find(n => !visited.has(n));
+                    if (unvisited) {
+                        visited.add(unvisited);
+                        nextQueue.push(unvisited);
+                    }
+                }
+                queue = nextQueue;
+            }
+
+            // PPTX Grid Assignment
+            const slideWidth = 10;
+            const startY = 1.3;
+            const levelHeight = 0.9;
+            const boxWidth = 2.4;
+            const boxHeight = 0.5;
+
+            levelInfo.forEach((levelNodes, levelIdx) => {
+                const y = startY + (levelIdx * levelHeight);
+                const gap = slideWidth / (levelNodes.length + 1);
+                
+                levelNodes.forEach((id, nodeIdx) => {
+                    nodes[id].x = gap * (nodeIdx + 1) - (boxWidth / 2);
+                    nodes[id].y = y;
+                });
+            });
+
+            // Draw Lines (Connectors)
+            edges.forEach(e => {
+                const from = nodes[e.from];
+                const to = nodes[e.to];
+                if (from && to) {
+                    let x1 = from.x + (boxWidth / 2);
+                    let y1 = from.y + boxHeight;
+                    let x2 = to.x + (boxWidth / 2);
+                    let y2 = to.y;
+
+                    let x = Math.min(x1, x2);
+                    let y = Math.min(y1, y2);
+                    let w = Math.abs(x2 - x1);
+                    let h = Math.abs(y2 - y1);
+
+                    if (w < 0.01) w = 0.01;
+                    if (h < 0.01) h = 0.01;
+
+                    let flipH = (x1 > x2);
+                    let flipV = (y1 > y2);
+
+                    slide.addShape(pptx.ShapeType.line, {
+                        x: x, 
+                        y: y, 
+                        w: w, 
+                        h: h,
+                        flipH: flipH,
+                        flipV: flipV,
+                        line: { color: palette.line, width: 1.5, endArrowType: "triangle" }
+                    });
+                }
+            });
+
+            // Draw Boxes (Editable Text)
+            Object.values(nodes).forEach(n => {
+                slide.addText(n.label, {
+                    shape: pptx.ShapeType.rect,
+                    x: n.x, 
+                    y: n.y, 
+                    w: boxWidth, 
+                    h: boxHeight,
+                    fill: { color: palette.fill },
+                    line: { color: palette.stroke, width: 1.2 },
+                    color: palette.text, 
+                    fontSize: 11, 
+                    bold: true, 
+                    align: "center", 
+                    valign: "middle"
+                });
+            });
+
+            return true;
+        }
+
+        // Color Palettes for the PPTX Export
+        const themePalettes = {
+            blue: { fill: "EFF6FF", stroke: "3B82F6", text: "1E293B", line: "94A3B8" },
+            teal: { fill: "F0FDFA", stroke: "0D9488", text: "115E59", line: "94A3B8" },
+            slate: { fill: "F8FAFC", stroke: "475569", text: "0F172A", line: "94A3B8" },
+            emerald: { fill: "F0FDF4", stroke: "16A34A", text: "166534", line: "94A3B8" }
+        };
+
+        // Download as PowerPoint (PPTX) Logic
+        downloadPptxBtn.addEventListener('click', async () => {
+            if (!currentMermaidCode) return;
+            
+            try {
+                const originalContent = downloadPptxBtn.innerHTML;
+                downloadPptxBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-orange-600"></i> Exporting...';
+                downloadPptxBtn.disabled = true;
+
+                let pptx = new PptxGenJS();
+                pptx.layout = 'LAYOUT_16x9'; 
+                
+                let slide = pptx.addSlide();
+                slide.addText("Experimental Flowchart", { x: 0.5, y: 0.4, w: "90%", h: 0.5, fontSize: 24, bold: true, color: "1E293B" });
+                
+                // Get selected palette
+                const selectedTheme = flowchartTheme.value || 'blue';
+                const palette = themePalettes[selectedTheme] || themePalettes.blue;
+
+                const nativeSuccess = buildNativePPTX(slide, pptx, currentMermaidCode, palette);
+                
+                if (!nativeSuccess) {
+                    const pngDataUrl = await getMermaidPngBase64(currentMermaidCode, 'exportPptxMermaidId');
+                    slide.addText("Note: Diagram was too complex for native shapes. Rendered as image.", { x: 0.5, y: 0.9, w: "90%", h: 0.3, fontSize: 10, italic: true, color: "EF4444" });
+                    slide.addImage({ 
+                        data: pngDataUrl, 
+                        x: 0.5, y: 1.5, 
+                        w: 9.0, h: 3.8, 
+                        sizing: { type: 'contain', w: 9.0, h: 3.8 }
+                    });
+                } else {
+                    slide.addText("Fully editable shapes generated natively.", { x: 0.5, y: 0.9, w: "90%", h: 0.3, fontSize: 11, italic: true, color: "64748B" });
+                }
+                
+                await pptx.writeFile({ fileName: "Experimental_Flowchart.pptx" });
+                
+                downloadPptxBtn.innerHTML = originalContent;
+                downloadPptxBtn.disabled = false;
+
+            } catch (error) {
+                console.error("Error generating PPTX:", error);
+                showError("Failed to generate PowerPoint file.");
+                downloadPptxBtn.innerHTML = '<i class="fa-solid fa-file-powerpoint text-orange-600"></i> Download PPTX';
+                downloadPptxBtn.disabled = false;
+            }
+        });
+
     </script>
 </body>
 </html>
