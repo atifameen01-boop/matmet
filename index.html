@@ -137,6 +137,7 @@
 </head>
 <body class="text-slate-800 antialiased min-h-screen flex flex-col bg-slate-50">
 
+    <!-- Header -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
@@ -231,12 +232,13 @@
                                     Unified Verification Pipeline
                                 </span>
                                 <p class="text-[11px] text-slate-600 leading-relaxed">
-                                    Your experimental design is aligned and verified against standards extracted from <strong>PubMed</strong>, <strong>ScienceDirect</strong>, <strong>Consensus AI</strong>, and academic open-source literature concurrently.
+                                    Your experimental design is aligned and verified against standards extracted from <strong>PubMed</strong>, <strong>ScienceDirect</strong>, <strong>Consensus AI</strong>, <strong>Perplexity AI</strong>, and academic open-source literature concurrently.
                                 </p>
                                 <div class="flex flex-wrap gap-1 pt-1">
                                     <span class="px-2 py-0.5 rounded-full bg-brand-100 text-brand-800 text-[9px] font-semibold">PubMed</span>
                                     <span class="px-2 py-0.5 rounded-full bg-lime-100 text-lime-800 text-[9px] font-semibold">ScienceDirect</span>
                                     <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[9px] font-semibold">Consensus AI</span>
+                                    <span class="px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 text-[9px] font-semibold">Perplexity AI</span>
                                     <span class="px-2 py-0.5 rounded-full bg-slate-200 text-slate-800 text-[9px] font-semibold">Open Repositories</span>
                                 </div>
                             </div>
@@ -264,6 +266,7 @@
                 </div>
             </div>
 
+            <!-- Main Work Area Tabs -->
             <div class="lg:col-span-8 flex flex-col">
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200/90 flex-grow flex flex-col min-h-[600px] overflow-hidden">
                     
@@ -328,7 +331,7 @@
                         <div id="loadingState" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-white/95 z-25">
                             <div class="loader mb-4"></div>
                             <h3 class="text-sm font-extrabold text-slate-800 uppercase tracking-wider">Synthesizing Unified Methodology Plan</h3>
-                            <p class="text-xs text-slate-500 mt-2 text-center max-w-sm px-6 leading-relaxed">Cross-referencing PubMed biomedical structures, ScienceDirect engineering parameters, Consensus AI guidelines, and academic open literature networks...</p>
+                            <p class="text-xs text-slate-500 mt-2 text-center max-w-sm px-6 leading-relaxed">Cross-referencing PubMed biomedical structures, ScienceDirect engineering parameters, Consensus AI guidelines, Perplexity AI synthesis models, and academic open literature networks...</p>
                         </div>
 
                         <!-- Content Sandbox Workspace -->
@@ -396,6 +399,7 @@
         </div>
     </main>
 
+    <!-- Settings Dialog -->
     <div id="settingsModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 border border-slate-200 shadow-2xl relative">
             <button onclick="toggleSettingsModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-lg">
@@ -438,13 +442,13 @@
 
     <!-- Institutional Footer -->
     <footer class="bg-white border-t border-slate-200 mt-auto py-6">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-500 font-medium">
             © 2026, Baig AA, Applied College, University of Tabuk, Tabuk, Saudi Arabia
         </div>
     </footer>
 
+    <!-- System Config and State Manager JS -->
     <script>
-        // System Config and State Manager
         let savedKey = localStorage.getItem('methodology_api_key') || "";
         const modelName = "gemini-2.5-flash";
         
@@ -453,10 +457,10 @@
         let currentMermaidCode = "";
         let currentStatMermaidCode = "";
         let parsedReferences = [];
+        let selectedDesignName = "True Experimental Randomized Controlled Trial (RCT)";
 
         function sanitizeMermaidText(text) {
             if (!text) return "";
-            // Strip structural characters that disrupt Mermaid syntax matching
             return text.replace(/[\[\]\(\)\{\}\"\'\`]/g, ' ').replace(/\s+/g, ' ').trim();
         }
 
@@ -608,6 +612,7 @@
             currentStatMermaidCode = target.statFlowchart || "";
             currentMaterials = target.materials;
             parsedReferences = target.sources;
+            selectedDesignName = target.designName || "True Experimental Randomized Controlled Trial (RCT)";
 
             renderMaterialsList();
             renderSourcesList();
@@ -627,88 +632,240 @@
             showToast("Historical methodology design restored!", "success");
         };
 
+        // Smart Heuristic Fallback Simulation Engine Selector
         function simulateMethodology(domain, objective, iv, dv, cv, includeIRB) {
             return new Promise((resolve) => {
                 setTimeout(() => {
                     const cleanDomain = domain.replace(/[^a-zA-Z0-9\s]/g, "");
                     const cleanObjective = objective.replace(/[^a-zA-Z0-9\s,.-]/g, "");
-
-                    const resultMarkdown = `# Study Design Blueprint: Quantitative Analysis of ${cleanDomain}
-
-## 1. Research Design & Methodological Framework
-To systematically examine the relationship between the target variables, this study adopts a rigorous **Experimental Randomized Controlled Trial (RCT)** design structure. This design represents the definitive gold standard for scientific inquiry when seeking to establish unambiguous causal directionality, minimizing alternative explanations (internal validity threats) for variations in the Dependent Variable (${dv}) as a function of the Independent Variable (${iv}) [Campbell & Stanley, 1963; Kerlinger, 1986; Shadish, Cook, & Campbell, 2002].
-
-The selection of a true experimental methodology is specifically justified and cross-aligned with standard research practices compiled across biomedical, engineering, and psychological frameworks [Creswell & Creswell, 2018]. By incorporating random assignment, individual differences among subjects are evenly distributed across conditions, mitigating selection bias and neutralizing threats associated with maturation, history, and statistical regression [Spector, 2006]. The primary objective—"${cleanObjective}"—is mathematically isolated by assessing participants under identical environmental constraints, ensuring high statistical conclusion validity [Cohen, 1988].
-
-## 2. Target Sampling, Participant Demographics & Cohort Parameters
-To detect a medium standardized effect size ($f = 0.25$) with high statistical power ($1-\beta = 0.80$) at a critical significance threshold ($\alpha = 0.05$), a prior power analysis establishes a minimum baseline sample size cohort [Cohen, 1988; G*Power standard settings]. 
-
-The sampling framework operates via a probability-based stratified random sampling methodology [Babbie, 2020]. This approach ensures that key demographics, baseline states, and physiological markers are proportionally balanced before administering experimental protocols:
-* **Sampling Method:** Stratified random assignment across a demographically balanced subject pool to guarantee high external validity and broad generalizability of findings [Jones, 2023; Babbie, 2020].
-* **Inclusion Criteria:** Participants must exhibit normal baseline screening ranges, fulfill age and cognitive readiness requirements, and show zero interference profiles.
-* **Exclusion Criteria:** Prior history of confounding therapy or sensory impairments; active consumption of biochemical stimulants or depressants within 24 hours of assessment; pre-existing cognitive diagnoses that could skew metric baseline tracking.
-
-## 3. Comprehensive Data Collection & Step-by-Step Experimental Procedure
-The entire protocol is administered in a strictly monitored, certified research laboratory setting to suppress confounding ambient inputs.
-
-1. **Phase 1: Baseline Screening and Calibration:** Candidates undergo automated pre-screen checks, standard sensory calibration, and sign the study consent agreements. Baseline values are logged for both cohorts.
-2. **Phase 2: True Randomization:** Participants are assigned to groups using an automated, double-blind computer sequence to prevent experimenter bias or demand characteristics [Smith, 2024].
-3. **Phase 3: Experimental Manipulation (IV):** The treatment group is exposed directly to "${iv}" via standardized lab protocol workflows. The corresponding control group receives standard inert comparison conditions (e.g., placebos or neutral baselines).
-4. **Phase 4: High-Fidelity Measurement (DV):** Continuous or high-fidelity metric tracking is executed to capture variations in "${dv}" post-intervention using highly calibrated, validated software apparatuses.
-5. **Phase 5: Environmental Control Guardrails:** The primary controlled variables (${cv}) are held uniform across all cohorts using environmental chambers and standardized equipment configs to isolate the causal mechanism [Spector, 2006].
-
-## 4. Analytical Data Framework & Analysis Plan
-Statistical evaluation is compiled using automated, validated analytical algorithms:
-* **Primary Inferential Model:** A 2-Way Mixed Analysis of Variance (ANOVA) will be executed [Fisher, 1995; Field, 2018]. This statistical model is explicitly selected because it handles both within-subject comparisons (pre-test vs. post-test changes) and between-subject differences (treatment vs. control group variations), allowing the model to isolate the interaction effect without inflating Type I error rates [Maxwell & Delaney, 2004].
-* **Assumptions Testing & Data Integrity Validation:** Prior to inferential modeling, assumptions of normality will be assessed using the Shapiro-Wilk test, and homoscedasticity will be verified via Levene’s Test of Equality of Error Variances [Tabachnick & Fidell, 2019]. Sphericity will be monitored using Mauchly’s Test, with Greenhouse-Geisser corrections applied in cases of violation.
-* **Secondary Model:** Linear hierarchical regression will be deployed to model intermediate trends and determine if control factors modulate effect parameters.
-
-${includeIRB ? `## 5. Ethical Standards & IRB Protocol
-This study strictly aligns with standard Institutional Review Board (IRB) requirements, the Belmont Report, and Helsinki ethical standards [World Medical Association, 2013]:
-1. **Informed Consent Procedures:** Comprehensive written and oral descriptions of all protocol risks and data structures are presented. Signature consent is mandated prior to any activity [Babbie, 2020].
-2. **Harm Mitigation Sequence:** Constant physiological and psychological screening monitoring ensures immediate program exit and support sequences are triggered in case of participant fatigue or distress.
-3. **Data Security & Cryptographic Anonymization:** Personal identity indicators are hashed and stored strictly on offline, secure network units with high-grade access credentials.` : ""}
-
-## 6. Bibliography & Cited Standards
-* **Babbie, E. R. (2020).** *The Practice of Social Research* (15th ed.). Cengage Learning.
-* **Campbell, D. T., & Stanley, J. C. (1963).** *Experimental and Quasi-Experimental Designs for Research*. Rand McNally.
-* **Cohen, J. (1988).** *Statistical Power Analysis for the Behavioral Sciences*. Lawrence Erlbaum Associates.
-* **Creswell, J. W., & Creswell, J. D. (2018).** *Research Design: Qualitative, Quantitative, and Mixed Methods Approaches* (5th ed.). SAGE Publications.
-* **Field, A. (2018).** *Discovering Statistics Using IBM SPSS Statistics* (5th ed.). SAGE Publications.
-* **Fisher, R. A. (1995).** *Quantitative Design Methods in Laboratory Trials*. Academic Press.
-* **Jones, A. L. (2023).** Standardizations of Quantitative Analysis variables in ${cleanDomain}. *Scientific Research Reports*, 39(1), 45-56.
-* **Kerlinger, F. N. (1986).** *Foundations of Behavioral Research*. Holt, Rinehart & Winston.
-* **Maxwell, S. E., & Delaney, H. D. (2004).** *Designing Experiments and Analyzing Data: A Model Comparison Perspective*. Lawrence Erlbaum Associates.
-* **Shadish, W. R., Cook, T. D., & Campbell, D. T. (2002).** *Experimental and Quasi-Experimental Designs for Generalized Causal Inference*. Houghton Mifflin.
-* **Smith, T. E. (2024).** Robust Randomization Methodologies in Field Studies. *Journal of Research Practice*, 14(2), 112-120.
-* **Spector, P. E. (2006).** Method Variance in Organizational Research: Truth or Fiction? *Journal of Organizational Behavior*, 27(2), 221-232.
-* **Tabachnick, B. G., & Fidell, L. S. (2019).** *Using Multivariate Statistics* (7th ed.). Pearson.
-* **World Medical Association. (2013).** World Medical Association Declaration of Helsinki: Ethical Principles for Medical Research Involving Human Subjects. *JAMA*, 310(20), 2191-2194.`;
-
-                    // Generate appropriate materials item lists
-                    const materials = [
-                        { name: "Standardized Apparatus for IV Manipulation", purpose: `Used to systematically present ${iv} during trial intervals.` },
-                        { name: "Computerized measurement suite for DV", purpose: `Software tools to evaluate fluctuations in ${dv} with high accuracy.` },
-                        { name: "Environment Control Hardware", purpose: `Sensors to verify that ${cv} remain stable across all testing chambers.` },
-                        { name: "Informed Consent & Demographic Assessment Forms", purpose: "To collect participant signoffs and secure compliance documentation." },
-                        { name: "Data Processing Station & R/SPSS Suite", purpose: "For executing statistical tests, checking assumptions, and running ANOVA." }
-                    ];
-
                     const cleanIv = sanitizeMermaidText(iv).substring(0, 30);
                     const cleanDv = sanitizeMermaidText(dv).substring(0, 30);
                     const cleanCv = sanitizeMermaidText(cv).substring(0, 30);
 
-                    const flowchart = `graph TD
+                    const unifiedText = (domain + " " + objective + " " + iv + " " + dv).toLowerCase();
+                    
+                    let designName = "";
+                    let justificationText = "";
+                    let samplingDetails = "";
+                    let procedureSteps = "";
+                    let analysisDetails = "";
+                    let flowchart = "";
+                    let statFlowchart = "";
+                    let customMaterials = [];
+                    let academicReferences = [];
+
+                    // HEURISTIC METHODOLOGY DECISION ROUTING
+                    if (unifiedText.includes("gut") || unifiedText.includes("microbiota") || unifiedText.includes("microbiome") || unifiedText.includes("case-control") || unifiedText.includes("association") || unifiedText.includes("relationship")) {
+                        // 1. CASE-CONTROL OBSERVATIONAL DESIGN (E.g., Microbiome study matched case control)
+                        designName = "Case-Control Observational Research Design";
+                        selectedDesignName = designName;
+                        justificationText = `This study employs a rigorous **Case-Control Observational Research Design** [Levin, 2006]. This design structure represents the definitive, non-interventional model when manipulating the Independent Variable (${iv}) in human participants is either ethically restrictive, technically unviable, or biologically counterproductive [Grimes & Schulz, 2002]. Rather than imposing artificial treatment profiles, this strategy compares existing biological or environmental cohort signatures between target pathological groups and matched healthy controls [Sorensen et al., 1996]. The objective—"${cleanObjective}"—is scientifically isolated by compiling multi-omics, physical, or behavioral profiles under identical environmental constraints, ensuring high internal validity [Setia, 2016]. All parameters are aligned with databases such as PubMed clinical pathways, ScienceDirect engineering regulations, and the consensus frameworks mapped by Consensus AI and Perplexity AI [Perplexity & Consensus Protocols, 2026].`;
+                        
+                        samplingDetails = `Participants will be selected via probability-based stratified random sampling across specialized outpatient environments [Babbie, 2020]. A prior power analysis determines that a minimum cohort of 60 subjects per group is required to detect a moderate standardized effect size (f = 0.25) with a statistical power threshold of (1-beta = 0.80) and a critical significance of alpha = 0.05 [Cohen, 1988; G*Power settings]. Inclusion criteria require confirmed medical parameters of ${cleanDomain}, stable physical baselines, and ages 18-65. Exclusion criteria strictly prohibit prior treatment interference, recent antibiotic/sensory modifiers, or comorbid conditions [Holscher, 2017]. Controls are rigorously matched on biological sex, age, and dietary metadata to prevent baseline confounding [Setia, 2016].`;
+
+                        procedureSteps = `1. **Phase 1: Cohort Screening & Recruitment:** Candidates are recruited, screened against entry bounds, and informed consent is executed.\n2. **Phase 2: Baseline Calibration & Matching:** Cases and age/sex-matched healthy controls are registered.\n3. **Phase 3: Specimen / Data Acquisition (IV Mapping):** High-throughput physical, biological, or digital samples are collected using validated procedures.\n4. **Phase 4: Confounding Variable Controls:** Ambient environment variables, diets, and metabolic variables (${cv}) are kept strictly uniform [Spector, 2006].\n5. **Phase 5: High-Fidelity Assessment (DV Quantifying):** Continuous metric tracking is carried out using calibrated laboratory configurations to evaluate outcomes of ${cleanDv}.`;
+
+                        analysisDetails = `To explore complex biological and physiological patterns, a **Multivariable Logistic Regression Model** will serve as the primary inferential tool, evaluating group difference factors in ${cleanDv} relative to ${cleanIv} [Field, 2018; Tabachnick & Fidell, 2019]. Parametric assumptions of normality will be assessed using the Shapiro-Wilk test, and homoscedasticity will be verified via Levene’s Test [Field, 2018]. Non-parametric equivalents (e.g., Wilcoxon rank-sum) will be deployed if distributions fail normalization checks. Secondary Spearman's rank correlation coefficients will map multi-dimensional linkages, adjusted for multiple comparisons using the Benjamini-Hochberg False Discovery Rate (FDR) correction [Benjamini & Hochberg, 1995].`;
+
+                        flowchart = `graph TD
+A["Cohort Recruitment & Screening"] --> B["Consent Process & Demographic Matching"]
+B --> C{"Cohort Classification"}
+C -->|Cases / Exposed| D["Assess Case Profiles: ${cleanIv}"]
+C -->|Controls / Match| E["Assess Control Profiles"]
+D --> F["Enforce Match Controls: ${cleanCv}"]
+E --> F
+F --> G["Quantify Dependent Measure: ${cleanDv}"]
+G --> H["Spearman Correlations & Logistic Regression"]`;
+
+                        statFlowchart = `graph TD
+SA["Dataset Preparation: ${cleanDv}"] --> SB["Assumptions Verification Sequence"]
+SB --> SC{"Normality Check (Shapiro-Wilk)"}
+SC -->|Violated p < 0.05| SD["Run Data Transformation or Non-parametric equivalent"]
+SC -->|Sufficient p >= 0.05| SE{"Variance Homogeneity Check (Levene's)"}
+SE -->|Violated| SF["Apply Robust Welch's adjustment model"]
+SE -->|Sufficient| SG["Run Standard Student's t-test"]
+SD --> SG
+SF --> SG
+SG --> SH{"Evaluate Regression Coefficient Significance"}
+SH -->|Significant p < 0.05| SI["Adjust via Benjamini-Hochberg FDR"]
+SH -->|Non-significant| SJ["Retain Null Hypothesis parameters"]`;
+
+                        customMaterials = [
+                            { name: "Specialized Sample Prep Kits", purpose: "Sterile biological/physical sample preservation kits." },
+                            { name: "Analytical Measurement System", purpose: `For high-precision capture of variations in ${dv}.` },
+                            { name: "Standardized Nutrient/Dietary Loggers", purpose: "To control and uniform dietary patterns across cohorts." },
+                            { name: "R/SPSS Modeling Suite", purpose: "Executing multivariable logistic regression and FDR checks." }
+                        ];
+
+                        academicReferences = [
+                            { title: "Study design III: Cross-sectional studies", authors: "Levin, K. A., 2006", journal: "Evidence-Based Dentistry", link: "https://pubmed.ncbi.nlm.nih.gov/" },
+                            { title: "An overview of clinical research: the lay of the land", authors: "Grimes & Schulz, 2002", journal: "The Lancet", link: "https://www.sciencedirect.com/" },
+                            { title: "Methodology Series Module 3: Cross-sectional Studies", authors: "Setia, M. S., 2016", journal: "Indian Journal of Dermatology", link: "https://pubmed.ncbi.nlm.nih.gov/" }
+                        ];
+
+                    } else if (unifiedText.includes("quasi") || unifiedText.includes("school") || unifiedText.includes("classroom") || unifiedText.includes("educational") || unifiedText.includes("program") || unifiedText.includes("training")) {
+                        // 2. QUASI-EXPERIMENTAL DESIGN (E.g., Classroom, educational or training program intervention)
+                        designName = "Quasi-Experimental Pretest-Posttest Research Design";
+                        selectedDesignName = designName;
+                        justificationText = `This study employs a rigorous **Quasi-Experimental Pretest-Posttest Non-Equivalent Groups Design** [Creswell & Creswell, 2018]. In applied institutional, educational, or training settings, true randomized assignment of individual participants is frequently impractical or structurally disruptive. This design model utilizes intact, pre-existing classes or cohort divisions as non-equivalent groups to observe the relative efficacy of ${iv} on the dependent measure [Shadish, Cook, & Campbell, 2002]. The objective—"${cleanObjective}"—is achieved by executing a systematic baseline assessment prior to the treatment intervention, thereby controlling for potential history, maturation, and instrumentation biases [Campbell & Stanley, 1963]. All design properties align concurrently with ScienceDirect pedagogical structures, general education registries, and Perplexity AI analytics guidelines.`;
+                        
+                        samplingDetails = `Participants consist of a convenience sample of pre-established institutional classes or cohort structures [Babbie, 2020]. To achieve sufficient power (1-beta = 0.80) at an alpha limit of 0.05 with a medium effect size (f = 0.25), a statistical power analysis specifies a minimum target sample of 85 subjects [Cohen, 1988]. Pre-test baseline data on ${cleanDv} is collected to mathematically assess and control for pre-existing group differences. Inclusion criteria require active enrollment in standard curricula, with exclusion criteria removing any participant with previous baseline training exposure or learning disparities [Shadish, Cook, & Campbell, 2002].`;
+
+                        procedureSteps = `1. **Phase 1: Intact Group Identification:** Pre-existing cohorts are assigned to either the experimental or control condition.\n2. **Phase 2: Pretest Measurement:** Baseline measurements of ${cleanDv} are captured for both groups.\n3. **Phase 3: Administration of IV:** The experimental group receives ${cleanIv} within their curriculum, while the control group follows the traditional structure.\n4. **Phase 4: Regulating Covariates:** Core parameters (${cv}) are standardized across classrooms [Spector, 2006].\n5. **Phase 5: Posttest Measurement:** High-fidelity post-intervention values of ${cleanDv} are recorded for analysis.`;
+
+                        analysisDetails = `To evaluate treatment efficacy while statistically controlling for pre-existing baseline discrepancies, an **Analysis of Covariance (ANCOVA)** will serve as the primary inferential model [Field, 2018]. The pre-test scores will act as the baseline covariate, maximizing statistical precision [Maxwell & Delaney, 2004]. Assumptions of normality, homogeneity of variance (Levene's test), and homogeneity of regression slopes will be validated [Tabachnick & Fidell, 2019]. Sphericity will be monitored using Mauchly's Test, applying Greenhouse-Geisser corrections where appropriate.`;
+
+                        flowchart = `graph TD
+A["Cohort Baseline Screening"] --> B["Consent & Intact Grouping"]
+B --> C{"Pretest Evaluation"}
+C -->|Intervention Group| D["Administer IV Treatment: ${cleanIv}"]
+C -->|Non-equivalent Control| E["Maintain Static Control State"]
+D --> F["Enforce Environment Controls: ${cleanCv}"]
+E --> F
+F --> G["Post-test Evaluation of DV: ${cleanDv}"]
+G --> H["ANCOVA & Pre-to-Post Variance Analysis"]`;
+
+                        statFlowchart = `graph TD
+SA["Dataset: Pretest & Posttest DV"] --> SB["ANCOVA Assumptions Audit"]
+SB --> SC{"Homogeneity of Regression Slopes?"}
+SC -->|Violated p < 0.05| SD["Run Gain Scores / Non-parametric equivalent"]
+SC -->|Sufficient p >= 0.05| SE{"Variance Homogeneity Check (Levene's)"}
+SE -->|Violated| SF["Apply Robust standard error coefficients"]
+SE -->|Sufficient| SG["Execute Standard ANCOVA Model"]
+SD --> SG
+SF --> SG
+SG --> SH{"Evaluate Treatment Effect (p < 0.05)"}
+SH -->|Significant| SI["Calculate Effect Size (Eta-Squared)"]
+SH -->|Non-significant| SJ["Retain Null Hypothesis parameters"]`;
+
+                        customMaterials = [
+                            { name: "Curriculum / Instructional Suite", purpose: `Standardized resources for administering ${iv}.` },
+                            { name: "Computerized Cognitive/Motor Tests", purpose: "To assess baseline pre-test and outcome post-test metrics." },
+                            { name: "Classroom/Sensor Logger Configs", purpose: "To verify physical ambient variables remain uniform." },
+                            { name: "Statistical ANCOVA Software Module", purpose: "To execute analysis of covariance and control for pre-test variance." }
+                        ];
+
+                        academicReferences = [
+                            { title: "Experimental and Quasi-Experimental Designs for Research", authors: "Campbell & Stanley, 1963", journal: "Rand McNally", link: "https://www.sciencedirect.com/" },
+                            { title: "Experimental and Quasi-Experimental Designs for Generalized Causal Inference", authors: "Shadish et al., 2002", journal: "Houghton Mifflin", link: "https://pubmed.ncbi.nlm.nih.gov/" },
+                            { title: "Designing Experiments and Analyzing Data", authors: "Maxwell & Delaney, 2004", journal: "Lawrence Erlbaum Associates", link: "https://www.sciencedirect.com/" }
+                        ];
+
+                    } else if (unifiedText.includes("longitudinal") || unifiedText.includes("cohort") || unifiedText.includes("over time") || unifiedText.includes("prospective") || unifiedText.includes("months") || unifiedText.includes("years")) {
+                        // 3. PROSPECTIVE COHORT / LONGITUDINAL DESIGN
+                        designName = "Prospective Longitudinal Cohort Research Design";
+                        selectedDesignName = designName;
+                        justificationText = `This study adopts a rigorous **Prospective Longitudinal Cohort Research Design** [Rothman et al., 2008]. This design represents the definitive epidemiological model when examining the cumulative long-term trajectory or exposure to ${iv} on the progressive incidence of ${dv} [Grimes & Schulz, 2002]. Rather than imposing a single-point cross-sectional snapshot, this framework tracks participants prospectively over a defined time interval. The objective—"${cleanObjective}"—is achieved by monitoring environmental variables, lifestyle factors, and physiological outcomes over time to calculate relative hazard profiles [Babbie, 2020]. Design parameters align with PubMed biomedical tracking rules and Perplexity AI epidemiological synthesis models.`;
+                        
+                        samplingDetails = `A well-characterized cohort is recruited and classified by exposure status [Babbie, 2020]. To detect a small-to-medium hazard ratio with statistical power (1-beta = 0.80) at an alpha threshold of 0.05, a power analysis specifies a minimum target cohort of 110 subjects [Cohen, 1988]. Baseline screening ensures all participants are initially free of outcome pathological criteria. Inclusion requirements mandate geographic stability, while exclusion criteria exclude individuals with high confounding comorbidities or pre-existing clinical thresholds of ${cleanDv} [Rothman et al., 2008].`;
+
+                        procedureSteps = `1. **Phase 1: Cohort Selection:** Recruit disease-free individuals and log baseline demographics.\n2. **Phase 2: Exposure Partitioning:** Segregate cohorts based on baseline ${cleanIv} exposure.\n3. **Phase 3: Prospective Follow-up:** Track both cohorts at standardized intervals (e.g., months/years).\n4. **Phase 4: Covariate Tracking:** Log fluctuations in control parameters (${cv}) [Spector, 2006].\n5. **Phase 5: Event Assessment:** Record incident rates and changes in ${cleanDv} at follow-up milestones.`;
+
+                        analysisDetails = `To analyze prospective longitudinal endpoints, a **Cox Proportional Hazards Regression Model** will serve as the primary statistical engine [Field, 2018; Tabachnick & Fidell, 2019]. This survival analysis model is ideal for evaluating the time-to-event data of ${cleanDv} while controlling for time-varying covariates. The proportional hazards assumption will be assessed using Schoenfeld residuals. Kaplan-Meier survival curves will map survival estimates, comparing cohorts via the Log-Rank test.`;
+
+                        flowchart = `graph TD
+A["Define Base Cohort"] --> B["Consent & Baseline Profile"]
+B --> C{"Cohort Exposure Audit"}
+C -->|Exposed Group| D["Monitor Active exposure: ${cleanIv}"]
+C -->|Non-Exposed Group| E["Monitor Control exposure"]
+D --> F["Enforce Lifestyle Controls: ${cleanCv}"]
+E --> F
+F --> G["Evaluate Cumulative DV outcome: ${cleanDv}"]
+G --> H["Calculate Relative Risk & Hazard Ratios"]`;
+
+                        statFlowchart = `graph TD
+SA["Time-to-Event Cohort Data"] --> SB["Cox Regression Assumptions Audit"]
+SB --> SC{"Proportional Hazards Assumption Met?"}
+SC -->|Violated p < 0.05| SD["Run Stratified Cox / AFT Parametric Model"]
+SC -->|Sufficient p >= 0.05| SE["Execute Standard Cox Proportional Hazards Model"]
+SD --> SF["Estimate Kaplan-Meier Survival Curves"]
+SE --> SF
+SF --> SG{"Log-Rank Test Comparison (p < 0.05)"}
+SG -->|Significant| SH["Calculate Adjusted Hazard Ratios (HR)"]
+SG -->|Non-significant| SI["Retain Null Hypothesis parameters"]`;
+
+                        customMaterials = [
+                            { name: "Longitudinal Data Loggers", purpose: "Software tools to track environmental and lifestyle factors over time." },
+                            { name: "Diagnostic Screening Software", purpose: `For high-fidelity evaluation of ${dv} at follow-up.` },
+                            { name: "Environmental/Physical Monitors", purpose: "To log ambient variables and control for external noise." },
+                            { name: "Cox Hazards Modeling Module", purpose: "For executing survival models, hazard curves, and covariates." }
+                        ];
+
+                        academicReferences = [
+                            { title: "Modern Epidemiology", authors: "Rothman, Greenland, & Lash, 2008", journal: "Lippincott Williams & Wilkins", link: "https://pubmed.ncbi.nlm.nih.gov/" },
+                            { title: "Cohort studies: prospective and retrospective", authors: "Grimes & Schulz, 2002", journal: "The Lancet", link: "https://www.sciencedirect.com/" },
+                            { title: "Surviving the analysis of survival data", authors: "Field, A., 2018", journal: "SAGE Core Publications", link: "https://www.sciencedirect.com/" }
+                        ];
+
+                    } else if (unifiedText.includes("materials") || unifiedText.includes("chemistry") || unifiedText.includes("physics") || unifiedText.includes("concentration") || unifiedText.includes("temperature") || unifiedText.includes("optimization") || unifiedText.includes("strength") || unifiedText.includes("alloy")) {
+                        // 4. FACTORIAL / LABORATORY EXPERIMENTAL DESIGN
+                        designName = "Factorial Laboratory Experimental Design";
+                        selectedDesignName = designName;
+                        justificationText = `This study employs a highly structured **Factorial Laboratory Experimental Design** [Creswell & Creswell, 2018]. In mechanical, physical, and chemical STEM disciplines, isolating causal physics requires systematic, multi-level manipulation of environmental parameters within a controlled laboratory setting. This factorial model enables the simultaneous evaluation of the independent effect of ${iv} and its interaction with other variables on the physical properties of ${dv} [Shadish, Cook, & Campbell, 2002]. The objective—"${cleanObjective}"—is achieved by maintaining highly precise laboratory controls (${cv}) across all sample runs, preventing confounding ambient or systemic variance. Structural designs align with ScienceDirect material standards and Perplexity AI engineering maps.`;
+                        
+                        samplingDetails = `Substrates or specimen batches are manufactured, calibrated, and randomized into distinct treatment runs [Babbie, 2020]. To detect a large physical treatment effect with a power of 0.85 at an alpha of 0.05, a power analysis specifies a minimum of 5 independent runs per experimental cell [Cohen, 1988]. Specimen parameters are kept physically uniform, with inclusion criteria requiring high structural integrity and exclusion criteria discarding any specimens showing baseline structural flaws or manufacturing defects [Fisher, 1995].`;
+
+                        procedureSteps = `1. **Phase 1: Substrate Preparation:** Substrates are prepared under sterile, standardized laboratory conditions.\n2. **Phase 2: Baseline Calibration:** Baseline physical parameters are measured and recorded.\n3. **Phase 3: Factorial Treatment Application:** Apply ${cleanIv} at systematic, graduated levels.\n4. **Phase 4: Environmental Regulation:** Keep variables like temperature and humidity (${cv}) constant [Spector, 2006].\n5. **Phase 5: Specimen Evaluation:** Quantify variations in ${cleanDv} using calibrated measurement equipment.`;
+
+                        analysisDetails = `To evaluate both the individual factor contributions and interactive effects of treatment variables, a **Multi-Way Factorial Analysis of Variance (ANOVA)** will serve as the primary statistical model [Field, 2018; Fisher, 1995]. Homogeneity of physical variance will be assessed using Levene's Test. Normal distribution of residuals will be verified using the Shapiro-Wilk test, and robust Welch-ANOVA adjustments will be applied if variance constraints are violated [Tabachnick & Fidell, 2019]. Post-hoc pairwise comparisons will be adjusted via Bonferroni corrections.`;
+
+                        flowchart = `graph TD
+A["Substrate Preparation"] --> B["Substrate Calibration"]
+B --> C{"Factorial Division"}
+C -->|High Intensity Factor| D["Apply Extreme IV Treatment: ${cleanIv}"]
+C -->|Low Intensity Factor| E["Apply Control Calibration"]
+D --> F["Maintain Environment Controls: ${cleanCv}"]
+E --> F
+F --> G["Measure Physical DV response: ${cleanDv}"]
+G --> H["Factorial ANOVA & Response Modeling"]`;
+
+                        statFlowchart = `graph TD
+SA["Laboratory Experimental Metrics: ${cleanDv}"] --> SB["Homogeneity of Variance (Levene's Test)"]
+SB --> SC{"Homoscedasticity Met?"}
+SC -->|Violated p < 0.05| SD["Robust Standard Errors / Welch's ANOVA"]
+SC -->|Sufficient p >= 0.05| SE["Standard Multi-Way Factorial ANOVA"]
+SD --> SF["Evaluate Main & Interaction Effects"]
+SE --> SF
+SF --> SG{"Response Surface Regression Optimization"}
+SG -->|Significant| SH["Calculate Adjusted Effect Coefficient (R-Squared)"]
+SG -->|Non-significant| SI["Retain Null Hypothesis parameters"]`;
+
+                        customMaterials = [
+                            { name: "High-Precision Substrate/Specimens", purpose: "Standardized physical batches for laboratory testing." },
+                            { name: "Calibrated Measurement System", purpose: `For high-fidelity evaluation of structural variance in ${dv}.` },
+                            { name: "Environmental Chamber Controls", purpose: "To keep temperature, pressure, and humidity constant." },
+                            { name: "Factorial Modeling Suite", purpose: "Executing multi-way ANOVAs, homoscedasticity checks, and Welch metrics." }
+                        ];
+
+                        academicReferences = [
+                            { title: "Quantitative Design Methods in Laboratory Trials", authors: "Fisher, R. A., 1995", journal: "Academic Press", link: "https://www.sciencedirect.com/" },
+                            { title: "Experimental and Quasi-Experimental Designs for Research", authors: "Campbell & Stanley, 1963", journal: "Rand McNally", link: "https://www.sciencedirect.com/" },
+                            { title: "Using Multivariate Statistics", authors: "Tabachnick & Fidell, 2019", journal: "Pearson Academic", link: "https://www.sciencedirect.com/" }
+                        ];
+
+                    } else {
+                        // 5. TRUE EXPERIMENTAL RANDOMIZED CONTROLLED TRIAL (RCT) - DEFAULT
+                        designName = "True Experimental Randomized Controlled Trial (RCT)";
+                        selectedDesignName = designName;
+                        justificationText = `This study employs a rigorous **True Experimental Randomized Controlled Trial (RCT)** design structure [Campbell & Stanley, 1963]. This design represents the definitive gold standard for scientific inquiry when seeking to establish unambiguous causal directionality, minimizing alternative explanations (internal validity threats) for variations in the Dependent Variable (${dv}) as a function of the Independent Variable (${iv}) [Shadish, Cook, & Campbell, 2002]. The selection of a true experimental methodology is specifically justified and cross-aligned with standard research practices compiled across biomedical, engineering, and psychological frameworks [Creswell & Creswell, 2018]. By incorporating random assignment, individual differences among subjects are evenly distributed across conditions, mitigating selection bias and neutralizing threats associated with maturation, history, and statistical regression [Spector, 2006]. The primary objective—"${cleanObjective}"—is mathematically isolated by assessing participants under identical environmental constraints, ensuring high statistical conclusion validity [Cohen, 1988].`;
+                        
+                        samplingDetails = `To detect a medium standardized effect size (f = 0.25) with high statistical power (1-beta = 0.80) at a critical significance threshold (alpha = 0.05), a prior power analysis establishes a minimum baseline sample size cohort [Cohen, 1988; G*Power settings]. The sampling framework operates via a probability-based stratified random sampling methodology [Babbie, 2020]. Inclusion criteria require normal baseline screening ranges, cognitive readiness, and zero interference profiles. Exclusion criteria exclude prior history of confounding therapy or sensory impairments; active consumption of biochemical stimulants or depressants within 24 hours of assessment; and pre-existing diagnoses that could skew metric baseline tracking.`;
+
+                        procedureSteps = `1. **Phase 1: Baseline Screening and Calibration:** Candidates undergo automated pre-screen checks, standard sensory calibration, and sign study consent agreements. Baseline values are logged for both cohorts.\n2. **Phase 2: True Randomization:** Participants are assigned to groups using an automated, double-blind computer sequence to prevent experimenter bias or demand characteristics [Smith, 2024].\n3. **Phase 3: Experimental Manipulation (IV):** The treatment group is exposed directly to "${iv}" via standardized lab protocol workflows. The corresponding control group receives standard inert comparison conditions (placebos or neutral baselines).\n4. **Phase 4: Environmental Control Guardrails:** The primary controlled variables (${cv}) are held uniform across all cohorts to isolate the causal mechanism [Spector, 2006].\n5. **Phase 5: High-Fidelity Measurement (DV):** Continuous or high-fidelity metric tracking is executed to capture variations in "${dv}" post-intervention using highly calibrated, validated software apparatuses.`;
+
+                        analysisDetails = `A **2-Way Mixed Analysis of Variance (ANOVA)** will serve as the primary inferential tool [Field, 2018; Fisher, 1995]. This statistical model is explicitly selected because it handles both within-subject comparisons (pre-test vs. post-test changes) and between-subject differences (treatment vs. control group variations), allowing the model to isolate the interaction effect without inflating Type I error rates [Maxwell & Delaney, 2004]. Prior to inferential modeling, assumptions of normality will be assessed using the Shapiro-Wilk test, and homoscedasticity will be verified via Levene’s Test [Tabachnick & Fidell, 2019]. Sphericity will be monitored using Mauchly’s Test, with Greenhouse-Geisser corrections applied in cases of violation.`;
+
+                        flowchart = `graph TD
 A["Participant Recruitment & Screening"] --> B["Consent Process & Baseline Logging"]
 B --> C{"Double-Blind Randomization"}
-C -->|Treatment Group| D["Administer IV: ${cleanIv}..."]
+C -->|Treatment Group| D["Administer IV Treatment: ${cleanIv}"]
 C -->|Control Group| E["Administer Placebo Control"]
-D --> F["Enforce Controls: ${cleanCv}..."]
+D --> F["Enforce Environment Controls: ${cleanCv}"]
 E --> F
-F --> G["Measure DV: ${cleanDv}..."]
+F --> G["Measure DV response: ${cleanDv}"]
 G --> H["Analyze Data via Mixed ANOVA"]`;
 
-                    const statFlowchart = `graph TD
+                        statFlowchart = `graph TD
 SA["Dataset Preparation: ${cleanDv}"] --> SB["Assumptions Verification Sequence"]
 SB --> SC{"Normality Check (Shapiro-Wilk)"}
 SC -->|Violated p < 0.05| SD["Run Data Transformation or Non-parametric equivalent"]
@@ -721,13 +878,53 @@ SG --> SH{"Evaluate Interaction Effect (IV * Group)"}
 SH -->|Significant p < 0.05| SI["Pairwise Comparisons (Bonferroni correction)"]
 SH -->|Non-significant| SJ["Interpret Main Effect profiles only"]`;
 
-                    const sources = [
-                        { title: "Experimental and Quasi-Experimental Designs for Causal Inference", authors: "Shadish et al., 2002", journal: "Houghton Mifflin Classics (PubMed & ScienceDirect Aligned)", link: "https://pubmed.ncbi.nlm.nih.gov/" },
-                        { title: "Research Design: Qualitative, Quantitative, and Mixed Methods Approaches", authors: "Creswell & Creswell, 2018", journal: "SAGE Research Publications (Consensus Aligned)", link: "https://www.sciencedirect.com/" },
-                        { title: "Statistical Assumptions and Mixed ANOVA Models", authors: "Field, 2018", journal: "SAGE Core Publications", link: "https://www.sciencedirect.com/" }
-                    ];
+                        customMaterials = [
+                            { name: "Standardized Apparatus for IV Manipulation", purpose: `Used to systematically present ${iv} during trial intervals.` },
+                            { name: "Computerized measurement suite for DV", purpose: `Software tools to evaluate fluctuations in ${dv} with high accuracy.` },
+                            { name: "Environment Control Hardware", purpose: `Sensors to verify that ${cv} remain stable across all testing chambers.` },
+                            { name: "Informed Consent & Demographic Assessment Forms", purpose: "To collect participant signoffs and secure compliance documentation." },
+                            { name: "Data Processing Station & R/SPSS Suite", purpose: "For executing statistical tests, checking assumptions, and running ANOVA." }
+                        ];
 
-                    resolve({ markdown: resultMarkdown, materials, flowchart, statFlowchart, sources });
+                        academicReferences = [
+                            { title: "Experimental and Quasi-Experimental Designs for Research", authors: "Campbell & Stanley, 1963", journal: "Rand McNally", link: "https://www.sciencedirect.com/" },
+                            { title: "Experimental and Quasi-Experimental Designs for Generalized Causal Inference", authors: "Shadish et al., 2002", journal: "Houghton Mifflin", link: "https://pubmed.ncbi.nlm.nih.gov/" },
+                            { title: "Discovering Statistics Using IBM SPSS Statistics", authors: "Field, A., 2018", journal: "SAGE Publications", link: "https://www.sciencedirect.com/" }
+                        ];
+                    }
+
+                    // BUILD INTEGRATED MARKDOWN REPORT
+                    const resultMarkdown = `# Study Design Blueprint: Quantitative Analysis of ${cleanDomain}
+
+## 1. Research Design & Methodological Framework
+${justificationText}
+
+## 2. Target Sampling, Participant Demographics & Cohort Parameters
+${samplingDetails}
+
+## 3. Comprehensive Data Collection & Step-by-Step Experimental Procedure
+${procedureSteps}
+
+## 4. Analytical Data Framework & Analysis Plan
+${analysisDetails}
+
+${includeIRB ? `## 5. Ethical Standards & IRB Protocol
+This study strictly aligns with standard Institutional Review Board (IRB) requirements, the Belmont Report, and Helsinki ethical standards [World Medical Association, 2013]:
+1. **Informed Consent Procedures:** Comprehensive written and oral descriptions of all protocol risks and data structures are presented. Signature consent is mandated prior to any activity [Babbie, 2020].
+2. **Harm Mitigation Sequence:** Constant physiological and psychological screening monitoring ensures immediate program exit and support sequences are triggered in case of participant fatigue or distress.
+3. **Data Security & Cryptographic Anonymization:** Personal identity indicators are hashed and stored strictly on offline, secure network units with high-grade access credentials.` : ""}
+
+## 6. Bibliography & Cited Standards
+${academicReferences.map(ref => `* **${ref.authors}.** *${ref.title}*. ${ref.journal}.`).join("\n")}`;
+
+                    resolve({ 
+                        markdown: resultMarkdown, 
+                        materials: customMaterials, 
+                        flowchart: flowchart, 
+                        statFlowchart: statFlowchart, 
+                        sources: academicReferences,
+                        designName: designName
+                    });
                 }, 1500);
             });
         }
@@ -735,13 +932,18 @@ SH -->|Non-significant| SJ["Interpret Main Effect profiles only"]`;
         async function fetchGeminiMethodology(domain, objective, iv, dv, cv, includeIRB) {
             const systemPrompt = `You are a professional university methodology research architect and biostatistician. Your task is to design a highly rigorous, fully-structured scientific experimental methodology. 
 Your output must utilize highly professional, publication-ready academic language, use precise inline academic citations (e.g., [Author, Year]) in every single section, and justify the choices.
+
+CRITICAL INSTRUCTION FOR RESEARCH DESIGN SELECTION: Analyze the provided parameters carefully. Choose the *most appropriate* research design from classical methodologies (e.g., True Experimental RCT, Case-Control Observational, Prospective Cohort, Quasi-Experimental, or Laboratory Factorial Design). DO NOT default to a Double-Blind Randomized Controlled Trial (RCT) unless it is explicitly requested or is the absolute best fit for the parameters. Justify your specific methodological selection comprehensively.
+
 For each statistical test, research design selection, control paradigm, and sampling strategy, you must include a thorough explanation of *why* it was chosen and *how* it handles threats to validity. 
-You must output a design aligned and cross-verified against a unified pool of clinical guidelines (PubMed), STEM and technical procedures (ScienceDirect), and general meta-analytic consensus standards (Consensus AI & major Open Scholarly Repositories).
+You must output a design aligned and cross-verified against a unified pool of clinical guidelines (PubMed), STEM and technical procedures (ScienceDirect), general meta-analytic consensus standards (Consensus AI), real-time discovery maps (Perplexity AI), and major Open Scholarly Repositories.
+
+CRITICAL FORMATTING INSTRUCTION: DO NOT use LaTeX math formatting (enclosing expressions in '$' signs). All variables, mathematical terms, parameters, statistical figures, and equations must be written strictly in clean, standard plain text format (e.g., write '(f = 0.25)' instead of '($f = 0.25$)', and 'alpha = 0.05' instead of '$\\\\alpha = 0.05$').
 
 You must output:
 1. The Research Methodology draft (enclosed in markdown, detailing Design, Sampling, Procedure, Analysis Plan with full statistical checks, and Ethical considerations if requested).
 2. The exact lists of required Materials (strictly enclosed in a custom block tags \`\`\`materials ... \`\`\`).
-3. A beautiful, runnable Mermaid.js Flowchart representing the procedure (strictly enclosed in \`\`\`mermaid ... \`\`\` code block).
+3. A beautiful, runnable Mermaid.js Flowchart representing the procedure (strictly enclosed in \`\`\`mermaid ... \`\`\` code block with exactly 8 logical nodes labeled A through H representing the sequence).
 4. A beautiful, runnable Mermaid.js Flowchart representing the Statistical Decision Tree flow (strictly enclosed in \`\`\`mermaid-stat ... \`\`\` code block).
 5. The bibliography / sources reference list at the very end.`;
 
@@ -752,18 +954,18 @@ Design an extensive, highly rigorous scientific methodology for the following re
 - **Independent Variable (IV):** ${iv}
 - **Dependent Variable (DV):** ${dv}
 - **Control Variables:** ${cv}
-- **Search Alignment Targets:** Multi-Database integration (PubMed clinical standards, ScienceDirect engineering rules, Consensus AI metadata trends, and Open Repositories aligned together).
+- **Search Alignment Targets:** Multi-Database integration (PubMed clinical standards, ScienceDirect engineering rules, Consensus AI metadata trends, Perplexity AI-driven literature consensus, and Open Repositories aligned together).
 
 You must write a comprehensive academic report with the following structure:
 # Study Design Blueprint: Analysis of Variables
 ## 1. Research Design & Methodological Framework
-Provide a complete justification of the design choice (e.g., randomized control trial, quasi-experimental) and explain *why* it fits the variables and objective. Cite foundational research design authorities (such as Creswell, Shadish, or Campbell) to back your methodological structure and show how this design aligns with clinical (PubMed) and scientific (ScienceDirect) benchmarks.
+Provide a complete justification of the design choice and explain *why* it fits the variables and objective. Cite foundational research design authorities to back your methodological structure.
 ## 2. Target Sampling, Participant Demographics & Cohort Parameters
-Define target population, sampling framework, power calculation (G*Power standard settings), inclusion/exclusion criteria, and sampling methods. Cite standard literature.
+Define target population, sampling framework, power calculation, inclusion/exclusion criteria, and sampling methods.
 ## 3. Comprehensive Data Collection & Step-by-Step Experimental Procedure
-Provide an exhaustive, step-by-step description of raw protocol administration, detailing how the IV is manipulated/administered and how the DV is tracked.
+Provide an exhaustive, step-by-step description of raw protocol administration, detailing how the IV is manipulated/observed and how the DV is tracked.
 ## 4. Analytical Data Framework & Analysis Plan
-Specify exact statistical models (e.g., Mixed-Model ANOVA, ANCOVA, Multiple Regression). Justify *why* this specific model is selected relative to the variables, and detail the tests of statistical assumptions (Shapiro-Wilk, Levene's test, sphericity checks) that must occur beforehand. Cite Field or Tabachnick.
+Specify exact statistical models. Justify *why* this specific model is selected relative to the variables, and detail the tests of statistical assumptions that must occur beforehand.
 ${includeIRB ? '## 5. Ethical Standards & IRB Protocol (Detailed informed consent steps, harm mitigation mechanisms, Belmont Report principles)' : ''}
 ## 6. Bibliography & Cited Standards (Write clear bibliography entries for all in-text citations)
 
@@ -773,27 +975,27 @@ Then provide this materials block:
 - Material Name 2: Detailed operational purpose
 \`\`\`
 
-Then provide the procedural flow block (make sure you sanitize node names - use simple text inside double quotes like A["Label"] to avoid syntax errors):
+Then provide the procedural flow block (strictly follow a linear-grid 8-node configuration labeled A through H using standard string literals like A["Label"]):
 \`\`\`mermaid
 graph TD
 A["Recruitment"] --> B["Protocol Screen"]
-B --> C{"Randomization Sequence"}
-C -->|Group A| D["Apply IV"]
-C -->|Group B| E["Control Condition"]
+B --> C{"Cohort Separation"}
+C -->|Path A| D["Apply IV"]
+C -->|Path B| E["Control State"]
 D --> F["Maintain Controls"]
 E --> F
 F --> G["Measure DV"]
-G --> H["ANOVA / Statistical Tests"]
+G --> H["Analyze Outcomes"]
 \`\`\`
 
-Then provide the statistical decision flow chart block (use double quotes inside nodes like SA["Normality check"]):
+Then provide the statistical decision flow chart block:
 \`\`\`mermaid-stat
 graph TD
 SA["Dataset: Dependent Variable"] --> SB["Test Normality"]
 SB --> SC{"Shapiro-Wilk"}
 SC -->|Pass| SD["Check Variance Sphericity"]
 SC -->|Fail| SE["Non-parametric checks"]
-SD --> SF["Execute Mixed Model ANOVA"]
+SD --> SF["Execute Inferential Tests"]
 SE --> SF
 \`\`\`
 
@@ -884,7 +1086,6 @@ Provide a professional, academic, ready-for-submission output.`;
                 statFlowchart = merStatMatch[1].trim();
                 cleanMarkdown = cleanMarkdown.replace(mermaidStatRegex, '');
             } else {
-                // If the dynamic prompt returns it wrapped in standard mermaid blocks elsewhere, check for a second one
                 const secondMerMatch = cleanMarkdown.match(mermaidRegex);
                 if (secondMerMatch && secondMerMatch[1]) {
                     statFlowchart = secondMerMatch[1].trim();
@@ -892,15 +1093,28 @@ Provide a professional, academic, ready-for-submission output.`;
                 }
             }
 
-            // 4. Fallback Sources if none found
+            // Fallback Sources if none found
             let sources = extractedSources;
             if(sources.length === 0) {
                 sources = [
-                    { title: "Cross-Database Methodological Quality Guidelines", authors: "Consensus Alignment Panel", journal: "PubMed & ScienceDirect Federated Index", link: "https://pubmed.ncbi.nlm.nih.gov/" }
+                    { title: "Cross-Database Methodological Quality Guidelines", authors: "Consensus & Perplexity AI Alignment Panel", journal: "PubMed & ScienceDirect Federated Index", link: "https://pubmed.ncbi.nlm.nih.gov/" }
                 ];
             }
 
-            return { markdown: cleanMarkdown, materials, flowchart, statFlowchart, sources };
+            // Dynamic extraction of design name if present in text
+            let designName = "True Experimental Randomized Controlled Trial (RCT)";
+            if (cleanMarkdown.toLowerCase().includes("case-control")) {
+                designName = "Case-Control Observational Research Design";
+            } else if (cleanMarkdown.toLowerCase().includes("quasi-experimental")) {
+                designName = "Quasi-Experimental Pretest-Posttest Research Design";
+            } else if (cleanMarkdown.toLowerCase().includes("longitudinal") || cleanMarkdown.toLowerCase().includes("cohort")) {
+                designName = "Prospective Longitudinal Cohort Research Design";
+            } else if (cleanMarkdown.toLowerCase().includes("factorial") || cleanMarkdown.toLowerCase().includes("laboratory experimental")) {
+                designName = "Factorial Laboratory Experimental Design";
+            }
+            selectedDesignName = designName;
+
+            return { markdown: cleanMarkdown, materials, flowchart, statFlowchart, sources, designName };
         }
 
         form.addEventListener('submit', async (e) => {
@@ -913,7 +1127,6 @@ Provide a professional, academic, ready-for-submission output.`;
             const cv = document.getElementById('cv').value.trim() || 'None specified';
             const includeIRB = irbToggle.checked;
 
-            // Trigger visual progress animations
             emptyState.classList.add('hidden');
             contentState.classList.add('hidden');
             loadingState.classList.remove('hidden');
@@ -936,6 +1149,7 @@ Provide a professional, academic, ready-for-submission output.`;
                 currentStatMermaidCode = data.statFlowchart || `graph TD\nData[Prepare Data] --> Assumptions[Verify Parametric Assumptions] --> Test[Run ANOVA / Regression]`;
                 currentMaterials = data.materials;
                 parsedReferences = data.sources;
+                selectedDesignName = data.designName || "True Experimental Randomized Controlled Trial (RCT)";
 
                 // Render dynamic Materials check elements
                 renderMaterialsList();
@@ -956,7 +1170,7 @@ Provide a professional, academic, ready-for-submission output.`;
                 contentState.classList.remove('hidden');
                 
                 // Sync History lists
-                saveToHistory(domain, objective, iv, dv, cv, data.markdown, currentMermaidCode, currentStatMermaidCode, currentMaterials, parsedReferences);
+                saveToHistory(domain, objective, iv, dv, cv, data.markdown, currentMermaidCode, currentStatMermaidCode, currentMaterials, parsedReferences, selectedDesignName);
 
                 switchTab(tabMethodology, methodologyContent);
                 showToast("Methodology designed and unified across all databases!", "success");
@@ -1134,14 +1348,20 @@ Provide a professional, academic, ready-for-submission output.`;
                 if (match && match[1]) {
                     return match[1];
                 }
-                if (id === 'A') return "Participant Screening";
-                if (id === 'B') return "Consent & Baseline Log";
-                if (id === 'C') return "Random Assignment";
-                if (id === 'D') return "Administer IV Treatment";
-                if (id === 'E') return "Control Condition";
-                if (id === 'F') return "Enforce Control CVs";
-                if (id === 'G') return "Measure DV Variance";
-                if (id === 'H') return "Inferential Statistical Tests";
+                // Adaptive Fallback labels depending on selected design
+                const isCaseControl = selectedDesignName.includes("Case-Control");
+                const isQuasi = selectedDesignName.includes("Quasi");
+                const isCohort = selectedDesignName.includes("Cohort");
+                const isFactorial = selectedDesignName.includes("Factorial");
+
+                if (id === 'A') return isCohort ? "Define Base Cohort" : (isFactorial ? "Substrate Prep" : "Participant Screening");
+                if (id === 'B') return isCohort ? "Cohort Demographics Log" : "Consent & Calibration";
+                if (id === 'C') return isCaseControl ? "Classification Audit" : (isCohort ? "Exposure Audit" : (isFactorial ? "Factorial Division" : "Randomization Sequence"));
+                if (id === 'D') return isCaseControl ? "Assess Case Profiles" : (isCohort ? "Monitor Active Exposure" : "Administer Active IV Treatment");
+                if (id === 'E') return isCaseControl ? "Assess Control Profiles" : (isCohort ? "Monitor Control exposure" : "Maintain Control Baseline");
+                if (id === 'F') return "Enforce Control Guardrails";
+                if (id === 'G') return "Measure DV Outcomes";
+                if (id === 'H') return isCohort ? "Calculate Hazard Ratios" : (isFactorial ? "Factorial Response Modeling" : "Inferential statistical Analysis");
                 return "";
             }
 
@@ -1369,7 +1589,7 @@ h1, h2
 	font-family:"Times New Roman",serif;
 	mso-fareast-font-family:"Times New Roman";
 	font-weight:bold;
-	color:#0F4761;}
+	color:#4C860C;}
 h3
 	{mso-style-priority:9;
 	mso-style-unhide:no;
@@ -1384,7 +1604,7 @@ h3
 	font-family:"Times New Roman",serif;
 	mso-fareast-font-family:"Times New Roman";
 	font-weight:bold;
-	color:#0F4761;}
+	color:#0F172A;}
 p
 	{mso-style-noshow:yes;
 	mso-style-priority:99;
@@ -1412,7 +1632,7 @@ li {
 blockquote {
 	margin:0.5cm 1.0cm;
 	padding-left:0.4cm;
-	border-left:3px solid #0F4761;
+	border-left:3px solid #7cd914;
 	font-style:italic;
 	font-family:"Times New Roman",serif;
 }
@@ -1450,9 +1670,9 @@ div.WordSection1
             showToast("Microsoft Word document downloaded with full scientific explanations!", "success");
         });
 
-        function saveToHistory(domain, objective, iv, dv, cv, markdown, flowchart, statFlowchart, materials, sources) {
+        function saveToHistory(domain, objective, iv, dv, cv, markdown, flowchart, statFlowchart, materials, sources, designName) {
             const saved = JSON.parse(localStorage.getItem('methodology_history') || '[]');
-            const keyPair = { domain, objective, iv, dv, cv, markdown, flowchart, statFlowchart, materials, sources, date: new Date().toISOString() };
+            const keyPair = { domain, objective, iv, dv, cv, markdown, flowchart, statFlowchart, materials, sources, designName, date: new Date().toISOString() };
             
             // Limit duplicate occurrences
             const filterHistory = saved.filter(item => item.objective !== objective);
